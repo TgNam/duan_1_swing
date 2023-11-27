@@ -5,7 +5,7 @@
 package views;
 
 import javax.swing.JPanel;
-import model.entity.Bill;
+
 
 /**
  *

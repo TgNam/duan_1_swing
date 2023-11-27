@@ -62,8 +62,8 @@ public class BillJPanel extends javax.swing.JPanel {
         resetformbill();
     }
     public void resetformbill(){
-        jLinto_money.setText( "0.0 VND");
-        jLtotal_cost.setText("0.0 VND");
+        jLtotal_cost.setText( "0.0 VND");
+        jLinto_money.setText("0.0 VND");
         jLGiamGia.setText("0.0 %");
     }
     //lấy thời gian hiện tại
@@ -169,8 +169,10 @@ public class BillJPanel extends javax.swing.JPanel {
             // Cộng giá tiền của mỗi sản phẩm vào tổng
             totalAmount = totalAmount.add(totalPriceForItem);
         }
-        jLinto_money.setText(String.valueOf(totalAmount.setScale(2, RoundingMode.HALF_UP))+ " VND");
+        resetformbill();
         jLtotal_cost.setText(String.valueOf(totalAmount.setScale(2, RoundingMode.HALF_UP))+ " VND");
+        jLinto_money.setText(String.valueOf(totalAmount.setScale(2, RoundingMode.HALF_UP))+ " VND");
+        
     }
 
     //thêm sản phẩm lên form SP
@@ -328,13 +330,13 @@ public class BillJPanel extends javax.swing.JPanel {
         jLabel11 = new javax.swing.JLabel();
         jPanel11 = new javax.swing.JPanel();
         jLabel14 = new javax.swing.JLabel();
-        jLinto_money = new javax.swing.JLabel();
+        jLtotal_cost = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
         txtVoucher = new javax.swing.JTextField();
         jLabel16 = new javax.swing.JLabel();
         jLGiamGia = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
-        jLtotal_cost = new javax.swing.JLabel();
+        jLinto_money = new javax.swing.JLabel();
         tblKTvoucher = new javax.swing.JButton();
         bthresetvoucher = new javax.swing.JButton();
         jPanel12 = new javax.swing.JPanel();
@@ -537,9 +539,9 @@ public class BillJPanel extends javax.swing.JPanel {
         jLabel14.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         jLabel14.setText("Tổng tiền hàng:");
 
-        jLinto_money.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
-        jLinto_money.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLinto_money.setText("360000 VND");
+        jLtotal_cost.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        jLtotal_cost.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLtotal_cost.setText("360000 VND");
 
         jLabel15.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         jLabel15.setText("Mã Voucher:");
@@ -554,9 +556,9 @@ public class BillJPanel extends javax.swing.JPanel {
         jLabel17.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         jLabel17.setText("Thành Tiền:");
 
-        jLtotal_cost.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
-        jLtotal_cost.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLtotal_cost.setText("349,200 VND");
+        jLinto_money.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        jLinto_money.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLinto_money.setText("349,200 VND");
 
         tblKTvoucher.setText("Kiểm Tra Voucher");
         tblKTvoucher.addActionListener(new java.awt.event.ActionListener() {
@@ -578,7 +580,7 @@ public class BillJPanel extends javax.swing.JPanel {
                         .addGroup(jPanel11Layout.createSequentialGroup()
                             .addComponent(jLabel14)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jLinto_money, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLtotal_cost, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(jPanel11Layout.createSequentialGroup()
                             .addComponent(jLabel15)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -590,7 +592,7 @@ public class BillJPanel extends javax.swing.JPanel {
                         .addGroup(jPanel11Layout.createSequentialGroup()
                             .addComponent(jLabel17)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(jLtotal_cost, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(jLinto_money, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(jPanel11Layout.createSequentialGroup()
                         .addComponent(tblKTvoucher)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -603,7 +605,7 @@ public class BillJPanel extends javax.swing.JPanel {
                 .addGap(26, 26, 26)
                 .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel14)
-                    .addComponent(jLinto_money, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLtotal_cost, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(22, 22, 22)
                 .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel15)
@@ -615,7 +617,7 @@ public class BillJPanel extends javax.swing.JPanel {
                 .addGap(27, 27, 27)
                 .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel17)
-                    .addComponent(jLtotal_cost))
+                    .addComponent(jLinto_money))
                 .addGap(29, 29, 29)
                 .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(tblKTvoucher, javax.swing.GroupLayout.DEFAULT_SIZE, 41, Short.MAX_VALUE)
@@ -1260,15 +1262,36 @@ public class BillJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void tblKTvoucherActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tblKTvoucherActionPerformed
-        try {
-            if (checkVoucher()) {
-                Voucher voucher = voucherResponsitory.getAllById(txtVoucher.getText()).get(0);
-                
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Lỗi dữ liệu!");
-        }
+//        try {
+//            int indexBill = tblbill.getSelectedRow();
+//            if (indexBill >= 0) {
+//                String idVoucher = txtVoucher.getText();
+//                BigDecimal total_cost = BigDecimal.valueOf(Double.parseDouble(jLinto_money.getText()));//200000
+//                BigDecimal into_money = BigDecimal.ZERO;
+//                boolean checkVoucher = false;
+//                BigDecimal sale = BigDecimal.ZERO;
+//                if (checkVoucher()) {
+//                    for (Voucher voucher : voucherResponsitory.getAllById(txtVoucher.getText())) {
+//                        if (voucher.getId().equals(idVoucher)) {
+//                            sale = BigDecimal.valueOf(voucher.getSaleOf());
+//                            checkVoucher = true;
+//                        }
+//                    }
+//                    if (checkVoucher) {
+//                        jLGiamGia.setText(String.valueOf(sale) + " %");
+//                        into_money = total_cost.subtract(total_cost.multiply(sale.divide(BigDecimal.valueOf(100.0))));
+//                        jLinto_money.setText(String.valueOf(into_money));
+//                    } else {
+//                        JOptionPane.showMessageDialog(this, "Voucher không tồn tại!");
+//                    }
+//                }
+//            }else{
+//                JOptionPane.showMessageDialog(this, "Bạn cần chọn Bill!");
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            JOptionPane.showMessageDialog(this, "Lỗi dữ liệu!");
+//        }
     }//GEN-LAST:event_tblKTvoucherActionPerformed
 
     private void tblProductMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblProductMouseClicked
@@ -1309,7 +1332,6 @@ public class BillJPanel extends javax.swing.JPanel {
         tableModel = (DefaultTableModel) tblShoppingCart.getModel();
         tableModel.setRowCount(0);
     }//GEN-LAST:event_bthdeleteBillActionPerformed
-
     /**
      * @param args the command line arguments
      */
