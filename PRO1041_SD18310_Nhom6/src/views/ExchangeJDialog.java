@@ -62,6 +62,8 @@ public class ExchangeJDialog extends javax.swing.JDialog {
         exs = new ExchangeImple();
         exds = new Exchage_DetailImple();
         List = new ArrayList<>();
+        System.out.println(idBill);
+        System.out.println(lblMoney_Sum.toString());
         this.loadProduct_Detail();
 
     }

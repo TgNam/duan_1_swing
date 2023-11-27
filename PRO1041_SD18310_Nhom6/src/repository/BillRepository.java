@@ -55,6 +55,7 @@ public class BillRepository {
     }
 
     //Them thang getBill_all
+    //ngay 27/11 update lai thang nay
     public ArrayList<Bill> getBil_All() {
         ArrayList<Bill> list = new ArrayList<>();
         try {
@@ -75,7 +76,7 @@ public class BillRepository {
                     + "inner join db_levents.address on db_levents.bill.address_id = db_levents.address.id\n"
                     + "left join db_levents.user_role on db_levents.user.id = db_levents.user_role.user_id\n"
                     + "inner join db_levents.role on db_levents.user_role.role_id = db_levents.role.id\n"
-                    + "where db_levents.bill.status = '1';";
+                    + "where db_levents.bill.status = '1' and not exists (select db_levents.exchange_bill.bill_id from db_levents.exchange_bill where db_levents.exchange_bill.bill_id = db_levents.bill.id ) and not exists (select * from db_levents.return_bill where db_levents.return_bill.bill_id = db_levents.bill.id);";
             ResultSet rs = JDBCHelped.executeQuery(sql);
             while (rs.next()) {
                 String id = rs.getString(1);

@@ -422,6 +422,8 @@ public class ExchangeJpanel extends javax.swing.JPanel {
     private void btnDoihangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDoihangActionPerformed
         // TODO add your handling code here:
         ExchangeJDialog ex = new ExchangeJDialog(frame, true);
+        int row = tblBill.getSelectedRow();
+        id = tblBill.getValueAt(row, 0).toString();
         ex.setMoney(money_Sum);
         ex.setIDbill(id);
         ex.setVisible(true);
