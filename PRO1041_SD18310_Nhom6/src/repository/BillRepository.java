@@ -58,24 +58,31 @@ public class BillRepository {
     public ArrayList<Bill> getBil_All() {
         ArrayList<Bill> list = new ArrayList<>();
         try {
-            String sql = "select \n"
-                    + "db_levents.bill.id, \n"
-                    + "db_levents.user.full_name,\n"
-                    + "db_levents.user.number_phone ,\n"
-                    + "db_levents.bill.into_money,\n"
-                    + "db_levents.bill.total_cost,\n"
-                    + "db_levents.address.address_detail,\n"
-                    + "db_levents.bill.created_at,\n"
-                    + "db_levents.bill.delivery_date,\n"
-                    + "db_levents.bill.updated_at,\n"
-                    + "db_levents.bill.voucher_id,\n"
-                    + "db_levents.bill.status\n"
-                    + "from db_levents.bill\n"
-                    + "inner join db_levents.user on db_levents.bill.user_id = db_levents.user.id\n"
-                    + "inner join db_levents.address on db_levents.bill.address_id = db_levents.address.id\n"
-                    + "left join db_levents.user_role on db_levents.user.id = db_levents.user_role.user_id\n"
-                    + "inner join db_levents.role on db_levents.user_role.role_id = db_levents.role.id\n"
-                    + "where db_levents.bill.status = '1';";
+            String sql = "SELECT\n"
+                    + "    db_levents.bill.id,\n"
+                    + "    db_levents.user.full_name,\n"
+                    + "    db_levents.user.number_phone,\n"
+                    + "    db_levents.bill.into_money,\n"
+                    + "    db_levents.bill.total_cost,\n"
+                    + "    db_levents.address.address_detail,\n"
+                    + "    db_levents.bill.created_at,\n"
+                    + "    db_levents.bill.delivery_date,\n"
+                    + "    db_levents.bill.updated_at,\n"
+                    + "    db_levents.bill.voucher_id,\n"
+                    + "    db_levents.bill.status,\n"
+                    + "    db_levents.user.id\n"
+                    + "FROM\n"
+                    + "    db_levents.bill\n"
+                    + "INNER JOIN\n"
+                    + "    db_levents.user ON db_levents.bill.user_id = db_levents.user.id\n"
+                    + "INNER JOIN\n"
+                    + "    db_levents.address ON db_levents.bill.address_id = db_levents.address.id\n"
+                    + "LEFT JOIN\n"
+                    + "    db_levents.user_role ON db_levents.user.id = db_levents.user_role.user_id\n"
+                    + "INNER JOIN\n"
+                    + "    db_levents.role ON db_levents.user_role.role_id = db_levents.role.id\n"
+                    + "WHERE\n"
+                    + "    db_levents.bill.status = '1';";
             ResultSet rs = JDBCHelped.executeQuery(sql);
             while (rs.next()) {
                 String id = rs.getString(1);
@@ -89,10 +96,10 @@ public class BillRepository {
                 Date updated_at = rs.getDate(9);
                 String voucher = rs.getString(10);
                 String status = rs.getString(11);
+                String idUser = rs.getString(12);
                 Bill b;
-                b = new Bill(into_money, total_cost, new Address(address_detail), created_at, delivery_date, id, updated_at, new User(name, number_Phone), new Voucher(voucher), status);
+                b = new Bill(into_money, total_cost, new Address(address_detail), created_at, delivery_date, id, updated_at, new User(idUser, name, number_Phone), new Voucher(voucher), status);
                 list.add(b);
-                ;
             }
             return list;
         } catch (SQLException ex) {
