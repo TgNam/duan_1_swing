@@ -13,6 +13,7 @@ import model.entity.Bill;
  */
 public interface BillService {
     ArrayList<Bill> getListBill_0();
+    ArrayList<Bill> getBill_status(String status1,String status2);
     String add_bill(Bill b);
     //them thang getall
     ArrayList<Bill> getAll();

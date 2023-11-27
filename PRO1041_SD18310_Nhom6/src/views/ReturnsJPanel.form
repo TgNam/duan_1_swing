@@ -16,8 +16,7 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="0" attributes="0">
-              <EmptySpace max="-2" attributes="0"/>
+          <Group type="102" alignment="1" attributes="0">
               <Component id="panelFormTraHang" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -28,8 +27,7 @@
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="0" attributes="0">
-              <EmptySpace max="-2" attributes="0"/>
+          <Group type="102" alignment="1" attributes="0">
               <Component id="panelFormTraHang" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -69,7 +67,7 @@
               </Group>
               <Group type="102" alignment="0" attributes="0">
                   <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="0" pref="12" max="32767" attributes="0"/>
+                  <EmptySpace min="0" pref="18" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -94,7 +92,7 @@
                           <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace min="0" pref="41" max="32767" attributes="0"/>
+                  <EmptySpace min="0" pref="47" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>

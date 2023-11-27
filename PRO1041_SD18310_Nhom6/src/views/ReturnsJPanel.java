@@ -303,7 +303,7 @@ public class ReturnsJPanel extends javax.swing.JPanel {
                 .addContainerGap())
             .addGroup(panelFormTraHangLayout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 12, Short.MAX_VALUE))
+                .addGap(0, 18, Short.MAX_VALUE))
         );
         panelFormTraHangLayout.setVerticalGroup(
             panelFormTraHangLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -324,7 +324,7 @@ public class ReturnsJPanel extends javax.swing.JPanel {
                         .addGap(18, 18, 18)
                         .addComponent(btnInPhieuGH, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(29, 29, 29)))
-                .addGap(0, 41, Short.MAX_VALUE))
+                .addGap(0, 47, Short.MAX_VALUE))
         );
 
         tblProductReturn.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
@@ -505,8 +505,7 @@ public class ReturnsJPanel extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(panelFormTraHang, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -514,8 +513,7 @@ public class ReturnsJPanel extends javax.swing.JPanel {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(panelFormTraHang, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

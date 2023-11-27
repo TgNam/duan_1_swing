@@ -46,5 +46,10 @@ public class BillImple implements BillService{
             return false;
         }
     }
+
+    @Override
+    public ArrayList<Bill> getBill_status(String status1,String status2) {
+        return br.getBill_status(status1, status2);
+    }
     
 }
