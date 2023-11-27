@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import model.entity.Bill;
 import java.sql.*;
+import java.util.List;
 import model.entity.Address;
 import model.entity.User;
 import model.entity.Voucher;
@@ -118,4 +119,38 @@ public class BillRepository {
             return false;
         }
     }
+
+    // anh linh đã ghé thăm chỗ này
+    public Bill getById(Long idBill) {
+        String query = "SELECT * FROM bill WHERE id = ?";
+        try {
+            ResultSet rs = JDBCHelped.executeQuery(query, idBill);
+            if (rs.next()) {
+                String id = rs.getString(1);
+                String name = rs.getString(2);
+                String number_Phone = rs.getString(3);
+                BigDecimal into_money = rs.getBigDecimal(4);
+                BigDecimal total_cost = rs.getBigDecimal(5);
+                String address_detail = rs.getString(6);
+                Date created_at = rs.getDate(7);
+                Date delivery_date = rs.getDate(8);
+                Date updated_at = rs.getDate(9);
+                String voucher = rs.getString(10);
+                String status = rs.getString(11);
+                String idUser = rs.getString(12);
+
+                Address address = new Address(address_detail);
+                User user = new User(idUser, name, number_Phone);
+                Voucher voucherObj = new Voucher(voucher);
+
+                Bill bill = new Bill(into_money, total_cost, address, created_at, delivery_date, id, updated_at, user, voucherObj, status);
+
+                return bill;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    // bye----------
 }

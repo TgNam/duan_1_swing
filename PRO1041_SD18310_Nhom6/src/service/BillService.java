@@ -18,4 +18,6 @@ public interface BillService {
     ArrayList<Bill> getAll();
     //Xóa bill thông qua id
     boolean delete_bill_id(Bill b);
+    // link
+    Bill getById(Long id);
 }

@@ -14,6 +14,10 @@ public class Main extends javax.swing.JFrame {
      */
     private JPanel panel;
 
+    public void setPanel(JPanel panel) {
+        this.panel = panel;
+    }
+
     public Main() {
         initComponents();
 //        tesst t = new tesst();

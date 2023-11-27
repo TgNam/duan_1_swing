@@ -13,7 +13,8 @@ import service.BillService;
  *
  * @author TgNam
  */
-public class BillImple implements BillService{
+public class BillImple implements BillService {
+
     BillRepository br = new BillRepository();
 
     @Override
@@ -25,8 +26,7 @@ public class BillImple implements BillService{
     public String add_bill(Bill b) {
         if (br.add_bill(b)) {
             return "Thêm thành công!";
-        }
-        else{
+        } else {
             return "Thêm thất bại!";
         }
     }
@@ -36,15 +36,20 @@ public class BillImple implements BillService{
     public ArrayList<Bill> getAll() {
         return br.getBil_All();
     }
+
     //Xóa bill thông qua id
     @Override
     public boolean delete_bill_id(Bill b) {
         if (br.delete_bill_id(b)) {
             return true;
-        }
-        else{
+        } else {
             return false;
         }
     }
-    
+
+    @Override
+    public Bill getById(Long id) {
+        return br.getById(id);
+    }
+
 }
