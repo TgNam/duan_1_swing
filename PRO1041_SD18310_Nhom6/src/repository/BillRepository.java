@@ -119,7 +119,6 @@ public class BillRepository {
             return false;
         }
     }
-
     // anh linh đã ghé thăm chỗ này
     public Bill getById(Long idBill) {
         String query = "SELECT * FROM bill WHERE id = ?";
@@ -153,4 +152,28 @@ public class BillRepository {
         return null;
     }
     // bye----------
+
+    public ArrayList<Bill> getBill_status(String status1,String status2) {
+        ArrayList<Bill> list = new ArrayList<>();
+        try {
+            String sql = "SELECT\n"
+                    + "  bill.created_at,\n"
+                    + "  bill.id,\n"
+                    + "  user.full_name,\n"
+                    + "  user.number_phone,\n"
+                    + "  bill.status\n"
+                    + "FROM db_levents.bill\n"
+                    + "join db_levents.user on user.id = bill.user_id where bill.status in (?,?);";           
+            ResultSet rs = JDBCHelped.executeQuery(sql, status1,status2);
+            while (rs.next()) {
+                list.add(new Bill(rs.getDate(1), rs.getString(2), new User(rs.getString(3), rs.getString(4)), rs.getString(5))
+                );
+            }
+            return list;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
 }

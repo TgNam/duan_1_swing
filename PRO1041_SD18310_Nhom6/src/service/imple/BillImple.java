@@ -48,8 +48,13 @@ public class BillImple implements BillService {
     }
 
     @Override
+
     public Bill getById(Long id) {
         return br.getById(id);
+    }
+
+    public ArrayList<Bill> getBill_status(String status1, String status2) {
+        return br.getBill_status(status1, status2);
     }
 
 }

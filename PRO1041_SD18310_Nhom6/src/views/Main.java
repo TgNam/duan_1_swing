@@ -1,7 +1,7 @@
 package views;
 
 import javax.swing.JPanel;
-import model.entity.Bill;
+
 
 /**
  *
@@ -52,6 +52,7 @@ public class Main extends javax.swing.JFrame {
         btnSale = new javax.swing.JButton();
         btnVoucher = new javax.swing.JButton();
         bthThongke = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -146,6 +147,13 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
+        jButton1.setText("Quản Lý Hóa Đơn");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -162,7 +170,8 @@ public class Main extends javax.swing.JFrame {
                     .addComponent(btnDelivery_notes, javax.swing.GroupLayout.DEFAULT_SIZE, 206, Short.MAX_VALUE)
                     .addComponent(btnSale, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnVoucher, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(bthThongke, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(bthThongke, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -188,7 +197,9 @@ public class Main extends javax.swing.JFrame {
                 .addComponent(btnVoucher)
                 .addGap(18, 18, 18)
                 .addComponent(bthThongke)
-                .addContainerGap(315, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton1)
+                .addContainerGap(286, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -245,13 +256,13 @@ public class Main extends javax.swing.JFrame {
 
     private void btnReturnsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReturnsActionPerformed
         // TODO add your handling code here:
-        tblCN.removeAll();
-        tblCN.repaint();
-        panel = new ReturnsJPanel();
-        panel.setSize(tblCN.getWidth(), tblCN.getHeight());
-        tblCN.removeAll();
-        tblCN.add(panel);
-        tblCN.validate();
+//        tblCN.removeAll();
+//        tblCN.repaint();
+//        panel = new ReturnsJPanel();
+//        panel.setSize(tblCN.getWidth(), tblCN.getHeight());
+//        tblCN.removeAll();
+//        tblCN.add(panel);
+//        tblCN.validate();
     }//GEN-LAST:event_btnReturnsActionPerformed
 
     private void btnExchangeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExchangeActionPerformed
@@ -344,6 +355,16 @@ public class Main extends javax.swing.JFrame {
         tblCN.validate();
     }//GEN-LAST:event_bthThongkeActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        tblCN.removeAll();
+        tblCN.repaint();
+        panel = new InvoiceManagementJPanel();
+        panel.setSize(tblCN.getWidth(), tblCN.getHeight());
+        tblCN.removeAll();
+        tblCN.add(panel);
+        tblCN.validate();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -391,6 +412,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JButton btnSale;
     private javax.swing.JButton btnStaff;
     private javax.swing.JButton btnVoucher;
+    private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel tblCN;

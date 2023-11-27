@@ -143,8 +143,20 @@ public class Bill {
     public String checkTrangThai(){
         if (this.status.equals("1")) {
             return "Đã thanh toán";
-        }if (this.status.equals("0")) {
+        }else if(this.status.equals("0")) {
             return "Chưa thanh toán";
+        }else if(this.status.equals("2")) {
+            return "Đang giao";
+        }else if(this.status.equals("3")) {
+            return "Hoàn thành";
+        }else if(this.status.equals("4")) {
+            return "Chờ xác nhận trả hàng";
+        }else if(this.status.equals("5")) {
+            return "Trả hàng thành công";
+        }else if(this.status.equals("6")) {
+            return "Chờ xác nhận đổi hàng";
+        }else if(this.status.equals("7")) {
+            return "Đổi thành công";
         }else{
             return "Null";
         }
