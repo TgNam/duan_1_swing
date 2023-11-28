@@ -33,4 +33,7 @@ public interface ProductDetailService {
      //them cai nay 25/11
     ArrayList<ProductDetail> getRestore_Product_Detail_stop_selling(int min, int max);
     public boolean khoiPhuc(String id);
+    
+    //them cai nay ngay 28//11
+    ArrayList<ProductDetail> getProductDetail_Selling_Next(String idPR, int min, int max);
 }

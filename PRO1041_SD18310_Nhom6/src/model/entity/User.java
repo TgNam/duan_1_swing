@@ -11,6 +11,7 @@ package model.entity;
 import java.util.Date;
 
 public class User {
+
     // private fields
     private Address addressId;
     private Date createdAt;
@@ -27,13 +28,15 @@ public class User {
 
     public User() {
     }
-            // chức năng voucher
-    public User(String id,  String fullName, String numberPhone, String email) {
+    // chức năng voucher
+
+    public User(String id, String fullName, String numberPhone, String email) {
         this.id = id;
         this.fullName = fullName;
         this.numberPhone = numberPhone;
         this.email = email;
     }
+
     public User(Address addressId, Date dateOfBirth, String id, String account, String email, String fullName, String numberPhone, String password, String status) {
         this.addressId = addressId;
         this.dateOfBirth = dateOfBirth;
@@ -56,14 +59,14 @@ public class User {
         this.fullName = fullName;
         this.numberPhone = numberPhone;
     }
-    
+
     public User(Date createdAt, Date updatedAt, String fullName, String numberPhone) {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.fullName = fullName;
         this.numberPhone = numberPhone;
     }
-    
+
     public User(Address addressId, Date createdAt, Date dateOfBirth, String id, Token tokenId, Date updatedAt, String account, String email, String fullName, String numberPhone, String password, String status) {
         this.addressId = addressId;
         this.createdAt = createdAt;
@@ -78,6 +81,9 @@ public class User {
         this.password = password;
         this.status = status;
     }
+
+    //ngay 28/11 them cai nay
+   
 
     public Address getAddressId() {
         return addressId;
@@ -174,16 +180,17 @@ public class User {
     public void setStatus(String status) {
         this.status = status;
     }
+
     // Cập nhật trạng thái của sản phẩm
-    public String checkTrangThai(){
+    public String checkTrangThai() {
         if (this.status.equals("1")) {
             return "Đang hoạt động";
-        }if (this.status.equals("0")) {
+        }
+        if (this.status.equals("0")) {
             return "Đã nghỉ làm";
-        }else{
+        } else {
             return "Null";
         }
     }
-    
-}
 
+}
