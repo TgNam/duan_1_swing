@@ -364,7 +364,7 @@ public class ProductDetailRepository {
                          INNER JOIN 
                              db_levents.product p ON pd.product_id = p.id
                          WHERE 
-                            pd.status NOT IN ('1')) 
+                            pd.status NOT IN ('1') and p.status = '1') 
                          AS temp WHERE rownum BETWEEN ? AND ?;   
                          """;
             ResultSet rs = JDBCHelped.executeQuery(sql, min, max);
@@ -404,4 +404,58 @@ public class ProductDetailRepository {
         }
     }
     
+     //them cai nay ngay 28//11
+     
+      public ArrayList<ProductDetail> getProductDetails_Selling_Next( String idSP, int min, int max) {
+        ArrayList<ProductDetail> list = new ArrayList<>();
+        try {
+            String sql = """
+                         select * from 
+                         (SELECT 
+                             pd.id,
+                             p.name_product,
+                             c.name_color,
+                             s.name_size,
+                             pd.created_at,
+                             pd.updated_at,
+                             pd.quantity,
+                             pd.status,
+                             ROW_NUMBER() OVER (ORDER BY pd.id) AS rownum 
+                         FROM 
+                             db_levents.product_detail pd
+                         INNER JOIN 
+                             db_levents.color c ON pd.color_id = c.id
+                         INNER JOIN 
+                             db_levents.size s ON pd.size_id = s.id
+                         INNER JOIN 
+                             db_levents.product p ON pd.product_id = p.id
+                         WHERE 
+                            pd.status NOT IN ('2') and p.id = ?) 
+                         AS temp WHERE rownum BETWEEN ? AND ?;   
+                         """;
+            ResultSet rs = JDBCHelped.executeQuery(sql, idSP, min, max);
+            while (rs.next()) {
+                String id = rs.getString(1);
+                String name_Product = rs.getString(2);
+                String name_Coler = rs.getString(3);
+                String name_Size = rs.getString(4);
+                Date created_at = rs.getDate(5);
+                Date updated_at = rs.getDate(6);
+                int quantity = rs.getInt(7);
+                String status = rs.getString(8);
+
+                Color color = new Color(name_Coler);
+                Size size = new Size(name_Size);
+
+                Product product = new Product(name_Product);
+                ProductDetail pdt = new ProductDetail(quantity, color, created_at, id, product, size, updated_at, status);
+
+                list.add(pdt);
+            }
+            return list;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
 }

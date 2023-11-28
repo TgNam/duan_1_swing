@@ -16,5 +16,6 @@ public interface Exchange_detailServict {
     public boolean insert(ExchangeBillDetail ex);
     //26/11
     public ArrayList<ExchangeBillDetail> getExchangeBillDetail(String id);
-
+    //them vao ngay 27//11
+    public boolean getMinus_Product_Detail(String id, int quantity);
 }

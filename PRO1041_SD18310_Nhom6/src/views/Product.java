@@ -5,11 +5,13 @@
 package views;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 import model.entity.Color;
 import model.entity.Custom;
@@ -46,7 +48,6 @@ public class Product extends javax.swing.JPanel {
     private SizeSevice ss;
     private ColorService cls = new ColorImple();
 
-    JFrame frame;
     DefaultComboBoxModel dcm;
 
     int minProduct_tab1 = 1;
@@ -55,16 +56,26 @@ public class Product extends javax.swing.JPanel {
     int maxProduct_tab2 = 10;
     int minProduct_detail = 1;
     int maxProduct_detail = 10;
-    String idSP;
-    String idSPCT;
+    //them cai nay ngay 28//11
+    int maxProduct_Stop_Sell = 10;
+    int minProduct_Stop_Sell = 1;
+    int maxProduct_Detail_Stop_Sell = 10;
+    int minProduct_Detail_Stop_Sell = 1;
+    //het
+    //cai nay viet trc r
+    String idProduct;
+    String idProduct_Extra;
+    String idProduct_Detail;
     String idTT;
+    String idProduct_Stop_Sell;
+    String idProduct_Detail_Stop_Sell;
 
+    //het
     /**
      * Creates new form Product
      */
-    public Product(JFrame jFrame) {
+    public Product() {
         initComponents();
-        frame = jFrame;
         pds = new ProductImple();
         pdds = new ProductDetailImple();
         mts = new MaterialImple();
@@ -73,22 +84,24 @@ public class Product extends javax.swing.JPanel {
         ss = new SizeImple();
         cls = new ColorImple();
 
-        this.loadSPNext();
-        this.loadCT();
-        this.loadSPPhu();
+        this.load_Product();
+        this.load_Product_Extra();
+        this.loadProduct_Stop();
+        this.loadProduct_Deteail_Stop_Sell();
 
         this.loadSize();
 
-        this.loadcbbkieu();
-        this.loadcbbVL();
-        this.loadcbbDD();
-        this.loadCBBS();
-        this.loadCBBCL();
-        this.loadCBBSP();
+        this.loadcbbCustom();
+        this.loadcbbMaterial();
+        this.loadcbbThickness();
+        this.loadcbbSize();
+        this.loadcbbColor();
+        this.loadcbbProduct();
+        System.out.println(idProduct_Extra);
     }
 
-    public void loadSPNext() {
-        DefaultTableModel dtm = (DefaultTableModel) this.tblBang.getModel();
+    public void load_Product() {
+        DefaultTableModel dtm = (DefaultTableModel) this.tblProduct.getModel();
         dtm.setRowCount(0);
         String tt = "";
         for (model.entity.Product sp : this.pds.getNext(minProduct_tab1, maxProduct_tab1)) {
@@ -107,8 +120,8 @@ public class Product extends javax.swing.JPanel {
         }
     }
 
-    public void loadSPPhu() {
-        DefaultTableModel dtm = (DefaultTableModel) this.tblSP.getModel();
+    public void load_Product_Extra() {
+        DefaultTableModel dtm = (DefaultTableModel) this.tblProduct_Extra.getModel();
         dtm.setRowCount(0);
 
         for (model.entity.Product sp : this.pds.getNext(minProduct_tab2, maxProduct_tab2)) {
@@ -122,11 +135,30 @@ public class Product extends javax.swing.JPanel {
         }
     }
 
-    public void loadCT() {
-        DefaultTableModel dtm = (DefaultTableModel) this.tblBangChiTiet.getModel();
+    //  cai nay tam bo
+//    public void loadCT() {
+//        DefaultTableModel dtm = (DefaultTableModel) this.tblBangChiTiet.getModel();
+//        dtm.setRowCount(0);
+//        String tt = "";
+//        for (ProductDetail spct : this.pdds.getProductDetails_id(idSP)) {
+//
+//            Object[] ob = {
+//                spct.getId(),
+//                spct.getSizeId().getNameSize(),
+//                spct.getColorId().getNameColor(),
+//                spct.getCreatedAt(),
+//                spct.getUpdatedAt(),
+//                spct.getQuantity()
+//            };
+//            dtm.addRow(ob);
+//        }
+//    }
+    //thay the bang cai nay ngay 28//11
+    public void load_Product_Detail() {
+        DefaultTableModel dtm = (DefaultTableModel) this.tblProduct_Detail.getModel();
         dtm.setRowCount(0);
         String tt = "";
-        for (ProductDetail spct : this.pdds.getProductDetails_id(idSP)) {
+        for (ProductDetail spct : this.pdds.getProductDetail_Selling_Next(idProduct_Extra, minProduct_detail, maxProduct_detail)) {
 
             Object[] ob = {
                 spct.getId(),
@@ -141,7 +173,7 @@ public class Product extends javax.swing.JPanel {
     }
 
     public void loadSize() {
-        DefaultTableModel dtm = (DefaultTableModel) this.tblThuocTinh.getModel();
+        DefaultTableModel dtm = (DefaultTableModel) this.tblAttribute.getModel();
         dtm.setRowCount(0);
         String tt = "";
 
@@ -156,8 +188,8 @@ public class Product extends javax.swing.JPanel {
         }
     }
 
-    public void loadMau() {
-        DefaultTableModel dtm = (DefaultTableModel) this.tblThuocTinh.getModel();
+    public void loadColer() {
+        DefaultTableModel dtm = (DefaultTableModel) this.tblAttribute.getModel();
         dtm.setRowCount(0);
         String tt = "";
         for (Color d : this.cls.getAll()) {
@@ -171,8 +203,8 @@ public class Product extends javax.swing.JPanel {
         }
     }
 
-    public void loadVatLieu() {
-        DefaultTableModel dtm = (DefaultTableModel) this.tblThuocTinh.getModel();
+    public void loadMaterial() {
+        DefaultTableModel dtm = (DefaultTableModel) this.tblAttribute.getModel();
         dtm.setRowCount(0);
         String tt = "";
 
@@ -187,8 +219,8 @@ public class Product extends javax.swing.JPanel {
         }
     }
 
-    public void loadDoDay() {
-        DefaultTableModel dtm = (DefaultTableModel) this.tblThuocTinh.getModel();
+    public void loadThickness() {
+        DefaultTableModel dtm = (DefaultTableModel) this.tblAttribute.getModel();
         dtm.setRowCount(0);
         String tt = "";
 
@@ -203,8 +235,8 @@ public class Product extends javax.swing.JPanel {
         }
     }
 
-    public void loadKieu() {
-        DefaultTableModel dtm = (DefaultTableModel) this.tblThuocTinh.getModel();
+    public void loadCustom() {
+        DefaultTableModel dtm = (DefaultTableModel) this.tblAttribute.getModel();
         dtm.setRowCount(0);
         String tt = "";
 
@@ -219,35 +251,35 @@ public class Product extends javax.swing.JPanel {
         }
     }
 
-    public void loadcbbkieu() {
+    public void loadcbbCustom() {
         dcm = new DefaultComboBoxModel();
         dcm.removeAllElements();
         for (Custom ct : this.cts.getAll()) {
             dcm.addElement(ct.getNameCustom());
         }
-        cbbKieu.setModel(dcm);
+        cbbCustom.setModel(dcm);
     }
 
-    public void loadcbbVL() {
+    public void loadcbbMaterial() {
         dcm = new DefaultComboBoxModel();
         dcm.removeAllElements();
         for (Material nl : this.mts.getAll()) {
             dcm.addElement(nl.getNameMaterial());
         }
-        cbbVatLieu.setModel(dcm);
+        cbbMaterial.setModel(dcm);
     }
 
-    public void loadcbbDD() {
+    public void loadcbbThickness() {
         dcm = new DefaultComboBoxModel();
         dcm.removeAllElements();
         for (Thickness dd : this.tns.getAll()) {
             String doDay = String.valueOf(dd.getGsm());
             dcm.addElement(doDay);
         }
-        cbbDoDay.setModel(dcm);
+        cbbThickness.setModel(dcm);
     }
 
-    public void loadCBBS() {
+    public void loadcbbSize() {
         dcm = new DefaultComboBoxModel();
         dcm.removeAllElements();
         for (Size s : this.ss.getAll()) {
@@ -257,47 +289,47 @@ public class Product extends javax.swing.JPanel {
         cbbSize.setModel(dcm);
     }
 
-    public void loadCBBCL() {
+    public void loadcbbColor() {
         dcm = new DefaultComboBoxModel();
         dcm.removeAllElements();
         for (Color m : this.cls.getAll()) {
             String ten = String.valueOf(m.getNameColor());
             dcm.addElement(ten);
         }
-        cbbMau.setModel(dcm);
+        cbbColor.setModel(dcm);
     }
 
-    public void loadCBBSP() {
+    public void loadcbbProduct() {
         dcm = new DefaultComboBoxModel();
         dcm.removeAllElements();
         for (model.entity.Product pr : this.pds.getProduct_sell()) {
             String ten = String.valueOf(pr.getName_product());
             dcm.addElement(ten);
         }
-        cbbSp.setModel(dcm);
+        cbbProduct.setModel(dcm);
     }
 
     public void clear() {
         txtName_Product.setText("");
-        cbbVatLieu.setSelectedIndex(0);
-        txtGia.setText("");
-        cbbDoDay.setSelectedIndex(0);
-        cbbKieu.setSelectedIndex(0);
-        txtMoTa.setText("");
-        cbbSp.setSelectedIndex(0);
-        cbbMau.setSelectedIndex(0);
+        cbbMaterial.setSelectedIndex(0);
+        txtPrice.setText("");
+        cbbThickness.setSelectedIndex(0);
+        cbbCustom.setSelectedIndex(0);
+        txtDescribe.setText("");
+        cbbProduct.setSelectedIndex(0);
+        cbbColor.setSelectedIndex(0);
         cbbSize.setSelectedIndex(0);
-        txtSoLuong.setText("");
+        txtQuantity.setText("");
         txtName_Attribute.setText("");
         rdoColor.setSelected(true);
         this.loadSize();
     }
 
     public ProductDetail formct() {
-        String ten = cbbSp.getSelectedItem().toString();
+        String ten = cbbProduct.getSelectedItem().toString();
         String size = cbbSize.getSelectedItem().toString().trim();
-        String mau = cbbMau.getSelectedItem().toString().trim();
-        String sl = txtSoLuong.getText().trim();
+        String mau = cbbColor.getSelectedItem().toString().trim();
+        String sl = txtQuantity.getText().trim();
         if (ten.equals("")) {
             JOptionPane.showMessageDialog(this, "chua co san pham de them");
             return null;
@@ -314,11 +346,11 @@ public class Product extends javax.swing.JPanel {
 
     public model.entity.Product form() {
         String ten = txtName_Product.getText().trim();
-        String vatLieu = cbbVatLieu.getSelectedItem().toString();
-        String gia = txtGia.getText().trim();
-        String doDay = cbbDoDay.getSelectedItem().toString();
-        String kieuDang = cbbKieu.getSelectedItem().toString();
-        String moTa = txtMoTa.getText().trim();
+        String vatLieu = cbbMaterial.getSelectedItem().toString();
+        String gia = txtPrice.getText().trim();
+        String doDay = cbbThickness.getSelectedItem().toString();
+        String kieuDang = cbbCustom.getSelectedItem().toString();
+        String moTa = txtDescribe.getText().trim();
         if (ten.equals("") || gia.equals("")) {
             JOptionPane.showMessageDialog(this, "chua nhap du tt");
             return null;
@@ -384,6 +416,48 @@ public class Product extends javax.swing.JPanel {
         }
         return true;
     }
+ //them cai nay ngay 28//11
+    public boolean checkNull_Table(ArrayList<?> myList) {
+        return myList != null && !myList.isEmpty();
+    }
+    
+    public void loadProduct_Stop() {
+        DefaultTableModel dtm = (DefaultTableModel) this.tblProduc_Stop_sell.getModel();
+        dtm.setRowCount(0);
+        String tt = "";
+        for (model.entity.Product sp : this.pds.getNext_Product_Stop_selling(minProduct_Stop_Sell, maxProduct_Stop_Sell)) {
+            Object[] ob = {
+                sp.getId(),
+                sp.getName_product(),
+                sp.getCreated_at(),
+                sp.getUpdated_at(),
+                sp.getCustome_id().getNameCustom(),
+                sp.getProduct_price(),
+                sp.getMaterial_id().getNameMaterial(),
+                sp.getThickness_id().getGsm() + "gsm",
+                sp.getDescription()
+            };
+            dtm.addRow(ob);
+        }
+    }
+
+    public void loadProduct_Deteail_Stop_Sell() {
+        DefaultTableModel dtm = (DefaultTableModel) this.tblProduct_Detail_Stop_Sell.getModel();
+        dtm.setRowCount(0);
+        String tt = "";
+        for (ProductDetail spct : this.pdds.getRestore_Product_Detail_stop_selling(minProduct_Detail_Stop_Sell, maxProduct_Detail_Stop_Sell)) {
+            Object[] ob = {
+                spct.getId(),
+                spct.getProductId().getName_product(),
+                spct.getSizeId().getNameSize(),
+                spct.getColorId().getNameColor(),
+                spct.getCreatedAt(),
+                spct.getUpdatedAt(),
+                spct.getQuantity()
+            };
+            dtm.addRow(ob);
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -404,60 +478,70 @@ public class Product extends javax.swing.JPanel {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        cbbVatLieu = new javax.swing.JComboBox<>();
-        txtGia = new javax.swing.JTextField();
-        cbbDoDay = new javax.swing.JComboBox<>();
+        cbbMaterial = new javax.swing.JComboBox<>();
+        txtPrice = new javax.swing.JTextField();
+        cbbThickness = new javax.swing.JComboBox<>();
         jLabel6 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        txtMoTa = new javax.swing.JTextArea();
+        txtDescribe = new javax.swing.JTextArea();
         jLabel7 = new javax.swing.JLabel();
-        cbbKieu = new javax.swing.JComboBox<>();
+        cbbCustom = new javax.swing.JComboBox<>();
         jScrollPane2 = new javax.swing.JScrollPane();
-        tblBang = new javax.swing.JTable();
-        btnThem = new javax.swing.JButton();
-        btnSua = new javax.swing.JButton();
-        btnXoa = new javax.swing.JButton();
-        btnClen = new javax.swing.JButton();
+        tblProduct = new javax.swing.JTable();
+        btnAdd_Product = new javax.swing.JButton();
+        btnFix_Produc = new javax.swing.JButton();
+        btnStop_Sell_Product = new javax.swing.JButton();
+        btnClear_Product = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        btnPre__Product = new javax.swing.JButton();
+        btnNext__Product = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
-        btnXoaCT = new javax.swing.JButton();
+        btnClear_Product_Detail = new javax.swing.JButton();
         jLabel9 = new javax.swing.JLabel();
-        txtSoLuong = new javax.swing.JTextField();
+        txtQuantity = new javax.swing.JTextField();
         cbbSize = new javax.swing.JComboBox<>();
         jLabel10 = new javax.swing.JLabel();
-        cbbMau = new javax.swing.JComboBox<>();
+        cbbColor = new javax.swing.JComboBox<>();
         jLabel11 = new javax.swing.JLabel();
-        btnThemCT = new javax.swing.JButton();
-        btnSuaChiTiet = new javax.swing.JButton();
-        cbbSp = new javax.swing.JComboBox<>();
-        btnNgungBan = new javax.swing.JButton();
+        btnAdd_Product_Detail = new javax.swing.JButton();
+        btnFix_Product_Detail = new javax.swing.JButton();
+        cbbProduct = new javax.swing.JComboBox<>();
+        btnStop_Sell_Product_Detail = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
         jScrollPane6 = new javax.swing.JScrollPane();
-        tblSP = new javax.swing.JTable();
+        tblProduct_Extra = new javax.swing.JTable();
         jScrollPane3 = new javax.swing.JScrollPane();
-        tblBangChiTiet = new javax.swing.JTable();
-        jButton5 = new javax.swing.JButton();
-        jButton10 = new javax.swing.JButton();
-        jButton11 = new javax.swing.JButton();
-        jButton12 = new javax.swing.JButton();
-        jButton13 = new javax.swing.JButton();
+        tblProduct_Detail = new javax.swing.JTable();
+        btnPre__Product_Extra = new javax.swing.JButton();
+        btnNext_Product_Extra = new javax.swing.JButton();
+        btnPre_Product_Detail = new javax.swing.JButton();
+        btnNext_Product_Detail = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
-        jButton8 = new javax.swing.JButton();
-        jButton9 = new javax.swing.JButton();
+        btnStop_Working_Attribute = new javax.swing.JButton();
+        btnClear_Attribute = new javax.swing.JButton();
         jLabel12 = new javax.swing.JLabel();
         jScrollPane4 = new javax.swing.JScrollPane();
-        tblThuocTinh = new javax.swing.JTable();
+        tblAttribute = new javax.swing.JTable();
         txtName_Attribute = new javax.swing.JTextField();
         rdoSize = new javax.swing.JRadioButton();
         rdoColor = new javax.swing.JRadioButton();
         rdoMaterial = new javax.swing.JRadioButton();
         rdoThickness = new javax.swing.JRadioButton();
         rdoCustom = new javax.swing.JRadioButton();
-        jButton6 = new javax.swing.JButton();
-        jButton7 = new javax.swing.JButton();
+        btnAdd_Attribute = new javax.swing.JButton();
+        btnFix_Attribute = new javax.swing.JButton();
+        jPanel5 = new javax.swing.JPanel();
+        btnPre_Product_Stop_Sell = new javax.swing.JButton();
+        btnNext_Product_Stop_Sell = new javax.swing.JButton();
+        btnRestore_Product = new javax.swing.JButton();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        tblProduc_Stop_sell = new javax.swing.JTable();
+        jPanel6 = new javax.swing.JPanel();
+        btnRestore_Product_Detail_Stop_Sell = new javax.swing.JButton();
+        btnNext_Product_Detail_Stop_Sell = new javax.swing.JButton();
+        btnPre_Product_Detail_Stop_Sell = new javax.swing.JButton();
+        jScrollPane7 = new javax.swing.JScrollPane();
+        tblProduct_Detail_Stop_Sell = new javax.swing.JTable();
 
         jButton2.setText("jButton2");
 
@@ -471,21 +555,21 @@ public class Product extends javax.swing.JPanel {
 
         jLabel5.setText("Độ dày:");
 
-        cbbVatLieu.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbbMaterial.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        cbbDoDay.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbbThickness.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jLabel6.setText("Mô tả:");
 
-        txtMoTa.setColumns(20);
-        txtMoTa.setRows(5);
-        jScrollPane1.setViewportView(txtMoTa);
+        txtDescribe.setColumns(20);
+        txtDescribe.setRows(5);
+        jScrollPane1.setViewportView(txtDescribe);
 
         jLabel7.setText("Kiểu dáng:");
 
-        cbbKieu.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbbCustom.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        tblBang.setModel(new javax.swing.table.DefaultTableModel(
+        tblProduct.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null, null, null},
@@ -496,61 +580,54 @@ public class Product extends javax.swing.JPanel {
                 "id", "Name product", "Created at", "Updated at", "Custom", "Price", "Material", "Thicknes", "Describe"
             }
         ));
-        tblBang.addMouseListener(new java.awt.event.MouseAdapter() {
+        tblProduct.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tblBangMouseClicked(evt);
+                tblProductMouseClicked(evt);
             }
         });
-        jScrollPane2.setViewportView(tblBang);
+        jScrollPane2.setViewportView(tblProduct);
 
-        btnThem.setText("Thêm");
-        btnThem.addActionListener(new java.awt.event.ActionListener() {
+        btnAdd_Product.setText("Add");
+        btnAdd_Product.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnThemActionPerformed(evt);
-            }
-        });
-
-        btnSua.setText("Sửa");
-        btnSua.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSuaActionPerformed(evt);
+                btnAdd_ProductActionPerformed(evt);
             }
         });
 
-        btnXoa.setText("Ngừng kinh doanh");
-        btnXoa.addActionListener(new java.awt.event.ActionListener() {
+        btnFix_Produc.setText("Fix");
+        btnFix_Produc.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnXoaActionPerformed(evt);
+                btnFix_ProducActionPerformed(evt);
             }
         });
 
-        btnClen.setText("Xóa form");
-        btnClen.addActionListener(new java.awt.event.ActionListener() {
+        btnStop_Sell_Product.setText("Stop_sell");
+        btnStop_Sell_Product.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnClenActionPerformed(evt);
+                btnStop_Sell_ProductActionPerformed(evt);
+            }
+        });
+
+        btnClear_Product.setText("Clear");
+        btnClear_Product.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnClear_ProductActionPerformed(evt);
             }
         });
 
         jLabel2.setText("gsm");
 
-        jButton3.setText("<");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        btnPre__Product.setText("<");
+        btnPre__Product.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                btnPre__ProductActionPerformed(evt);
             }
         });
 
-        jButton4.setText(">");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        btnNext__Product.setText(">");
+        btnNext__Product.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
-            }
-        });
-
-        jButton1.setText("danh sách sản phẩm ngừng kinh doanh");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnNext__ProductActionPerformed(evt);
             }
         });
 
@@ -563,49 +640,51 @@ public class Product extends javax.swing.JPanel {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane2)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(txtName_Product, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(txtGia, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(cbbDoDay, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(cbbKieu, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(cbbVatLieu, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 130, Short.MAX_VALUE)
+                                .addComponent(txtName_Product, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(jPanel2Layout.createSequentialGroup()
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(cbbMaterial, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGroup(jPanel2Layout.createSequentialGroup()
+                                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(txtPrice))
+                                .addGroup(jPanel2Layout.createSequentialGroup()
+                                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(cbbThickness, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGroup(jPanel2Layout.createSequentialGroup()
+                                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(cbbCustom, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGroup(jPanel2Layout.createSequentialGroup()
+                                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(btnXoa, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnClen, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnThem)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnSua, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 229, Short.MAX_VALUE)
+                                .addComponent(btnStop_Sell_Product)
+                                .addGap(18, 18, 18)))
+                        .addComponent(btnClear_Product)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnAdd_Product)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnFix_Produc))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnPre__Product, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnNext__Product, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -616,57 +695,56 @@ public class Product extends javax.swing.JPanel {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(3, 3, 3)
                         .addComponent(jLabel1))
-                    .addComponent(txtName_Product, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(btnThem)
-                        .addComponent(btnSua)
-                        .addComponent(btnClen)
-                        .addComponent(btnXoa)))
+                        .addComponent(btnAdd_Product)
+                        .addComponent(btnFix_Produc)
+                        .addComponent(btnClear_Product)
+                        .addComponent(btnStop_Sell_Product))
+                    .addComponent(txtName_Product, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(12, 12, 12)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(3, 3, 3)
                         .addComponent(jLabel3))
-                    .addComponent(cbbVatLieu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
-                .addGap(18, 18, 18)
+                    .addComponent(cbbMaterial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(19, 19, 19)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(3, 3, 3)
                         .addComponent(jLabel4))
-                    .addComponent(txtGia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel5)
-                    .addComponent(cbbDoDay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbbThickness, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(3, 3, 3)
                         .addComponent(jLabel2)))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel7)
-                    .addComponent(cbbKieu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cbbCustom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel6)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(24, 24, 24)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 282, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton4)
-                    .addComponent(jButton3))
-                .addContainerGap(64, Short.MAX_VALUE))
+                    .addComponent(btnNext__Product)
+                    .addComponent(btnPre__Product))
+                .addContainerGap())
         );
 
-        jTabbedPane1.addTab("San pham", jPanel2);
+        jTabbedPane1.addTab("Product", jPanel2);
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
 
-        btnXoaCT.setText("Clear form");
-        btnXoaCT.addActionListener(new java.awt.event.ActionListener() {
+        btnClear_Product_Detail.setText("Clear form");
+        btnClear_Product_Detail.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnXoaCTActionPerformed(evt);
+                btnClear_Product_DetailActionPerformed(evt);
             }
         });
 
@@ -676,36 +754,36 @@ public class Product extends javax.swing.JPanel {
 
         jLabel10.setText("Coler:");
 
-        cbbMau.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbbColor.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jLabel11.setText("Số  lượng:");
 
-        btnThemCT.setText("Thêm");
-        btnThemCT.addActionListener(new java.awt.event.ActionListener() {
+        btnAdd_Product_Detail.setText("Add");
+        btnAdd_Product_Detail.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnThemCTActionPerformed(evt);
+                btnAdd_Product_DetailActionPerformed(evt);
             }
         });
 
-        btnSuaChiTiet.setText("Sửa");
-        btnSuaChiTiet.addActionListener(new java.awt.event.ActionListener() {
+        btnFix_Product_Detail.setText("Fix");
+        btnFix_Product_Detail.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSuaChiTietActionPerformed(evt);
+                btnFix_Product_DetailActionPerformed(evt);
             }
         });
 
-        cbbSp.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbbProduct.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        btnNgungBan.setText("Ngừng bán");
-        btnNgungBan.addActionListener(new java.awt.event.ActionListener() {
+        btnStop_Sell_Product_Detail.setText("Stop_sell");
+        btnStop_Sell_Product_Detail.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnNgungBanActionPerformed(evt);
+                btnStop_Sell_Product_DetailActionPerformed(evt);
             }
         });
 
         jLabel8.setText("Tên sản phẩm: ");
 
-        tblSP.setModel(new javax.swing.table.DefaultTableModel(
+        tblProduct_Extra.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
                 {null, null, null, null, null},
@@ -716,14 +794,14 @@ public class Product extends javax.swing.JPanel {
                 "id", "ten sp", "do day", "nguyen lieu", "kieu"
             }
         ));
-        tblSP.addMouseListener(new java.awt.event.MouseAdapter() {
+        tblProduct_Extra.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tblSPMouseClicked(evt);
+                tblProduct_ExtraMouseClicked(evt);
             }
         });
-        jScrollPane6.setViewportView(tblSP);
+        jScrollPane6.setViewportView(tblProduct_Extra);
 
-        tblBangChiTiet.setModel(new javax.swing.table.DefaultTableModel(
+        tblProduct_Detail.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null},
                 {null, null, null, null, null, null},
@@ -734,45 +812,38 @@ public class Product extends javax.swing.JPanel {
                 "id", "size", "màu sắc", "Ngày tạo", "Ngày sửa", "Số lượng"
             }
         ));
-        tblBangChiTiet.addMouseListener(new java.awt.event.MouseAdapter() {
+        tblProduct_Detail.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tblBangChiTietMouseClicked(evt);
+                tblProduct_DetailMouseClicked(evt);
             }
         });
-        jScrollPane3.setViewportView(tblBangChiTiet);
+        jScrollPane3.setViewportView(tblProduct_Detail);
 
-        jButton5.setText("<");
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
+        btnPre__Product_Extra.setText("<");
+        btnPre__Product_Extra.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
-            }
-        });
-
-        jButton10.setText(">");
-        jButton10.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton10ActionPerformed(evt);
+                btnPre__Product_ExtraActionPerformed(evt);
             }
         });
 
-        jButton11.setText("<");
-        jButton11.addActionListener(new java.awt.event.ActionListener() {
+        btnNext_Product_Extra.setText(">");
+        btnNext_Product_Extra.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton11ActionPerformed(evt);
+                btnNext_Product_ExtraActionPerformed(evt);
             }
         });
 
-        jButton12.setText(">");
-        jButton12.addActionListener(new java.awt.event.ActionListener() {
+        btnPre_Product_Detail.setText("<");
+        btnPre_Product_Detail.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton12ActionPerformed(evt);
+                btnPre_Product_DetailActionPerformed(evt);
             }
         });
 
-        jButton13.setText("Các sản phẩm ngừng bán");
-        jButton13.addActionListener(new java.awt.event.ActionListener() {
+        btnNext_Product_Detail.setText(">");
+        btnNext_Product_Detail.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton13ActionPerformed(evt);
+                btnNext_Product_DetailActionPerformed(evt);
             }
         });
 
@@ -786,16 +857,16 @@ public class Product extends javax.swing.JPanel {
                     .addComponent(jScrollPane3)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton11, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnPre_Product_Detail, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton12, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btnNext_Product_Detail, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                 .addGroup(jPanel3Layout.createSequentialGroup()
-                                    .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnPre__Product_Extra, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(btnNext_Product_Extra, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addComponent(jScrollPane6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 595, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -805,19 +876,17 @@ public class Product extends javax.swing.JPanel {
                                     .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE))
                                 .addGap(18, 18, 18)
                                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(cbbSp, 0, 288, Short.MAX_VALUE)
+                                    .addComponent(cbbProduct, 0, 288, Short.MAX_VALUE)
                                     .addComponent(cbbSize, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(cbbMau, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(txtSoLuong))
+                                    .addComponent(cbbColor, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(txtQuantity))
                                 .addGap(18, 18, 18)
                                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(btnXoaCT, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(btnNgungBan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(btnSuaChiTiet, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(btnThemCT, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addGap(18, 18, 18)
-                                .addComponent(jButton13)))
-                        .addGap(0, 252, Short.MAX_VALUE)))
+                                    .addComponent(btnClear_Product_Detail, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(btnStop_Sell_Product_Detail, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(btnFix_Product_Detail, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(btnAdd_Product_Detail, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGap(0, 363, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -825,57 +894,61 @@ public class Product extends javax.swing.JPanel {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cbbSp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbbProduct, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8)
-                    .addComponent(btnThemCT)
-                    .addComponent(jButton13))
+                    .addComponent(btnAdd_Product_Detail))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
                     .addComponent(cbbSize, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnSuaChiTiet))
+                    .addComponent(btnFix_Product_Detail))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel10)
                     .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(cbbMau, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnNgungBan)))
+                        .addComponent(cbbColor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnStop_Sell_Product_Detail)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel11)
-                    .addComponent(btnXoaCT)
-                    .addComponent(txtSoLuong, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnClear_Product_Detail)
+                    .addComponent(txtQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton5)
-                    .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnNext_Product_Extra, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnPre__Product_Extra, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton12)
-                    .addComponent(jButton11))
+                    .addComponent(btnNext_Product_Detail)
+                    .addComponent(btnPre_Product_Detail))
                 .addContainerGap(10, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("San pham chi tiet", jPanel3);
+        jTabbedPane1.addTab("Product_Detail", jPanel3);
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
 
-        jButton8.setText("Ngừng hoạt động");
-
-        jButton9.setText("Clear");
-        jButton9.addActionListener(new java.awt.event.ActionListener() {
+        btnStop_Working_Attribute.setText(" stop working");
+        btnStop_Working_Attribute.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton9ActionPerformed(evt);
+                btnStop_Working_AttributeActionPerformed(evt);
+            }
+        });
+
+        btnClear_Attribute.setText("Clear");
+        btnClear_Attribute.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnClear_AttributeActionPerformed(evt);
             }
         });
 
         jLabel12.setText("Thêm thuộc tính sản phẩm:");
 
-        tblThuocTinh.setModel(new javax.swing.table.DefaultTableModel(
+        tblAttribute.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -886,12 +959,12 @@ public class Product extends javax.swing.JPanel {
                 "id", "name", "Created_at", "Updated_at"
             }
         ));
-        tblThuocTinh.addMouseListener(new java.awt.event.MouseAdapter() {
+        tblAttribute.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tblThuocTinhMouseClicked(evt);
+                tblAttributeMouseClicked(evt);
             }
         });
-        jScrollPane4.setViewportView(tblThuocTinh);
+        jScrollPane4.setViewportView(tblAttribute);
 
         btgTT.add(rdoSize);
         rdoSize.setSelected(true);
@@ -903,7 +976,7 @@ public class Product extends javax.swing.JPanel {
         });
 
         btgTT.add(rdoColor);
-        rdoColor.setText("Màu");
+        rdoColor.setText("Color");
         rdoColor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 rdoColorActionPerformed(evt);
@@ -911,7 +984,7 @@ public class Product extends javax.swing.JPanel {
         });
 
         btgTT.add(rdoMaterial);
-        rdoMaterial.setText("Vật liệu");
+        rdoMaterial.setText("Material");
         rdoMaterial.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 rdoMaterialActionPerformed(evt);
@@ -919,7 +992,7 @@ public class Product extends javax.swing.JPanel {
         });
 
         btgTT.add(rdoThickness);
-        rdoThickness.setText("Độ dày");
+        rdoThickness.setText("Thickness");
         rdoThickness.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 rdoThicknessActionPerformed(evt);
@@ -927,24 +1000,24 @@ public class Product extends javax.swing.JPanel {
         });
 
         btgTT.add(rdoCustom);
-        rdoCustom.setText("Kiểu");
+        rdoCustom.setText("Custom");
         rdoCustom.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 rdoCustomActionPerformed(evt);
             }
         });
 
-        jButton6.setText("Thêm");
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
+        btnAdd_Attribute.setText("Add");
+        btnAdd_Attribute.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
+                btnAdd_AttributeActionPerformed(evt);
             }
         });
 
-        jButton7.setText("Sửa");
-        jButton7.addActionListener(new java.awt.event.ActionListener() {
+        btnFix_Attribute.setText("Fix");
+        btnFix_Attribute.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton7ActionPerformed(evt);
+                btnFix_AttributeActionPerformed(evt);
             }
         });
 
@@ -973,14 +1046,14 @@ public class Product extends javax.swing.JPanel {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(rdoCustom))
                             .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addComponent(jButton6)
+                                .addComponent(btnAdd_Attribute)
                                 .addGap(18, 18, 18)
-                                .addComponent(jButton7)
+                                .addComponent(btnFix_Attribute)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jButton8)
+                                .addComponent(btnStop_Working_Attribute)
                                 .addGap(18, 18, 18)
-                                .addComponent(jButton9)))
-                        .addGap(0, 202, Short.MAX_VALUE)))
+                                .addComponent(btnClear_Attribute)))
+                        .addGap(0, 161, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
@@ -997,16 +1070,159 @@ public class Product extends javax.swing.JPanel {
                     .addComponent(rdoCustom))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton6)
-                    .addComponent(jButton7)
-                    .addComponent(jButton8)
-                    .addComponent(jButton9))
+                    .addComponent(btnAdd_Attribute)
+                    .addComponent(btnFix_Attribute)
+                    .addComponent(btnStop_Working_Attribute)
+                    .addComponent(btnClear_Attribute))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 475, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("Thuoc tinh", jPanel4);
+        jTabbedPane1.addTab("Attribute", jPanel4);
+
+        btnPre_Product_Stop_Sell.setText("<");
+        btnPre_Product_Stop_Sell.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPre_Product_Stop_SellActionPerformed(evt);
+            }
+        });
+
+        btnNext_Product_Stop_Sell.setText(">");
+        btnNext_Product_Stop_Sell.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNext_Product_Stop_SellActionPerformed(evt);
+            }
+        });
+
+        btnRestore_Product.setText(" Restore");
+        btnRestore_Product.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRestore_ProductActionPerformed(evt);
+            }
+        });
+
+        tblProduc_Stop_sell.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "id", "Name product", "Created at", "Updated at", "Custom", "Price", "Material", "Thicknes", "Describe"
+            }
+        ));
+        tblProduc_Stop_sell.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblProduc_Stop_sellMouseClicked(evt);
+            }
+        });
+        jScrollPane5.setViewportView(tblProduc_Stop_sell);
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnPre_Product_Stop_Sell, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnNext_Product_Stop_Sell, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnRestore_Product))
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 958, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnRestore_Product)
+                    .addComponent(btnPre_Product_Stop_Sell)
+                    .addComponent(btnNext_Product_Stop_Sell))
+                .addContainerGap(344, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Product_stop_sell", jPanel5);
+
+        btnRestore_Product_Detail_Stop_Sell.setText(" Restore");
+        btnRestore_Product_Detail_Stop_Sell.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRestore_Product_Detail_Stop_SellActionPerformed(evt);
+            }
+        });
+
+        btnNext_Product_Detail_Stop_Sell.setText(">");
+        btnNext_Product_Detail_Stop_Sell.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNext_Product_Detail_Stop_SellActionPerformed(evt);
+            }
+        });
+
+        btnPre_Product_Detail_Stop_Sell.setText("<");
+        btnPre_Product_Detail_Stop_Sell.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPre_Product_Detail_Stop_SellActionPerformed(evt);
+            }
+        });
+
+        tblProduct_Detail_Stop_Sell.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "id", "Name Product", "size", "color", "Created at", "Updated at", "Quantity"
+            }
+        ));
+        tblProduct_Detail_Stop_Sell.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblProduct_Detail_Stop_SellMouseClicked(evt);
+            }
+        });
+        jScrollPane7.setViewportView(tblProduct_Detail_Stop_Sell);
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 958, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnPre_Product_Detail_Stop_Sell, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnNext_Product_Detail_Stop_Sell, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnRestore_Product_Detail_Stop_Sell)))
+                .addContainerGap())
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnNext_Product_Detail_Stop_Sell)
+                        .addComponent(btnPre_Product_Detail_Stop_Sell))
+                    .addComponent(btnRestore_Product_Detail_Stop_Sell))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Product_Detail_Stop_sell", jPanel6);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -1039,26 +1255,26 @@ public class Product extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void tblBangMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblBangMouseClicked
+    private void tblProductMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblProductMouseClicked
         // TODO add your handling code here:
-        int row = tblBang.getSelectedRow();
-        idSP = tblBang.getValueAt(row, 0).toString();
-        txtName_Product.setText(tblBang.getValueAt(row, 1).toString());
-        cbbVatLieu.setSelectedItem(tblBang.getValueAt(row, 6).toString());
-        txtGia.setText(tblBang.getValueAt(row, 5).toString());
-        String doDay = tblBang.getValueAt(row, 7).toString();
+        int row = tblProduct.getSelectedRow();
+        idProduct = tblProduct.getValueAt(row, 0).toString();
+        txtName_Product.setText(tblProduct.getValueAt(row, 1).toString());
+        cbbMaterial.setSelectedItem(tblProduct.getValueAt(row, 6).toString());
+        txtPrice.setText(tblProduct.getValueAt(row, 5).toString());
+        String doDay = tblProduct.getValueAt(row, 7).toString();
         String pattern = "(\\d+)gsm";
         Pattern regex = Pattern.compile(pattern);
         Matcher matcher = regex.matcher(doDay);
         while (matcher.find()) {
             String match = matcher.group(1);
-            cbbDoDay.setSelectedItem(match.toString());
+            cbbThickness.setSelectedItem(match.toString());
         }
-        cbbKieu.setSelectedItem(tblBang.getValueAt(row, 4).toString());
-        txtMoTa.setText(tblBang.getValueAt(row, 8).toString());
-    }//GEN-LAST:event_tblBangMouseClicked
+        cbbCustom.setSelectedItem(tblProduct.getValueAt(row, 4).toString());
+        txtDescribe.setText(tblProduct.getValueAt(row, 8).toString());
+    }//GEN-LAST:event_tblProductMouseClicked
 
-    private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
+    private void btnAdd_ProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdd_ProductActionPerformed
         model.entity.Product sp = form();
         if (sp == null) {
             return;
@@ -1077,77 +1293,62 @@ public class Product extends javax.swing.JPanel {
             System.out.println("kieu dang: " + sp.getCustome_id().getNameCustom());
             System.out.println("mo ta:" + sp.getDescription());
             JOptionPane.showMessageDialog(this, "Them thanh cong");
-            this.loadSPNext();
-            this.loadSPPhu();
-            this.loadCBBSP();
+            this.load_Product();
+            this.load_Product_Extra();
+            this.loadcbbProduct();
         } else {
             JOptionPane.showMessageDialog(this, "Them that bai");
             return;
         }
-    }//GEN-LAST:event_btnThemActionPerformed
+    }//GEN-LAST:event_btnAdd_ProductActionPerformed
 
-    private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
+    private void btnFix_ProducActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFix_ProducActionPerformed
         // TODO add your handling code here:
         model.entity.Product sp = form();
         if (sp == null) {
             return;
         }
-        if (this.pds.sua(idSP, sp) == true) {
+        if (this.pds.sua(idProduct, sp) == true) {
             JOptionPane.showMessageDialog(this, "Da sua thanh cong");
-            this.loadCT();
-            this.loadSPNext();
-            this.loadSPPhu();
-            this.loadCBBSP();
+            this.load_Product_Detail();
+            this.load_Product();
+            this.load_Product_Extra();
+            this.loadcbbProduct();
         } else {
             JOptionPane.showMessageDialog(this, "Da sua that bai");
             return;
         }
-    }//GEN-LAST:event_btnSuaActionPerformed
+    }//GEN-LAST:event_btnFix_ProducActionPerformed
 
-    private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
-        if (txtName_Product.getText().trim().equalsIgnoreCase("")) {
-            return;
-        }
-        if (this.pds.xoa(txtName_Product.getText().trim()) == true) {
-            JOptionPane.showMessageDialog(this, "Da xoa thanh cong");
-            this.loadCT();
-            this.loadSPNext();
-            this.loadSPPhu();
-            this.loadCBBSP();
-            this.clear();
-        } else {
-            JOptionPane.showMessageDialog(this, "Da xoa that bai");
-            return;
-        }
-    }//GEN-LAST:event_btnXoaActionPerformed
-
-    private void btnXoaCTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaCTActionPerformed
+    private void btnClear_Product_DetailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClear_Product_DetailActionPerformed
         // TODO add your handling code here:
         this.clear();
-    }//GEN-LAST:event_btnXoaCTActionPerformed
+    }//GEN-LAST:event_btnClear_Product_DetailActionPerformed
 
     private void rdoColorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoColorActionPerformed
         // TODO add your handling code here:
-        this.loadMau();
+        this.loadColer();
     }//GEN-LAST:event_rdoColorActionPerformed
 
-    private void tblSPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblSPMouseClicked
-        int row = tblSP.getSelectedRow();
+    private void tblProduct_ExtraMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblProduct_ExtraMouseClicked
+        int row = tblProduct_Extra.getSelectedRow();
         if (row < 0) {
             return;
         }
-        idSP = tblSP.getValueAt(row, 0).toString();
-        this.loadCT();
-    }//GEN-LAST:event_tblSPMouseClicked
+        minProduct_detail = 1;
+        maxProduct_detail = 10;
+        idProduct_Extra = tblProduct_Extra.getValueAt(row, 0).toString();
+        this.load_Product_Detail();
+    }//GEN-LAST:event_tblProduct_ExtraMouseClicked
 
-    private void tblBangChiTietMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblBangChiTietMouseClicked
+    private void tblProduct_DetailMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblProduct_DetailMouseClicked
         // TODO add your handling code here:
-        int row = this.tblBangChiTiet.getSelectedRow();
-        cbbSize.setSelectedItem(tblBangChiTiet.getValueAt(row, 1).toString());
-        cbbMau.setSelectedItem(tblBangChiTiet.getValueAt(row, 2).toString());
-        txtSoLuong.setText(tblBangChiTiet.getValueAt(row, 5).toString());
-        idSPCT = tblBangChiTiet.getValueAt(row, 0).toString();
-    }//GEN-LAST:event_tblBangChiTietMouseClicked
+        int row = this.tblProduct_Detail.getSelectedRow();
+        cbbSize.setSelectedItem(tblProduct_Detail.getValueAt(row, 1).toString());
+        cbbColor.setSelectedItem(tblProduct_Detail.getValueAt(row, 2).toString());
+        txtQuantity.setText(tblProduct_Detail.getValueAt(row, 5).toString());
+        idProduct_Detail = tblProduct_Detail.getValueAt(row, 0).toString();
+    }//GEN-LAST:event_tblProduct_DetailMouseClicked
 
     private void rdoSizeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoSizeActionPerformed
         // TODO add your handling code here:
@@ -1156,32 +1357,32 @@ public class Product extends javax.swing.JPanel {
 
     private void rdoMaterialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoMaterialActionPerformed
         // TODO add your handling code here:
-        this.loadVatLieu();
+        this.loadMaterial();
     }//GEN-LAST:event_rdoMaterialActionPerformed
 
     private void rdoThicknessActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoThicknessActionPerformed
         // TODO add your handling code here:
-        this.loadDoDay();
+        this.loadThickness();
     }//GEN-LAST:event_rdoThicknessActionPerformed
 
     private void rdoCustomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoCustomActionPerformed
         // TODO add your handling code here:
-        this.loadKieu();
+        this.loadCustom();
     }//GEN-LAST:event_rdoCustomActionPerformed
 
-    private void btnClenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClenActionPerformed
+    private void btnClear_ProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClear_ProductActionPerformed
         // TODO add your handling code here:
         this.clear();
-    }//GEN-LAST:event_btnClenActionPerformed
+    }//GEN-LAST:event_btnClear_ProductActionPerformed
 
-    private void btnThemCTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemCTActionPerformed
+    private void btnAdd_Product_DetailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdd_Product_DetailActionPerformed
         // TODO add your handling code here:
         ProductDetail spct = formct();
-        if (this.checkSPCTNB(cbbSp.getSelectedItem().toString(), cbbSize.getSelectedItem().toString(), cbbMau.getSelectedItem().toString()) == false) {
+        if (this.checkSPCTNB(cbbProduct.getSelectedItem().toString(), cbbSize.getSelectedItem().toString(), cbbColor.getSelectedItem().toString()) == false) {
             return;
         }
 
-        if (this.checkSPCTCB(cbbSp.getSelectedItem().toString(), cbbSize.getSelectedItem().toString(), cbbMau.getSelectedItem().toString()) == false) {
+        if (this.checkSPCTCB(cbbProduct.getSelectedItem().toString(), cbbSize.getSelectedItem().toString(), cbbColor.getSelectedItem().toString()) == false) {
             return;
         }
 
@@ -1190,46 +1391,47 @@ public class Product extends javax.swing.JPanel {
         }
         if (pdds.them(spct) == true) {
             JOptionPane.showMessageDialog(this, "them thanh cong");
-            this.loadCT();
+            this.load_Product_Detail();
         } else {
             JOptionPane.showMessageDialog(this, "them that bai");
             return;
         }
-    }//GEN-LAST:event_btnThemCTActionPerformed
+    }//GEN-LAST:event_btnAdd_Product_DetailActionPerformed
 
-    private void btnSuaChiTietActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaChiTietActionPerformed
+    private void btnFix_Product_DetailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFix_Product_DetailActionPerformed
         // TODO add your handling code here:
-        int row = tblBangChiTiet.getSelectedRow();
+        int row = tblProduct_Detail.getSelectedRow();
         if (row < 0) {
             return;
         }
         ProductDetail spct = formct();
-        if (this.pdds.sua(idSPCT, spct) == true) {
+        if (this.pdds.sua(idProduct_Detail, spct) == true) {
             JOptionPane.showMessageDialog(this, "Da sua thanh cong");
-            this.loadCT();
+            this.load_Product_Detail();
         } else {
             JOptionPane.showMessageDialog(this, "Sua that bai");
             return;
         }
-    }//GEN-LAST:event_btnSuaChiTietActionPerformed
+    }//GEN-LAST:event_btnFix_Product_DetailActionPerformed
 
-    private void btnNgungBanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNgungBanActionPerformed
+    private void btnStop_Sell_Product_DetailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStop_Sell_Product_DetailActionPerformed
         // TODO add your handling code here:
-        int row = tblBangChiTiet.getSelectedRow();
+        int row = tblProduct_Detail.getSelectedRow();
         if (row < 0) {
             return;
         }
-        if (this.pdds.xoa(idSPCT) == true) {
+        if (this.pdds.xoa(idProduct_Detail) == true) {
             JOptionPane.showMessageDialog(this, "Da ngung ban");
-            this.loadCT();
+            this.load_Product_Detail();
+            this.loadProduct_Deteail_Stop_Sell();
             this.clear();
         } else {
             JOptionPane.showMessageDialog(this, "Da ngung ba that bai");
             return;
         }
-    }//GEN-LAST:event_btnNgungBanActionPerformed
+    }//GEN-LAST:event_btnStop_Sell_Product_DetailActionPerformed
 
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+    private void btnAdd_AttributeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdd_AttributeActionPerformed
         // TODO add your handling code here:
         String ten = txtName_Attribute.getText().trim();
         if (ten.equals("")) {
@@ -1241,11 +1443,11 @@ public class Product extends javax.swing.JPanel {
             if (this.ss.Insert(s)) {
                 JOptionPane.showMessageDialog(this, "Da them size.");
                 this.loadSize();
-                this.loadcbbkieu();
-                this.loadcbbVL();
-                this.loadcbbDD();
-                this.loadCBBS();
-                this.loadCBBCL();
+                this.loadcbbCustom();
+                this.loadcbbMaterial();
+                this.loadcbbThickness();
+                this.loadcbbSize();
+                this.loadcbbColor();
             }
 
         } else if (rdoColor.isSelected() == true) {
@@ -1253,12 +1455,12 @@ public class Product extends javax.swing.JPanel {
 
             if (this.cls.them(c)) {
                 JOptionPane.showMessageDialog(this, "Da them mau");
-                this.loadMau();
-                this.loadcbbkieu();
-                this.loadcbbVL();
-                this.loadcbbDD();
-                this.loadCBBS();
-                this.loadCBBCL();
+                this.loadColer();
+                this.loadcbbCustom();
+                this.loadcbbMaterial();
+                this.loadcbbThickness();
+                this.loadcbbSize();
+                this.loadcbbColor();
             }
 
         } else if (rdoMaterial.isSelected() == true) {
@@ -1268,12 +1470,12 @@ public class Product extends javax.swing.JPanel {
             }
             if (this.mts.them(m)) {
                 JOptionPane.showMessageDialog(this, "Da them vat lieu.");
-                this.loadVatLieu();
-                this.loadcbbkieu();
-                this.loadcbbVL();
-                this.loadcbbDD();
-                this.loadCBBS();
-                this.loadCBBCL();
+                this.loadMaterial();
+                this.loadcbbCustom();
+                this.loadcbbMaterial();
+                this.loadcbbThickness();
+                this.loadcbbSize();
+                this.loadcbbColor();
             }
 
         } else if (rdoThickness.isSelected() == true) {
@@ -1285,12 +1487,12 @@ public class Product extends javax.swing.JPanel {
                 }
                 if (this.tns.them(t)) {
                     JOptionPane.showMessageDialog(this, "Da them do day.");
-                    this.loadDoDay();
-                    this.loadcbbkieu();
-                    this.loadcbbVL();
-                    this.loadcbbDD();
-                    this.loadCBBS();
-                    this.loadCBBCL();
+                    this.loadThickness();
+                    this.loadcbbCustom();
+                    this.loadcbbMaterial();
+                    this.loadcbbThickness();
+                    this.loadcbbSize();
+                    this.loadcbbColor();
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -1303,18 +1505,18 @@ public class Product extends javax.swing.JPanel {
             }
             if (this.cts.them(c)) {
                 JOptionPane.showMessageDialog(this, "Da them kieu.");
-                this.loadKieu();
-                this.loadcbbkieu();
-                this.loadcbbVL();
-                this.loadcbbDD();
-                this.loadCBBS();
-                this.loadCBBCL();
+                this.loadCustom();
+                this.loadcbbCustom();
+                this.loadcbbMaterial();
+                this.loadcbbThickness();
+                this.loadcbbSize();
+                this.loadcbbColor();
             }
 
         }
-    }//GEN-LAST:event_jButton6ActionPerformed
+    }//GEN-LAST:event_btnAdd_AttributeActionPerformed
 
-    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+    private void btnFix_AttributeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFix_AttributeActionPerformed
         // TODO add your handling code here:
         String ten = txtName_Attribute.getText().trim();
         if (ten.equals("")) {
@@ -1326,11 +1528,11 @@ public class Product extends javax.swing.JPanel {
             if (this.ss.Update(idTT, s)) {
                 JOptionPane.showMessageDialog(this, "Da sua size.");
                 this.loadSize();
-                this.loadcbbkieu();
-                this.loadcbbVL();
-                this.loadcbbDD();
-                this.loadCBBS();
-                this.loadCBBCL();
+                this.loadcbbCustom();
+                this.loadcbbMaterial();
+                this.loadcbbThickness();
+                this.loadcbbSize();
+                this.loadcbbColor();
             }
 
         } else if (rdoColor.isSelected() == true) {
@@ -1338,12 +1540,12 @@ public class Product extends javax.swing.JPanel {
 
             if (this.cls.sua(idTT, c)) {
                 JOptionPane.showMessageDialog(this, "Da them mau");
-                this.loadMau();
-                this.loadcbbkieu();
-                this.loadcbbVL();
-                this.loadcbbDD();
-                this.loadCBBS();
-                this.loadCBBCL();
+                this.loadColer();
+                this.loadcbbCustom();
+                this.loadcbbMaterial();
+                this.loadcbbThickness();
+                this.loadcbbSize();
+                this.loadcbbColor();
             }
 
         } else if (rdoMaterial.isSelected() == true) {
@@ -1353,12 +1555,12 @@ public class Product extends javax.swing.JPanel {
             }
             if (this.mts.sua(idTT, m)) {
                 JOptionPane.showMessageDialog(this, "Da them vat lieu.");
-                this.loadVatLieu();
-                this.loadcbbkieu();
-                this.loadcbbVL();
-                this.loadcbbDD();
-                this.loadCBBS();
-                this.loadCBBCL();
+                this.loadMaterial();
+                this.loadcbbCustom();
+                this.loadcbbMaterial();
+                this.loadcbbThickness();
+                this.loadcbbSize();
+                this.loadcbbColor();
             }
 
         } else if (rdoThickness.isSelected() == true) {
@@ -1370,12 +1572,12 @@ public class Product extends javax.swing.JPanel {
                 }
                 if (this.tns.sua(idTT, t)) {
                     JOptionPane.showMessageDialog(this, "Da them do day.");
-                    this.loadDoDay();
-                    this.loadcbbkieu();
-                    this.loadcbbVL();
-                    this.loadcbbDD();
-                    this.loadCBBS();
-                    this.loadCBBCL();
+                    this.loadThickness();
+                    this.loadcbbCustom();
+                    this.loadcbbMaterial();
+                    this.loadcbbThickness();
+                    this.loadcbbSize();
+                    this.loadcbbColor();
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -1388,122 +1590,263 @@ public class Product extends javax.swing.JPanel {
             }
             if (this.cts.sua(idTT, c)) {
                 JOptionPane.showMessageDialog(this, "Da them kieu.");
-                this.loadKieu();
-                this.loadcbbkieu();
-                this.loadcbbVL();
-                this.loadcbbDD();
-                this.loadCBBS();
-                this.loadCBBCL();
+                this.loadCustom();
+                this.loadcbbCustom();
+                this.loadcbbMaterial();
+                this.loadcbbThickness();
+                this.loadcbbSize();
+                this.loadcbbColor();
             }
 
         }
-    }//GEN-LAST:event_jButton7ActionPerformed
+    }//GEN-LAST:event_btnFix_AttributeActionPerformed
 
-    private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
+    private void btnClear_AttributeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClear_AttributeActionPerformed
         // TODO add your handling code here:
         this.clear();
-    }//GEN-LAST:event_jButton9ActionPerformed
+    }//GEN-LAST:event_btnClear_AttributeActionPerformed
 
-    private void tblThuocTinhMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblThuocTinhMouseClicked
+    private void tblAttributeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblAttributeMouseClicked
         // TODO add your handling code here:
-        int row = tblThuocTinh.getSelectedRow();
-        idTT = tblThuocTinh.getValueAt(row, 0).toString();
-        txtName_Attribute.setText(tblThuocTinh.getValueAt(row, 1).toString());
-    }//GEN-LAST:event_tblThuocTinhMouseClicked
+        int row = tblAttribute.getSelectedRow();
+        idTT = tblAttribute.getValueAt(row, 0).toString();
+        txtName_Attribute.setText(tblAttribute.getValueAt(row, 1).toString());
+    }//GEN-LAST:event_tblAttributeMouseClicked
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void btnPre__ProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPre__ProductActionPerformed
         // TODO add your handling code here:
         maxProduct_tab1 -= 10;
         minProduct_tab1 = maxProduct_tab1 - 9;
-        if(minProduct_tab1 < 1){
+        if (minProduct_tab1 < 1) {
             return;
         }
-        this.loadSPNext();
-    }//GEN-LAST:event_jButton3ActionPerformed
+        this.load_Product();
+    }//GEN-LAST:event_btnPre__ProductActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void btnNext__ProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNext__ProductActionPerformed
         // TODO add your handling code here:
         minProduct_tab1 = maxProduct_tab1 + 1;
         maxProduct_tab1 += 10;
-        this.loadSPNext();
-    }//GEN-LAST:event_jButton4ActionPerformed
+        boolean checkList = checkNull_Table(this.pds.getNext(minProduct_tab1, maxProduct_tab1));
+        if (checkList) {
+            this.load_Product();
+        } else {
+            JOptionPane.showMessageDialog(this, "Da het trang.");
+            maxProduct_tab1 -= 10;
+            minProduct_tab1 = maxProduct_tab1 - 9;
+            return;
+        }
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+    }//GEN-LAST:event_btnNext__ProductActionPerformed
+
+    private void btnPre__Product_ExtraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPre__Product_ExtraActionPerformed
         // TODO add your handling code here:
         maxProduct_tab2 -= 10;
         minProduct_tab2 = maxProduct_tab2 - 9;
-        if(minProduct_tab2 < 1){
+        if (minProduct_tab2 < 1) {
+            maxProduct_tab2 = 10;
+            minProduct_tab2 = 1;
             return;
         }
-        this.loadSPPhu();
-    }//GEN-LAST:event_jButton5ActionPerformed
+        this.load_Product_Extra();
+    }//GEN-LAST:event_btnPre__Product_ExtraActionPerformed
 
-    private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
+    private void btnNext_Product_ExtraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNext_Product_ExtraActionPerformed
         // TODO add your handling code here:
         minProduct_tab2 = maxProduct_tab2 + 1;
         maxProduct_tab2 += 10;
-        this.loadSPPhu();
-    }//GEN-LAST:event_jButton10ActionPerformed
+        boolean checkList =checkNull_Table(this.pds.getNext(minProduct_tab2, maxProduct_tab2));
+        if (checkList) {
+            this.load_Product_Extra();
+        } else {
+            JOptionPane.showMessageDialog(this, "Da het trang.");
+            maxProduct_tab2 -= 10;
+            minProduct_tab2 = maxProduct_tab2 - 9;
+            return;
+        }
+    }//GEN-LAST:event_btnNext_Product_ExtraActionPerformed
 
-    private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
+    private void btnPre_Product_DetailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPre_Product_DetailActionPerformed
         // TODO add your handling code here:
         maxProduct_detail -= 10;
         minProduct_detail = maxProduct_detail - 9;
-        if(minProduct_detail < 1){
+        if (minProduct_detail < 1) {
+            maxProduct_detail = 10;
+            minProduct_detail = 1;
             return;
         }
-        this.loadCT();
-    }//GEN-LAST:event_jButton11ActionPerformed
+        this.load_Product_Detail();
+    }//GEN-LAST:event_btnPre_Product_DetailActionPerformed
 
-    private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
+    private void btnNext_Product_DetailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNext_Product_DetailActionPerformed
         // TODO add your handling code here:
         minProduct_detail = maxProduct_detail + 1;
         maxProduct_detail += 10;
-        this.loadCT();
-    }//GEN-LAST:event_jButton12ActionPerformed
+        boolean checkList = checkNull_Table(this.pdds.getProductDetail_Selling_Next(idProduct_Extra, minProduct_detail, maxProduct_detail));
+        if (checkList) {
+            this.load_Product_Detail();
+        } else {
+            JOptionPane.showMessageDialog(this, "Da het trang.");
+            maxProduct_detail -= 10;
+            minProduct_detail = maxProduct_detail - 9;
+            return;
+        }
+    }//GEN-LAST:event_btnNext_Product_DetailActionPerformed
 
-    private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
+    private void btnPre_Product_Stop_SellActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPre_Product_Stop_SellActionPerformed
         // TODO add your handling code here:
-        Product_Deteil_stop_sellingJDialog prs = new Product_Deteil_stop_sellingJDialog(frame, true);
-        prs.setVisible(true);
-    }//GEN-LAST:event_jButton13ActionPerformed
+        maxProduct_Stop_Sell -= 10;
+        minProduct_Detail_Stop_Sell = maxProduct_Detail_Stop_Sell - 9;
+        if (maxProduct_Stop_Sell < 1) {
+            maxProduct_Stop_Sell = 10;
+            minProduct_Detail_Stop_Sell = 1;
+            return;
+        }
+        this.loadProduct_Stop();
+    }//GEN-LAST:event_btnPre_Product_Stop_SellActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnNext_Product_Stop_SellActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNext_Product_Stop_SellActionPerformed
         // TODO add your handling code here:
-        Product_stop_sellingJdialog st = new Product_stop_sellingJdialog(frame, true);
-        st.setVisible(true);
-    }//GEN-LAST:event_jButton1ActionPerformed
+        minProduct_Stop_Sell = maxProduct_Stop_Sell + 1;
+        maxProduct_Stop_Sell += 10;
+        boolean checkList = checkNull_Table(this.pds.getNext_Product_Stop_selling( minProduct_Stop_Sell, maxProduct_Stop_Sell));
+        if (checkList) {
+            this.loadProduct_Stop();
+        } else {
+            JOptionPane.showMessageDialog(this, "Da het trang.");
+            maxProduct_Stop_Sell -= 10;
+            minProduct_Stop_Sell = maxProduct_Stop_Sell - 9;
+            return;
+        }
+        
+    }//GEN-LAST:event_btnNext_Product_Stop_SellActionPerformed
+
+    private void btnRestore_ProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRestore_ProductActionPerformed
+        if (idProduct_Stop_Sell.equalsIgnoreCase("")) {
+            return;
+        }
+        if (this.pds.KhoiPhuc(idProduct_Stop_Sell)) {
+            JOptionPane.showMessageDialog(this, "Khoi phuc thanh cong");
+            //            product = new Product(f);
+            this.loadProduct_Stop();
+            this.load_Product();
+            this.loadcbbProduct();
+            this.load_Product_Extra();
+        }
+    }//GEN-LAST:event_btnRestore_ProductActionPerformed
+
+    private void tblProduc_Stop_sellMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblProduc_Stop_sellMouseClicked
+        // TODO add your handling code here:
+        int row = tblProduc_Stop_sell.getSelectedRow();
+        if (row < 0) {
+            return;
+        }
+        idProduct_Stop_Sell = tblProduc_Stop_sell.getValueAt(row, 0).toString();
+    }//GEN-LAST:event_tblProduc_Stop_sellMouseClicked
+
+    private void btnStop_Sell_ProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStop_Sell_ProductActionPerformed
+        if (txtName_Product.getText().trim().equalsIgnoreCase("")) {
+            return;
+        }
+        if (this.pds.xoa(txtName_Product.getText().trim()) == true) {
+            JOptionPane.showMessageDialog(this, "Da xoa thanh cong");
+            this.load_Product_Detail();
+            this.load_Product();
+            this.load_Product_Extra();
+            this.loadcbbProduct();
+            this.loadProduct_Stop();
+            this.loadProduct_Deteail_Stop_Sell();
+            this.clear();
+        } else {
+            JOptionPane.showMessageDialog(this, "Da xoa that bai");
+            return;
+        }
+    }//GEN-LAST:event_btnStop_Sell_ProductActionPerformed
+
+    private void btnRestore_Product_Detail_Stop_SellActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRestore_Product_Detail_Stop_SellActionPerformed
+        // TODO add your handling code here:
+        if (idProduct_Detail_Stop_Sell == null) {
+            return;
+        }
+        if (pdds.khoiPhuc(idProduct_Detail_Stop_Sell)) {
+            JOptionPane.showMessageDialog(this, "Da khoi phuc");
+            this.loadProduct_Deteail_Stop_Sell();
+            this.load_Product_Detail();
+        }
+    }//GEN-LAST:event_btnRestore_Product_Detail_Stop_SellActionPerformed
+
+    private void btnNext_Product_Detail_Stop_SellActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNext_Product_Detail_Stop_SellActionPerformed
+        // TODO add your handling code here:
+        minProduct_Detail_Stop_Sell = maxProduct_Detail_Stop_Sell + 1;
+        maxProduct_Detail_Stop_Sell += 10;
+         boolean checkList = checkNull_Table(this.pdds.getRestore_Product_Detail_stop_selling( minProduct_Detail_Stop_Sell, maxProduct_Detail_Stop_Sell));
+        if (checkList) {
+           this.loadProduct_Deteail_Stop_Sell();
+        } else {
+            JOptionPane.showMessageDialog(this, "Da het trang.");
+            maxProduct_Detail_Stop_Sell -= 10;
+            minProduct_Detail_Stop_Sell = maxProduct_Detail_Stop_Sell - 9;
+            return;
+        }
+    }//GEN-LAST:event_btnNext_Product_Detail_Stop_SellActionPerformed
+
+    private void btnPre_Product_Detail_Stop_SellActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPre_Product_Detail_Stop_SellActionPerformed
+        // TODO add your handling code here:
+        maxProduct_Detail_Stop_Sell -= 10;
+        minProduct_Detail_Stop_Sell = maxProduct_Detail_Stop_Sell - 9;
+        if (maxProduct_Detail_Stop_Sell < 1) {
+            return;
+        }
+        this.loadProduct_Deteail_Stop_Sell();
+    }//GEN-LAST:event_btnPre_Product_Detail_Stop_SellActionPerformed
+
+    private void tblProduct_Detail_Stop_SellMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblProduct_Detail_Stop_SellMouseClicked
+        // TODO add your handling code here:
+        int row = tblProduct_Detail.getSelectedRow();
+        if (row < 0) {
+            return;
+        }
+        idProduct_Detail_Stop_Sell = tblProduct_Detail.getValueAt(row, 0).toString();
+    }//GEN-LAST:event_tblProduct_Detail_Stop_SellMouseClicked
+
+    private void btnStop_Working_AttributeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStop_Working_AttributeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnStop_Working_AttributeActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup btgTT;
-    private javax.swing.JButton btnClen;
-    private javax.swing.JButton btnNgungBan;
-    private javax.swing.JButton btnSua;
-    private javax.swing.JButton btnSuaChiTiet;
-    private javax.swing.JButton btnThem;
-    private javax.swing.JButton btnThemCT;
-    private javax.swing.JButton btnXoa;
-    private javax.swing.JButton btnXoaCT;
-    private javax.swing.JComboBox<String> cbbDoDay;
-    private javax.swing.JComboBox<String> cbbKieu;
-    private javax.swing.JComboBox<String> cbbMau;
+    private javax.swing.JButton btnAdd_Attribute;
+    private javax.swing.JButton btnAdd_Product;
+    private javax.swing.JButton btnAdd_Product_Detail;
+    private javax.swing.JButton btnClear_Attribute;
+    private javax.swing.JButton btnClear_Product;
+    private javax.swing.JButton btnClear_Product_Detail;
+    private javax.swing.JButton btnFix_Attribute;
+    private javax.swing.JButton btnFix_Produc;
+    private javax.swing.JButton btnFix_Product_Detail;
+    private javax.swing.JButton btnNext_Product_Detail;
+    private javax.swing.JButton btnNext_Product_Detail_Stop_Sell;
+    private javax.swing.JButton btnNext_Product_Extra;
+    private javax.swing.JButton btnNext_Product_Stop_Sell;
+    private javax.swing.JButton btnNext__Product;
+    private javax.swing.JButton btnPre_Product_Detail;
+    private javax.swing.JButton btnPre_Product_Detail_Stop_Sell;
+    private javax.swing.JButton btnPre_Product_Stop_Sell;
+    private javax.swing.JButton btnPre__Product;
+    private javax.swing.JButton btnPre__Product_Extra;
+    private javax.swing.JButton btnRestore_Product;
+    private javax.swing.JButton btnRestore_Product_Detail_Stop_Sell;
+    private javax.swing.JButton btnStop_Sell_Product;
+    private javax.swing.JButton btnStop_Sell_Product_Detail;
+    private javax.swing.JButton btnStop_Working_Attribute;
+    private javax.swing.JComboBox<String> cbbColor;
+    private javax.swing.JComboBox<String> cbbCustom;
+    private javax.swing.JComboBox<String> cbbMaterial;
+    private javax.swing.JComboBox<String> cbbProduct;
     private javax.swing.JComboBox<String> cbbSize;
-    private javax.swing.JComboBox<String> cbbSp;
-    private javax.swing.JComboBox<String> cbbVatLieu;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton10;
-    private javax.swing.JButton jButton11;
-    private javax.swing.JButton jButton12;
-    private javax.swing.JButton jButton13;
+    private javax.swing.JComboBox<String> cbbThickness;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
-    private javax.swing.JButton jButton8;
-    private javax.swing.JButton jButton9;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -1520,25 +1863,31 @@ public class Product extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JRadioButton rdoColor;
     private javax.swing.JRadioButton rdoCustom;
     private javax.swing.JRadioButton rdoMaterial;
     private javax.swing.JRadioButton rdoSize;
     private javax.swing.JRadioButton rdoThickness;
-    private javax.swing.JTable tblBang;
-    private javax.swing.JTable tblBangChiTiet;
-    private javax.swing.JTable tblSP;
-    private javax.swing.JTable tblThuocTinh;
-    private javax.swing.JTextField txtGia;
-    private javax.swing.JTextArea txtMoTa;
+    private javax.swing.JTable tblAttribute;
+    private javax.swing.JTable tblProduc_Stop_sell;
+    private javax.swing.JTable tblProduct;
+    private javax.swing.JTable tblProduct_Detail;
+    private javax.swing.JTable tblProduct_Detail_Stop_Sell;
+    private javax.swing.JTable tblProduct_Extra;
+    private javax.swing.JTextArea txtDescribe;
     private javax.swing.JTextField txtName_Attribute;
     private javax.swing.JTextField txtName_Product;
-    private javax.swing.JTextField txtSoLuong;
+    private javax.swing.JTextField txtPrice;
+    private javax.swing.JTextField txtQuantity;
     // End of variables declaration//GEN-END:variables
 }

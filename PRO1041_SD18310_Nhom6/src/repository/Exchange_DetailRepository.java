@@ -111,4 +111,15 @@ public class Exchange_DetailRepository {
         return null;
 
     }
+    //them cai nay ngay 27//11
+    public boolean getMinus_product_Detail(String id, int quantity){
+        try {
+            String sql = "update db_levents.product_detail set db_levents.product_detail.quantity = db_levents.product_detail.quantity - ? where db_levents.product_detail.id = ?;";
+            JDBCHelped.excuteUpdate(sql, quantity,id);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

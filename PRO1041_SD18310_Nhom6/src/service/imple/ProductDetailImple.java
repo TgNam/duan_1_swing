@@ -89,4 +89,9 @@ public class ProductDetailImple implements ProductDetailService {
         }
     }
 
+    @Override
+    public ArrayList<ProductDetail> getProductDetail_Selling_Next(String idPR, int min, int max) {
+        return this.pdr.getProductDetails_Selling_Next(idPR, min, max);
+    }
+
 }
