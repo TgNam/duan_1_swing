@@ -33,14 +33,5 @@ public class Exchage_DetailImple implements Exchange_detailServict{
     public ArrayList<ExchangeBillDetail> getExchangeBillDetail(String id) {
         return edr.getExBill(id);
     }
-
-    @Override
-    public boolean getMinus_Product_Detail(String id, int quantity) {
-        if(edr.getMinus_product_Detail(id, quantity)){
-            return true;
-        }else{
-            return false;
-        }
-    }
     
 }

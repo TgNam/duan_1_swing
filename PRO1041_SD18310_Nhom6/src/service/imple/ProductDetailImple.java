@@ -94,4 +94,13 @@ public class ProductDetailImple implements ProductDetailService {
         return this.pdr.getProductDetails_Selling_Next(idPR, min, max);
     }
 
+    @Override
+    public boolean getQuantity(String id, int quantity) {
+        if(pdr.getMinus_product_Detail(id, quantity)){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
 }
