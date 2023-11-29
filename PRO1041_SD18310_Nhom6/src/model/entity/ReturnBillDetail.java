@@ -36,6 +36,14 @@ public class ReturnBillDetail {
         this.status = status;
     }
 
+    public ReturnBillDetail(BigDecimal priceAtTheTimeOfPurchase, int quantityOfProductsReturned, ProductDetail productDetailId, ReturnBill returnBillId, String status) {
+        this.priceAtTheTimeOfPurchase = priceAtTheTimeOfPurchase;
+        this.quantityOfProductsReturned = quantityOfProductsReturned;
+        this.productDetailId = productDetailId;
+        this.returnBillId = returnBillId;
+        this.status = status;
+    }
+
     public BigDecimal getPriceAtTheTimeOfPurchase() {
         return priceAtTheTimeOfPurchase;
     }
