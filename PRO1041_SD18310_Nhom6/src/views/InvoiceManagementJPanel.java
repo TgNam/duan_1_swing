@@ -372,6 +372,11 @@ public class InvoiceManagementJPanel extends javax.swing.JPanel {
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
         btnDoiHang.setText("ĐỔI HÀNG");
+        btnDoiHang.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDoiHangActionPerformed(evt);
+            }
+        });
 
         btnTraHang.setText("TRẢ HÀNG");
         btnTraHang.addActionListener(new java.awt.event.ActionListener() {
@@ -381,8 +386,18 @@ public class InvoiceManagementJPanel extends javax.swing.JPanel {
         });
 
         btnInPhieuGH.setText("IN PHIẾU GIAO HÀNG");
+        btnInPhieuGH.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnInPhieuGHActionPerformed(evt);
+            }
+        });
 
         bthXacNhan.setText("XÁC NHẬN");
+        bthXacNhan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bthXacNhanActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -527,6 +542,7 @@ public class InvoiceManagementJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_tblBillMouseClicked
 
     private void btnTraHangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTraHangActionPerformed
+
         int rowCount = tblBillDetails.getRowCount();
         int indexBill = tblBill.getSelectedRow();
         if (indexBill != -1) {
@@ -561,7 +577,19 @@ public class InvoiceManagementJPanel extends javax.swing.JPanel {
     private void tblBillDetailsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblBillDetailsMouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_tblBillDetailsMouseClicked
-    /**
+
+    private void btnDoiHangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDoiHangActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnDoiHangActionPerformed
+
+    private void btnInPhieuGHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInPhieuGHActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnInPhieuGHActionPerformed
+
+    private void bthXacNhanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bthXacNhanActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_bthXacNhanActionPerformed
+ /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {

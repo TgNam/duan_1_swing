@@ -12,12 +12,17 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+<<<<<<< HEAD
             <file>file:/E:/DuAn01_Swing/PRO1041_SD18310_Nhom6/src/service/imple/BillDetailImple.java</file>
             <file>file:/E:/DuAn01_Swing/PRO1041_SD18310_Nhom6/src/service/imple/BillImple.java</file>
             <file>file:/E:/DuAn01_Swing/PRO1041_SD18310_Nhom6/src/repository/BillDetailRepository.java</file>
             <file>file:/E:/DuAn01_Swing/PRO1041_SD18310_Nhom6/src/views/ReturnsForm.java</file>
             <file>file:/E:/DuAn01_Swing/PRO1041_SD18310_Nhom6/src/views/InvoiceManagementJPanel.java</file>
             <file>file:/E:/DuAn01_Swing/PRO1041_SD18310_Nhom6/src/repository/BillRepository.java</file>
+=======
+            <file>file:/D:/DA1_MARK5/duan_1_swing/PRO1041_SD18310_Nhom6/src/views/Main.java</file>
+            <file>file:/D:/DA1_MARK5/duan_1_swing/PRO1041_SD18310_Nhom6/src/views/Product.java</file>
+>>>>>>> 446da1aca1af88cbbf668483c7161d625e3ef957
         </group>
     </open-files>
 </project-private>

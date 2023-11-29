@@ -26,8 +26,10 @@ public class Main extends javax.swing.JFrame {
 //        tblCN.removeAll();
 //        tblCN.add(panel);
 //        tblCN.validate();
-        setLocationRelativeTo(null);
+       
         this.setExtendedState(this.MAXIMIZED_BOTH);
+//        LoginJDialog login = new LoginJDialog(this, true);
+//        login.setVisible(true);
     }
 
     /**
@@ -247,7 +249,11 @@ public class Main extends javax.swing.JFrame {
 ////        // TODO add your handling code here:
         tblCN.removeAll();
         tblCN.repaint();
-        panel = new Product(this);
+        panel = new Product();
+        
+//        Product_stop_sellingJdialog pss = new Product_stop_sellingJdialog(this,true);
+//        pss.setPannel(product);
+
         panel.setSize(tblCN.getWidth(), tblCN.getHeight());
         tblCN.removeAll();
         tblCN.add(panel);

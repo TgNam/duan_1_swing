@@ -16,5 +16,4 @@ public interface Exchange_detailServict {
     public boolean insert(ExchangeBillDetail ex);
     //26/11
     public ArrayList<ExchangeBillDetail> getExchangeBillDetail(String id);
-
 }
