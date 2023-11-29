@@ -300,7 +300,7 @@ public class ProductDetailRepository {
         }
     }
 
-    public ArrayList<ProductDetail> get_ProductDetails_id_Bill(String id) {
+    public ArrayList<ProductDetail> get_ProductDetails_id_Bill(String id, String status) {
         ArrayList<ProductDetail> list = new ArrayList<>();
         try {
             String sql = "SELECT \n"
@@ -316,10 +316,10 @@ public class ProductDetailRepository {
                     + "FROM db_levents.product_detail\n"
                     + "join db_levents.product on product.id = product_detail.product_id\n"
                     + "join db_levents.color on color.id = product_detail.color_id\n"
-                    + "join db_levents.size on size.id = product_detail.size_id\n" // Thêm dấu ; ở đây
-                    + "where db_levents.product.id = ?;";
+                    + "join db_levents.size on size.id = product_detail.size_id\n" 
+                    + "where db_levents.product.id = ? and product_detail.status = ?;";
 
-            ResultSet rs = JDBCHelped.executeQuery(sql, id);
+            ResultSet rs = JDBCHelped.executeQuery(sql, id, status);
             while (rs.next()) {
                 list.add(new ProductDetail(
                         rs.getInt(1),

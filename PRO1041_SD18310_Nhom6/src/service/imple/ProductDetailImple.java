@@ -71,8 +71,8 @@ public class ProductDetailImple implements ProductDetailService {
 
     // thêm sản phẩm vào table product detail của billJPanel 
     @Override
-    public ArrayList<ProductDetail> get_ProductDetails_id_Bill(String id) {
-        return pdr.get_ProductDetails_id_Bill(id);
+    public ArrayList<ProductDetail> get_ProductDetails_id_Bill(String id, String status) {
+        return pdr.get_ProductDetails_id_Bill(id, status);
     }
 
     @Override

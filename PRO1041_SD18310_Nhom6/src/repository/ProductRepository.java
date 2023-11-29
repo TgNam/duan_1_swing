@@ -24,19 +24,26 @@ public class ProductRepository {
     public ArrayList<Product> getAll_sale() {
         ArrayList<Product> list = new ArrayList<>();
         try {
-            String sql = "select \n"
-                    + "product.product_price,\n"
-                    + "product.created_at,\n"
-                    + "product.id, \n"
-                    + "sale_product.sale,\n"
-                    + "product.updated_at,\n"
-                    + "product.name_product,\n"
-                    + "product.status,product.sale_id  \n"
-                    + "from db_levents.product \n"
-                    + "LEFT join db_levents.sale_product on sale_product.id = product.sale_id;";
+            String sql = "select product.product_price,\n"
+                    + "       product.created_at,\n"
+                    + "       product.id, \n"
+                    + "       sale_product.sale,\n"
+                    + "       product.updated_at,\n"
+                    + "       product.name_product,\n"
+                    + "       product.status,product.sale_id  \n"
+                    + "       from db_levents.product \n"
+                    + "       LEFT join db_levents.sale_product on sale_product.id = product.sale_id\n"
+                    + "       where product.status = 1;";
             ResultSet rs = JDBCHelped.executeQuery(sql);
             while (rs.next()) {
-                list.add(new Product(rs.getBigDecimal(1), rs.getDate(2), rs.getString(3), new SaleProduct(rs.getString(8), rs.getDouble(4)), rs.getDate(5), rs.getString(6), rs.getString(7))
+                list.add(new Product(
+                        rs.getBigDecimal(1),
+                        rs.getDate(2),
+                        rs.getString(3),
+                        new SaleProduct(rs.getString(8), rs.getDouble(4)),
+                        rs.getDate(5),
+                        rs.getString(6),
+                        rs.getString(7))
                 );
             }
             return list;
@@ -224,10 +231,9 @@ public class ProductRepository {
             return false;
         }
     }
-    
-     //them cai nay ngay 25/11
-    
-     public ArrayList<Product> getNext_Product_stop_selling(int min, int max) {
+
+    //them cai nay ngay 25/11
+    public ArrayList<Product> getNext_Product_stop_selling(int min, int max) {
         ArrayList<Product> list = new ArrayList<>();
         try {
             String sql = "select * from \n"
@@ -271,7 +277,7 @@ public class ProductRepository {
         }
         return null;
     }
-    
+
     public boolean Restore(String id) {
         try {
             String sql = "UPDATE `db_levents`.`product` SET `status` = '1' WHERE (`id` = ?);";
