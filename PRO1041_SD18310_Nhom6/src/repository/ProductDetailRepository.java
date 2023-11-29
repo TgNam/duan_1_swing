@@ -338,9 +338,9 @@ public class ProductDetailRepository {
         }
         return null;
     }
-    
+
     //them  cai nay 25/11
-     public ArrayList<ProductDetail> getProductDetails_Stop_Selling(int min, int max) {
+    public ArrayList<ProductDetail> getProductDetails_Stop_Selling(int min, int max) {
         ArrayList<ProductDetail> list = new ArrayList<>();
         try {
             String sql = """
@@ -393,7 +393,7 @@ public class ProductDetailRepository {
         return null;
     }
 
-     public boolean Restore(String id) {
+    public boolean Restore(String id) {
         try {
             String sql = "UPDATE `db_levents`.`product_detail` SET `status` = '1' WHERE (`id` = ?);";
             JDBCHelped.excuteUpdate(sql, id);
@@ -403,10 +403,9 @@ public class ProductDetailRepository {
             return false;
         }
     }
-    
-     //them cai nay ngay 28//11
-     
-      public ArrayList<ProductDetail> getProductDetails_Selling_Next( String idSP, int min, int max) {
+
+    //them cai nay ngay 28//11
+    public ArrayList<ProductDetail> getProductDetails_Selling_Next(String idSP, int min, int max) {
         ArrayList<ProductDetail> list = new ArrayList<>();
         try {
             String sql = """
@@ -458,16 +457,56 @@ public class ProductDetailRepository {
         }
         return null;
     }
-      
-      //them cai nay ngay 29//11
-    public boolean getMinus_product_Detail(String id, int quantity){
+
+    //them cai nay ngay 29//11
+    public boolean getMinus_product_Detail(String id, int quantity) {
         try {
             String sql = "update db_levents.product_detail set db_levents.product_detail.quantity = db_levents.product_detail.quantity - ? where db_levents.product_detail.id = ?;";
-            JDBCHelped.excuteUpdate(sql, quantity,id);
+            JDBCHelped.excuteUpdate(sql, quantity, id);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
         }
         return false;
     }
+
+    // linh dz 
+    public ProductDetail getById(String id) {
+        ProductDetail productDetail = new ProductDetail();
+        try {
+            String sql = "SELECT \n"
+                    + "db_levents.product_detail.quantity,\n"
+                    + "db_levents.color.name_color,\n"
+                    + "db_levents.product_detail.created_at,\n"
+                    + "db_levents.product_detail.id,\n"
+                    + "db_levents.product.name_product,\n"
+                    + "db_levents.size.name_size,\n"
+                    + "db_levents.product_detail.updated_at,\n"
+                    + "db_levents.product.product_price,\n"
+                    + "db_levents.product_detail.status \n"
+                    + "FROM db_levents.product_detail\n"
+                    + "join db_levents.product on product.id = product_detail.product_id\n"
+                    + "join db_levents.color on color.id = product_detail.color_id\n"
+                    + "join db_levents.size on size.id = product_detail.size_id "
+                    + " where db_levents.product_detail.id = ? ;";
+            ResultSet rs = JDBCHelped.executeQuery(sql, id);
+            while (rs.next()) {
+                productDetail = new ProductDetail(
+                        rs.getInt(1),
+                        new Color(rs.getString(2)),
+                        rs.getDate(3),
+                        rs.getString(4),
+                        new Product(rs.getBigDecimal(8), rs.getString(5)),
+                        new Size(rs.getString(6)),
+                        rs.getDate(7),
+                        rs.getString(9)
+                );
+            }
+            return productDetail;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+    // end link
 }

@@ -96,11 +96,16 @@ public class ProductDetailImple implements ProductDetailService {
 
     @Override
     public boolean getQuantity(String id, int quantity) {
-        if(pdr.getMinus_product_Detail(id, quantity)){
+        if (pdr.getMinus_product_Detail(id, quantity)) {
             return true;
-        }else{
+        } else {
             return false;
         }
+    }
+
+    @Override
+    public ProductDetail getById(String id) {
+        return pdr.getById(id);
     }
 
 }

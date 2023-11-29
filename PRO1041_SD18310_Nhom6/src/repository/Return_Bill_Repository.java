@@ -50,5 +50,20 @@ public class Return_Bill_Repository {
         }
         return returnBill;
     }
+    
+    public ReturnBill getById(String id) {
+        String query = "select * from return_bill WHERE id = ?";
+        ReturnBill returnBill = null;
+        try {
+            ResultSet rs = JDBCHelped.executeQuery(query, id);
+            if (rs.next()) {
+                returnBill = new ReturnBill(rs.getBigDecimal(1), new BillRepository().getById(rs.getLong(2)), rs.getDate(3), rs.getString(4), rs.getDate(5), rs.getString(6));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+        return returnBill;
+    }
     // end linh dz
 }

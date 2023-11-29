@@ -6,14 +6,16 @@ package views;
 
 import Util.Validate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import model.entity.Bill;
 import model.entity.BillDetail;
+import model.entity.ReturnBill;
+import model.entity.ReturnBillDetail;
 import repository.VoucherResponsitory;
 import service.BillDetailService;
 import service.BillService;
@@ -25,6 +27,8 @@ import service.imple.BillDetailImple;
 import service.imple.BillImple;
 import service.imple.ProductDetailImple;
 import service.imple.ProductImple;
+import service.imple.ReturnBillDetailImple;
+import service.imple.ReturnBillImple;
 import service.imple.UserImple;
 import service.imple.UserRoleImple;
 
@@ -59,8 +63,9 @@ public class InvoiceManagementJPanel extends javax.swing.JPanel {
         btnTraHang.setVisible(false);
         btnInPhieuGH.setVisible(true);
         bthXacNhan.setVisible(false);
+        pannelLyDoHoanTra.setVisible(false);
     }
-
+    
     public void columns_no_checkbox() {
         tableModel = new DefaultTableModel();
         String[] column = {"STT", "Tên Sản Phẩm", "Màu", "Size", "Số Lượng", "Đơn Giá"};
@@ -127,6 +132,23 @@ public class InvoiceManagementJPanel extends javax.swing.JPanel {
             tableModel.addRow(ob);
         }
     }
+    
+    public void loadBillReturn(List<ReturnBillDetail> list) {
+        tableModel = (DefaultTableModel) this.tblBillDetails.getModel();
+        tableModel.setRowCount(0);
+        int index = 1;
+        for (ReturnBillDetail rbd : list) {
+            Object[] ob = {
+                index++,
+                rbd.getProductDetailId().getProductId().getName_product(),
+                rbd.getProductDetailId().getColorId().getNameColor(),
+                rbd.getProductDetailId().getSizeId().getNameSize(),
+                rbd.getQuantityOfProductsReturned(),
+                rbd.getPriceAtTheTimeOfPurchase()
+            };
+            tableModel.addRow(ob);
+        }
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -153,6 +175,10 @@ public class InvoiceManagementJPanel extends javax.swing.JPanel {
         btnTraHang = new javax.swing.JButton();
         btnInPhieuGH = new javax.swing.JButton();
         bthXacNhan = new javax.swing.JButton();
+        pannelLyDoHoanTra = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
+        jLabel2 = new javax.swing.JLabel();
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -272,7 +298,7 @@ public class InvoiceManagementJPanel extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(bthBill46, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(bthBill57, javax.swing.GroupLayout.DEFAULT_SIZE, 231, Short.MAX_VALUE))
+                .addComponent(bthBill57, javax.swing.GroupLayout.DEFAULT_SIZE, 213, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -407,9 +433,9 @@ public class InvoiceManagementJPanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(bthXacNhan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnDoiHang, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnTraHang, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnInPhieuGH, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 389, Short.MAX_VALUE))
+                    .addComponent(btnInPhieuGH, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 371, Short.MAX_VALUE)
+                    .addComponent(btnTraHang, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnDoiHang, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -424,6 +450,36 @@ public class InvoiceManagementJPanel extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(bthXacNhan, javax.swing.GroupLayout.DEFAULT_SIZE, 57, Short.MAX_VALUE)
                 .addContainerGap())
+        );
+
+        pannelLyDoHoanTra.setPreferredSize(new java.awt.Dimension(383, 267));
+
+        jTextArea1.setColumns(20);
+        jTextArea1.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
+        jTextArea1.setRows(5);
+        jScrollPane3.setViewportView(jTextArea1);
+
+        jLabel2.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        jLabel2.setText("Lý do:");
+
+        javax.swing.GroupLayout pannelLyDoHoanTraLayout = new javax.swing.GroupLayout(pannelLyDoHoanTra);
+        pannelLyDoHoanTra.setLayout(pannelLyDoHoanTraLayout);
+        pannelLyDoHoanTraLayout.setHorizontalGroup(
+            pannelLyDoHoanTraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 373, Short.MAX_VALUE)
+            .addGroup(pannelLyDoHoanTraLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        pannelLyDoHoanTraLayout.setVerticalGroup(
+            pannelLyDoHoanTraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pannelLyDoHoanTraLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(50, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -441,6 +497,11 @@ public class InvoiceManagementJPanel extends javax.swing.JPanel {
                     .addContainerGap()
                     .addComponent(panelFormTraHang, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addContainerGap()))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addContainerGap(593, Short.MAX_VALUE)
+                    .addComponent(pannelLyDoHoanTra, javax.swing.GroupLayout.PREFERRED_SIZE, 373, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(27, 27, 27)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -455,6 +516,11 @@ public class InvoiceManagementJPanel extends javax.swing.JPanel {
                     .addContainerGap()
                     .addComponent(panelFormTraHang, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addContainerGap(283, Short.MAX_VALUE)))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addContainerGap(427, Short.MAX_VALUE)
+                    .addComponent(pannelLyDoHoanTra, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(15, 15, 15)))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -496,6 +562,7 @@ public class InvoiceManagementJPanel extends javax.swing.JPanel {
         btnTraHang.setVisible(false);
         btnInPhieuGH.setVisible(false);
         bthXacNhan.setVisible(true);
+        pannelLyDoHoanTra.setVisible(true);
     }//GEN-LAST:event_bthBill46ActionPerformed
 
     private void bthBill57ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bthBill57ActionPerformed
@@ -525,10 +592,12 @@ public class InvoiceManagementJPanel extends javax.swing.JPanel {
                     String id = bill.getId();
                     loadBillDetail(id);
                 } else if (checkStatus.equals("46")) {
-                    Bill bill = billService.getBill_status("4", "5").get(row);
+                    Bill bill = billService.getBill_status("4", "6").get(row);
                     String id = bill.getId();
-                    System.out.println(id);
-                    loadBillDetail(id);
+                    List<ReturnBillDetail> listRbd = new ReturnBillDetailImple().getByIdBill(id);
+                    loadBillReturn(listRbd);
+                    ReturnBill returnBill = new ReturnBillImple().getById(listRbd.get(0).getReturnBillId().getId());
+                    jTextArea1.setText(returnBill.getReasonDescription());
                 } else if (checkStatus.equals("57")) {
                     Bill bill = billService.getBill_status("5", "7").get(row);
                     String id = bill.getId();
@@ -579,7 +648,7 @@ public class InvoiceManagementJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_tblBillDetailsMouseClicked
 
     private void btnDoiHangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDoiHangActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_btnDoiHangActionPerformed
 
     private void btnInPhieuGHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInPhieuGHActionPerformed
@@ -636,6 +705,7 @@ public class InvoiceManagementJPanel extends javax.swing.JPanel {
     private javax.swing.JButton btnInPhieuGH;
     private javax.swing.JButton btnTraHang;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
@@ -644,7 +714,10 @@ public class InvoiceManagementJPanel extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JPanel panelFormTraHang;
+    private javax.swing.JPanel pannelLyDoHoanTra;
     private javax.swing.JTable tblBill;
     private javax.swing.JTable tblBillDetails;
     // End of variables declaration//GEN-END:variables
