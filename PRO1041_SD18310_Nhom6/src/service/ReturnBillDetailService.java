@@ -4,10 +4,15 @@
  */
 package service;
 
+import java.util.List;
+import model.entity.ReturnBillDetail;
+
 /**
  *
  * @author lenovo
  */
-public interface ReturnBillDetail {
+public interface ReturnBillDetailService {
     boolean insert(model.entity.ReturnBillDetail returnBillDetail);
+    public List<ReturnBillDetail> getAll();
+    public List<ReturnBillDetail> getByIdBill(String idBill);
 }

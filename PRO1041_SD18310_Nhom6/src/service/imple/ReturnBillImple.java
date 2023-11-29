@@ -25,4 +25,9 @@ public class ReturnBillImple implements ReturnBillService {
     public ReturnBill getByIdBill(String idBill) {
         return returnBillRepository.getByIdBill(idBill);
     }
+
+    @Override
+    public ReturnBill getById(String id) {
+        return returnBillRepository.getById(id);
+    }
 }

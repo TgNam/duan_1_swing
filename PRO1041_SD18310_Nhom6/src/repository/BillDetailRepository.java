@@ -150,7 +150,8 @@ public class BillDetailRepository {
                     + "INNER JOIN\n"
                     + "    material ON db_levents.product.material_id = material.id\n"
                     + "INNER JOIN\n"
-                    + "    thickness ON db_levents.product.thickness_id = thickness.id;";
+                    + "    thickness ON db_levents.product.thickness_id = thickness.id "
+                    + " where db_levents.bill_detail.bill_id = ?;";
             ResultSet rs = JDBCHelped.executeQuery(sql, id);
             while (rs.next()) {
                 String name_Product = rs.getString(1);
