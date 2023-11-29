@@ -24,7 +24,7 @@ public interface ProductDetailService {
 
     ArrayList<ProductDetail> getProduct_Detail_Stop_selling();
     //Thêm sản phẩm cho bên bán hàng
-    ArrayList<ProductDetail> get_ProductDetails_id_Bill(String id);
+    ArrayList<ProductDetail> get_ProductDetails_id_Bill(String id, String status);
     
     public boolean them(ProductDetail prd);
     public boolean sua(String id,ProductDetail prd);
