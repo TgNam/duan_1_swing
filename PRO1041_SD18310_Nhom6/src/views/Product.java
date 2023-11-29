@@ -49,14 +49,18 @@ public class Product extends javax.swing.JPanel {
     private ColorService cls = new ColorImple();
 
     DefaultComboBoxModel dcm;
-
+    
+//up date them 2 thang moi 
     int minProduct_tab1 = 1;
     int maxProduct_tab1 = 10;
     int minProduct_tab2 = 1;
     int maxProduct_tab2 = 10;
     int minProduct_detail = 1;
     int maxProduct_detail = 10;
+    int minProduct_tab3 = 1;
+    int maxProduct_tab3= 10;
     //them cai nay ngay 28//11
+    
     int maxProduct_Stop_Sell = 10;
     int minProduct_Stop_Sell = 1;
     int maxProduct_Detail_Stop_Sell = 10;
@@ -88,6 +92,7 @@ public class Product extends javax.swing.JPanel {
         this.load_Product_Extra();
         this.loadProduct_Stop();
         this.loadProduct_Deteail_Stop_Sell();
+        this.loadProduct_Has_No_Category_Yet();
 
         this.loadSize();
 
@@ -458,6 +463,27 @@ public class Product extends javax.swing.JPanel {
             dtm.addRow(ob);
         }
     }
+    
+    //them vao ngay 29/11
+     public void loadProduct_Has_No_Category_Yet() {
+        DefaultTableModel dtm = (DefaultTableModel) this.tblProduct_Has_No_Category_Yet.getModel();
+        dtm.setRowCount(0);
+        String tt = "";
+        for (model.entity.Product sp : this.pds.getNext(minProduct_tab1, maxProduct_tab1)) {
+            Object[] ob = {
+                sp.getId(),
+                sp.getName_product(),
+                sp.getCreated_at(),
+                sp.getUpdated_at(),
+                sp.getCustome_id().getNameCustom(),
+                sp.getProduct_price(),
+                sp.getMaterial_id().getNameMaterial(),
+                sp.getThickness_id().getGsm() + "gsm",
+                sp.getDescription()
+            };
+            dtm.addRow(ob);
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -542,6 +568,12 @@ public class Product extends javax.swing.JPanel {
         btnPre_Product_Detail_Stop_Sell = new javax.swing.JButton();
         jScrollPane7 = new javax.swing.JScrollPane();
         tblProduct_Detail_Stop_Sell = new javax.swing.JTable();
+        jPanel7 = new javax.swing.JPanel();
+        jScrollPane8 = new javax.swing.JScrollPane();
+        tblProduct_Has_No_Category_Yet = new javax.swing.JTable();
+        btnPre_Product_Has_No_Category_Yet = new javax.swing.JButton();
+        btnNext_Product_Has_No_Category_Yet = new javax.swing.JButton();
+        jLabel13 = new javax.swing.JLabel();
 
         jButton2.setText("jButton2");
 
@@ -1224,6 +1256,75 @@ public class Product extends javax.swing.JPanel {
 
         jTabbedPane1.addTab("Product_Detail_Stop_sell", jPanel6);
 
+        tblProduct_Has_No_Category_Yet.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "id", "Name product", "Created at", "Updated at", "Custom", "Price", "Material", "Thicknes", "Describe"
+            }
+        ));
+        tblProduct_Has_No_Category_Yet.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblProduct_Has_No_Category_YetMouseClicked(evt);
+            }
+        });
+        jScrollPane8.setViewportView(tblProduct_Has_No_Category_Yet);
+
+        btnPre_Product_Has_No_Category_Yet.setText("<");
+        btnPre_Product_Has_No_Category_Yet.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPre_Product_Has_No_Category_YetActionPerformed(evt);
+            }
+        });
+
+        btnNext_Product_Has_No_Category_Yet.setText(">");
+        btnNext_Product_Has_No_Category_Yet.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNext_Product_Has_No_Category_YetActionPerformed(evt);
+            }
+        });
+
+        jLabel13.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
+        jLabel13.setText("Product has no category yet");
+
+        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
+        jPanel7.setLayout(jPanel7Layout);
+        jPanel7Layout.setHorizontalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 959, Short.MAX_VALUE)
+                    .addGroup(jPanel7Layout.createSequentialGroup()
+                        .addComponent(jLabel13)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnPre_Product_Has_No_Category_Yet, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnNext_Product_Has_No_Category_Yet, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
+        );
+        jPanel7Layout.setVerticalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel13)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnPre_Product_Has_No_Category_Yet)
+                    .addComponent(btnNext_Product_Has_No_Category_Yet))
+                .addContainerGap(332, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Category", jPanel7);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -1618,6 +1719,8 @@ public class Product extends javax.swing.JPanel {
         maxProduct_tab1 -= 10;
         minProduct_tab1 = maxProduct_tab1 - 9;
         if (minProduct_tab1 < 1) {
+            maxProduct_tab1 = 10;
+            minProduct_tab1 = 1;
             return;
         }
         this.load_Product();
@@ -1795,6 +1898,8 @@ public class Product extends javax.swing.JPanel {
         maxProduct_Detail_Stop_Sell -= 10;
         minProduct_Detail_Stop_Sell = maxProduct_Detail_Stop_Sell - 9;
         if (maxProduct_Detail_Stop_Sell < 1) {
+            maxProduct_Detail_Stop_Sell = 10;
+            minProduct_Detail_Stop_Sell = 1;
             return;
         }
         this.loadProduct_Deteail_Stop_Sell();
@@ -1813,6 +1918,37 @@ public class Product extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnStop_Working_AttributeActionPerformed
 
+    private void tblProduct_Has_No_Category_YetMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblProduct_Has_No_Category_YetMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tblProduct_Has_No_Category_YetMouseClicked
+
+    private void btnPre_Product_Has_No_Category_YetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPre_Product_Has_No_Category_YetActionPerformed
+        // TODO add your handling code here:
+         maxProduct_tab3 -= 10;
+        minProduct_tab3 = maxProduct_tab3 - 9;
+        if (minProduct_tab3 < 1) {
+            maxProduct_tab3 = 10;
+            minProduct_tab3 = 1;
+            return;
+        }
+        this.load_Product();
+    }//GEN-LAST:event_btnPre_Product_Has_No_Category_YetActionPerformed
+
+    private void btnNext_Product_Has_No_Category_YetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNext_Product_Has_No_Category_YetActionPerformed
+        // TODO add your handling code here:
+         minProduct_tab1 = maxProduct_tab3 + 1;
+        maxProduct_tab3 += 10;
+        boolean checkList = checkNull_Table(this.pds.getNext(minProduct_tab3, maxProduct_tab3));
+        if (checkList) {
+            this.load_Product();
+        } else {
+            JOptionPane.showMessageDialog(this, "Da het trang.");
+            maxProduct_tab3 -= 10;
+            minProduct_tab3 = maxProduct_tab3 - 9;
+            return;
+        }
+    }//GEN-LAST:event_btnNext_Product_Has_No_Category_YetActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup btgTT;
@@ -1828,10 +1964,12 @@ public class Product extends javax.swing.JPanel {
     private javax.swing.JButton btnNext_Product_Detail;
     private javax.swing.JButton btnNext_Product_Detail_Stop_Sell;
     private javax.swing.JButton btnNext_Product_Extra;
+    private javax.swing.JButton btnNext_Product_Has_No_Category_Yet;
     private javax.swing.JButton btnNext_Product_Stop_Sell;
     private javax.swing.JButton btnNext__Product;
     private javax.swing.JButton btnPre_Product_Detail;
     private javax.swing.JButton btnPre_Product_Detail_Stop_Sell;
+    private javax.swing.JButton btnPre_Product_Has_No_Category_Yet;
     private javax.swing.JButton btnPre_Product_Stop_Sell;
     private javax.swing.JButton btnPre__Product;
     private javax.swing.JButton btnPre__Product_Extra;
@@ -1851,6 +1989,7 @@ public class Product extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -1865,6 +2004,7 @@ public class Product extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
@@ -1872,6 +2012,7 @@ public class Product extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
+    private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JRadioButton rdoColor;
     private javax.swing.JRadioButton rdoCustom;
@@ -1884,6 +2025,7 @@ public class Product extends javax.swing.JPanel {
     private javax.swing.JTable tblProduct_Detail;
     private javax.swing.JTable tblProduct_Detail_Stop_Sell;
     private javax.swing.JTable tblProduct_Extra;
+    private javax.swing.JTable tblProduct_Has_No_Category_Yet;
     private javax.swing.JTextArea txtDescribe;
     private javax.swing.JTextField txtName_Attribute;
     private javax.swing.JTextField txtName_Product;

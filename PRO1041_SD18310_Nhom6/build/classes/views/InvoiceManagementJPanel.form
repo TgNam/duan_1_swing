@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
+<Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
@@ -462,21 +462,33 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="&#x110;&#x1ed4;I H&#xc0;NG"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDoiHangActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btnTraHang">
           <Properties>
             <Property name="text" type="java.lang.String" value="TR&#x1ea2; H&#xc0;NG"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnTraHangActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btnInPhieuGH">
           <Properties>
             <Property name="text" type="java.lang.String" value="IN PHI&#x1ebe;U GIAO H&#xc0;NG"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnInPhieuGHActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="bthXacNhan">
           <Properties>
             <Property name="text" type="java.lang.String" value="X&#xc1;C NH&#x1eac;N"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bthXacNhanActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

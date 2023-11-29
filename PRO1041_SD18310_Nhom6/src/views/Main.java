@@ -24,8 +24,8 @@ public class Main extends javax.swing.JFrame {
 //        tblCN.validate();
        
         this.setExtendedState(this.MAXIMIZED_BOTH);
-        LoginJDialog login = new LoginJDialog(this, true);
-        login.setVisible(true);
+//        LoginJDialog login = new LoginJDialog(this, true);
+//        login.setVisible(true);
     }
 
     /**

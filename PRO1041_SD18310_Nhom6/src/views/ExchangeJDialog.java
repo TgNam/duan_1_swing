@@ -125,6 +125,28 @@ public class ExchangeJDialog extends javax.swing.JDialog {
         return totalSum;
     }
 
+    //them cai nay ngay 28//11
+    private int findRowInTable_Product_Detail(String idPr) {
+        for (int i = 0; i < tblProduct_Detail.getRowCount(); i++) {
+            if (idPr.trim().equals(tblProduct_Detail.getValueAt(i, 0).toString().trim())) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private int findRowInTable_Product_Ex(String idEX) {
+        for (int i = 0; i < tblProduct_Ex.getRowCount(); i++) {
+            if (tblProduct_Ex.getValueAt(i, 0) == null) {
+                return -1;
+            } else if (idEX.trim().equals(tblProduct_Ex.getValueAt(i, 0).toString().trim())) {
+                return i;
+            }
+        }
+        return -1;
+
+    }
+
 //    
     /**
      * This method is called from within the constructor to initialize the form.
@@ -306,31 +328,66 @@ public class ExchangeJDialog extends javax.swing.JDialog {
         } else {
             int quantity_product = Integer.parseInt(tblProduct_Detail.getValueAt(row, 8).toString());
             int quantity = Integer.parseInt(JOptionPane.showInputDialog(this, "Moi ban nhap so luong: "));
+            if(quantity > Integer.parseInt(tblProduct_Detail.getValueAt(row, 8).toString())){
+                JOptionPane.showMessageDialog(this, "Khong duoc nhap qua so luong sp trong kho");
+                return;
+            }
+            
+            
             if (quantity > 0) {
                 int resultQauntity = quantity_product - quantity;
                 dtm.setValueAt(resultQauntity, row, 8);
 
-                String id = tblProduct_Detail.getValueAt(row, 0).toString().trim();
-                String name_Product = tblProduct_Detail.getValueAt(row, 1).toString().trim();
-                String name_Custom = tblProduct_Detail.getValueAt(row, 2).toString().trim();
-                String name_Material = tblProduct_Detail.getValueAt(row, 3).toString().trim();
-                int gsm = Integer.parseInt(tblProduct_Detail.getValueAt(row, 4).toString());
-                String name_Coler = tblProduct_Detail.getValueAt(row, 5).toString().trim();
-                String name_Size = tblProduct_Detail.getValueAt(row, 6).toString().trim();
-                BigDecimal price = new BigDecimal(tblProduct_Detail.getValueAt(row, 7).toString().trim());
+//                kien tra xem ton tai chua
+                String idCheck = tblProduct_Detail.getValueAt(row, 0).toString();
+                System.out.println(idCheck);
+                int checkEx = this.findRowInTable_Product_Ex(idCheck);
+                System.out.println("row" + checkEx);
                 
-                Custom custom = new Custom(name_Custom);
-                Material material = new Material(name_Material);
-                Thickness thickness = new Thickness(gsm);
-                Color color = new Color(name_Coler);
-                Size size = new Size(name_Size);
+                if (checkEx != -1) {
+                    int currentQuantity_Ex = (int) tblProduct_Ex.getValueAt(checkEx, 8);
+                    tblProduct_Ex.setValueAt(currentQuantity_Ex + quantity, checkEx, 8);
+                    String id = tblProduct_Detail.getValueAt(row, 0).toString().trim();
+                    String name_Product = tblProduct_Detail.getValueAt(row, 1).toString().trim();
+                    String name_Custom = tblProduct_Detail.getValueAt(row, 2).toString().trim();
+                    String name_Material = tblProduct_Detail.getValueAt(row, 3).toString().trim();
+                    int gsm = Integer.parseInt(tblProduct_Detail.getValueAt(row, 4).toString());
+                    String name_Coler = tblProduct_Detail.getValueAt(row, 5).toString().trim();
+                    String name_Size = tblProduct_Detail.getValueAt(row, 6).toString().trim();
+                    BigDecimal price = new BigDecimal(tblProduct_Detail.getValueAt(row, 7).toString().trim());
 
-                model.entity.Product product = new model.entity.Product(price, custom, material, thickness, name_Product);
-                ProductDetail pdt = new ProductDetail(quantity, color, id, product, size);
+                    Custom custom = new Custom(name_Custom);
+                    Material material = new Material(name_Material);
+                    Thickness thickness = new Thickness(gsm);
+                    Color color = new Color(name_Coler);
+                    Size size = new Size(name_Size);
 
-                this.List.add(pdt);
-                this.loadProduct_Ex();
+                    model.entity.Product product = new model.entity.Product(price, custom, material, thickness, name_Product);
+                    ProductDetail pdt = new ProductDetail(currentQuantity_Ex + quantity , color, id, product, size);
+                    this.List.set(checkEx, pdt);
+                    this.loadProduct_Ex();
+                } else {
+                    String id = tblProduct_Detail.getValueAt(row, 0).toString().trim();
+                    String name_Product = tblProduct_Detail.getValueAt(row, 1).toString().trim();
+                    String name_Custom = tblProduct_Detail.getValueAt(row, 2).toString().trim();
+                    String name_Material = tblProduct_Detail.getValueAt(row, 3).toString().trim();
+                    int gsm = Integer.parseInt(tblProduct_Detail.getValueAt(row, 4).toString());
+                    String name_Coler = tblProduct_Detail.getValueAt(row, 5).toString().trim();
+                    String name_Size = tblProduct_Detail.getValueAt(row, 6).toString().trim();
+                    BigDecimal price = new BigDecimal(tblProduct_Detail.getValueAt(row, 7).toString().trim());
 
+                    Custom custom = new Custom(name_Custom);
+                    Material material = new Material(name_Material);
+                    Thickness thickness = new Thickness(gsm);
+                    Color color = new Color(name_Coler);
+                    Size size = new Size(name_Size);
+
+                    model.entity.Product product = new model.entity.Product(price, custom, material, thickness, name_Product);
+                    ProductDetail pdt = new ProductDetail(quantity, color, id, product, size);
+                    this.List.add(pdt);
+                    this.loadProduct_Ex();
+                }
+                
                 sum = calculateTotalSum(dtmPR);
                 lblMoney_Sum.setText(String.valueOf(sum_Money - sum));
             }
@@ -341,6 +398,7 @@ public class ExchangeJDialog extends javax.swing.JDialog {
         int row = tblProduct_Ex.getSelectedRow();
         int rowprd = tblProduct_Ex.getRowCount();
         int rowpr = tblProduct_Detail.getRowCount();
+        int row_Detail = tblProduct_Detail.getSelectedRow();
 
         if (row < 0) {
             return;
@@ -350,17 +408,19 @@ public class ExchangeJDialog extends javax.swing.JDialog {
         if (quantity > 0) {
             int resultQauntity = quantity_product - quantity;
             tblProduct_Ex.setValueAt(String.valueOf(resultQauntity), row, 8);
+            //kien tra xem ton tai chua
+
+            int checkPr = this.findRowInTable_Product_Detail(tblProduct_Ex.getValueAt(row, 0).toString().trim());
+            if (checkPr != -1) {
+                int currentQuantity_Detail = (int) tblProduct_Detail.getValueAt(checkPr, 8);
+                tblProduct_Detail.setValueAt(currentQuantity_Detail + quantity, checkPr, 8);
+            }
 
             double sum2 = calculateTotalSum(dtmPR);
             System.out.println("so tien" + sum2);
 
             lblMoney_Sum.setText(String.valueOf(sum_Money - sum2));
-            
-            for (int i = 0; i < rowpr; i++) {
-                String id = tblProduct_Detail.getValueAt(i, 0).toString();
-                int sl = Integer.parseInt(tblProduct_Ex.getValueAt(i, 8).toString());
-            }
-            
+
             for (int i = 0; i < rowprd; i++) {
                 String id = tblProduct_Ex.getValueAt(i, 0).toString();
                 String name_Product = tblProduct_Ex.getValueAt(i, 1).toString().trim();
@@ -398,7 +458,7 @@ public class ExchangeJDialog extends javax.swing.JDialog {
         LocalDateTime today = LocalDateTime.now();
         Timestamp todayEx = new java.sql.Timestamp(today.atZone(java.time.ZoneId.systemDefault()).toInstant().toEpochMilli());
         created_at = todayEx;
-        ExchangeBill ex = new ExchangeBill(new Bill("1"), created_at, txaReason.getText().trim());
+        ExchangeBill ex = new ExchangeBill(new Bill(idBill), created_at, txaReason.getText().trim());
         System.out.println("id bill: " + ex.getBillId().getId());
         System.out.println("ngay tao: " + ex.getCreatedAt());
         System.out.println("mo ta: " + ex.getDescribeReason());
@@ -408,7 +468,7 @@ public class ExchangeJDialog extends javax.swing.JDialog {
                 int sl = Integer.parseInt(tblProduct_Ex.getValueAt(i, 8).toString());
                 String idSP = tblProduct_Ex.getValueAt(i, 0).toString();
                 ExchangeBillDetail exd = new ExchangeBillDetail(sl, new ExchangeBill(created_at), new ProductDetail(idSP));
-                if (this.exds.insert(exd) == true) {
+                if (this.exds.insert(exd) == true && this.pdds.getQuantity(idSP, sl)) {
                     JOptionPane.showMessageDialog(this, "them 2 thanh cong");
                 } else {
                     JOptionPane.showMessageDialog(this, "them 2 that bai");
