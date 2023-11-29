@@ -29,6 +29,12 @@ public class ReturnBill {
         this.reasonDescription = reasonDescription;
     }
 
+    public ReturnBill(BigDecimal totalCost, Bill billId,String reasonDescription) {
+        this.totalCost = totalCost;
+        this.billId = billId;
+        this.reasonDescription = reasonDescription;
+    }
+
     public ReturnBill() {
     }
 

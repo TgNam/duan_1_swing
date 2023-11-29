@@ -113,6 +113,11 @@ public class BillDetail {
     public void setQuantityPurchased(String quantityPurchased) {
         this.quantityPurchased = quantityPurchased;
     }
+
+    @Override
+    public String toString() {
+        return "BillDetail{" + "priceNow=" + priceNow + ", billId=" + billId + ", createdAt=" + createdAt + ", id=" + id + ", productDetailId=" + productDetailId + ", updatedAt=" + updatedAt + ", quantityPurchased=" + quantityPurchased + '}';
+    }
     
     
 }

@@ -14,6 +14,10 @@ public class Main extends javax.swing.JFrame {
      */
     private JPanel panel;
 
+    public void setPanel(JPanel panel) {
+        this.panel = panel;
+    }
+
     public Main() {
         initComponents();
 //        tesst t = new tesst();
@@ -258,13 +262,13 @@ public class Main extends javax.swing.JFrame {
 
     private void btnReturnsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReturnsActionPerformed
         // TODO add your handling code here:
-        tblCN.removeAll();
-        tblCN.repaint();
-        panel = new ReturnsJPanel();
-        panel.setSize(tblCN.getWidth(), tblCN.getHeight());
-        tblCN.removeAll();
-        tblCN.add(panel);
-        tblCN.validate();
+//        tblCN.removeAll();
+//        tblCN.repaint();
+//        panel = new ReturnsJPanel();
+//        panel.setSize(tblCN.getWidth(), tblCN.getHeight());
+//        tblCN.removeAll();
+//        tblCN.add(panel);
+//        tblCN.validate();
     }//GEN-LAST:event_btnReturnsActionPerformed
 
     private void btnExchangeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExchangeActionPerformed

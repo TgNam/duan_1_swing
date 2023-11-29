@@ -11,6 +11,7 @@ package model.entity;
 import java.util.Date;
 
 public class ProductDetail {
+
     // private fields
     private int quantity;
     private Color colorId;
@@ -37,12 +38,18 @@ public class ProductDetail {
         this.productId = productId;
         this.sizeId = sizeId;
     }
-    
+
+    public ProductDetail(String id, Color colorId, Product productId, Size sizeId) {
+        this.id = id;
+        this.colorId = colorId;
+        this.productId = productId;
+        this.sizeId = sizeId;
+    }
+
     public ProductDetail() {
     }
-    
-      //them cai nay 24-11 2:45sa
-    
+
+    //them cai nay 24-11 2:45sa
     public ProductDetail(int quantity, Color colorId, String id, Product productId, Size sizeId) {
         this.quantity = quantity;
         this.colorId = colorId;
@@ -132,15 +139,17 @@ public class ProductDetail {
     public void setStatus(String status) {
         this.status = status;
     }
+
     // Cập nhật trạng thái của sản phẩm
-    public String checkTrangThai(){
+    public String checkTrangThai() {
         if (this.status.equals("1")) {
             return "Còn hàng";
-        }if (this.status.equals("0")) {
+        }
+        if (this.status.equals("0")) {
             return "Hết hàng";
-        }else{
+        } else {
             return "Null";
         }
     }
-    
+
 }
