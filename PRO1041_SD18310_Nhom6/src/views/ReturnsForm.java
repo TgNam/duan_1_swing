@@ -7,9 +7,16 @@ package views;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.entity.Bill;
 import model.entity.BillDetail;
+import model.entity.ReturnBill;
+import model.entity.ReturnBillDetail;
+import service.imple.BillDetailImple;
+import service.imple.BillImple;
+import service.imple.ReturnBillDetailImple;
+import service.imple.ReturnBillImple;
 
 /**
  *
@@ -18,10 +25,17 @@ import model.entity.BillDetail;
 public class ReturnsForm extends javax.swing.JDialog {
 
     private int stt = 0;
-    private ReturnsJPanel returnsJPanel = new ReturnsJPanel();
     private List<BillDetail> billDetails = new ArrayList<>();
     private Bill bill = null;
-    
+    private BillImple billImple = new BillImple();
+    private BillDetailImple billDetailImple = new BillDetailImple();
+
+    private Long idBill;
+
+    public void setIdBill(Long idBill) {
+        this.idBill = idBill;
+    }
+
     public void setBillDetails(List<BillDetail> billDetails) {
         this.billDetails = billDetails;
     }
@@ -32,7 +46,7 @@ public class ReturnsForm extends javax.swing.JDialog {
     }
 
     public void loadTableProductReturn() {
-        DefaultTableModel tableModel = (DefaultTableModel) this.tblProductReturn.getModel();
+        DefaultTableModel tableModel = (DefaultTableModel) tblProductReturn.getModel();
         tableModel.setRowCount(0);
         stt = 1;
         for (BillDetail bdt : billDetails) {
@@ -55,6 +69,13 @@ public class ReturnsForm extends javax.swing.JDialog {
         txtLyDo.setText("");
         txtMaKH.setText("");
         txtTenKH.setText("");
+    }
+
+    public void loadForm() {
+        bill = billImple.getById(idBill);
+        txtMaKH.setText(bill.getId());
+        txtTenKH.setText(bill.getUserId().getFullName());
+        txtDaTT.setText(bill.getTotalCost() + "");
     }
 
     @SuppressWarnings("unchecked")
@@ -276,11 +297,9 @@ public class ReturnsForm extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void tblProductReturnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblProductReturnMouseClicked
-
         int rowCount = tblProductReturn.getRowCount();
-
-        Bill bill = biv.getAll().get(index);
-        List<BillDetail> billDetails = bdts.getbill_all(bill.getId());
+        bill = billImple.getById(idBill);
+        List<BillDetail> billDetails = billDetailImple.getbill_all(bill.getId());
         Integer soLuongInput = 0;
         Integer soLuongGoc = 0;
         BigDecimal sumMoney = BigDecimal.ZERO;
@@ -289,22 +308,45 @@ public class ReturnsForm extends javax.swing.JDialog {
             if (tblProductReturn.getValueAt(i, 7) != null) {
                 try {
                     soLuongInput = Integer.parseInt(tblProductReturn.getValueAt(i, 7).toString());
+                    if (soLuongInput < 0) {
+                        JOptionPane.showMessageDialog(this, "Số lượng không thể âm", "Lỗi", 2);
+                        return;
+                    }
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                    JOptionPane.showMessageDialog(this, "Vui lòng nhập số nguyên dương", "Lỗi", 2);
+                    return;
                 } catch (Exception e) {
                     e.printStackTrace();
-                    JOptionPane.showMessageDialog(this, "Vui lòng nhập số", "Lỗi", 2);
+                    JOptionPane.showMessageDialog(this, "Lỗi hệ thống", "Lỗi", 2);
                     return;
                 }
-                soLuongGoc = Integer.parseInt(tblProductReturn.getValueAt(i, 3).toString());
-                if (soLuongInput > soLuongGoc) {
-                    JOptionPane.showMessageDialog(this, "Số lượng muốn trả không phù hợp", "Lỗi", 2);
+
+                try {
+                    soLuongGoc = Integer.parseInt(tblProductReturn.getValueAt(i, 3).toString());
+                    if (soLuongInput > soLuongGoc) {
+                        JOptionPane.showMessageDialog(this, "Số lượng muốn trả không phù hợp", "Lỗi", 2);
+                        return;
+                    }
+
+                    BigDecimal productPrice = new BigDecimal(tblProductReturn.getValueAt(i, 6).toString());
+                    BigDecimal productTotal = BigDecimal.valueOf(soLuongInput).multiply(productPrice);
+                    sumMoney = sumMoney.add(productTotal);
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                    JOptionPane.showMessageDialog(this, "Vui lòng nhập số nguyên", "Lỗi", 2);
+                    return;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    JOptionPane.showMessageDialog(this, "Lỗi hệ thống", "Lỗi", 2);
                     return;
                 }
-                BigDecimal productPrice = BigDecimal.valueOf(Double.parseDouble(tblProductReturn.getValueAt(i, 6) + ""));
-                BigDecimal productTotal = BigDecimal.valueOf(soLuongInput).multiply(productPrice);
-                sumMoney = sumMoney.add(productTotal);
             }
         }
-        txtHoanTra.setText(sumMoney.toString());
+        double saleOf = bill.getVoucherId().getSaleOf(); // Giả sử saleOf là một giá trị double
+        BigDecimal discount = BigDecimal.valueOf(1).subtract(BigDecimal.valueOf(saleOf).divide(BigDecimal.valueOf(100)));
+        BigDecimal tienTra = sumMoney.multiply(discount);
+        txtHoanTra.setText(tienTra.toString());
     }//GEN-LAST:event_tblProductReturnMouseClicked
 
     private void jLabel5AncestorMoved(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_jLabel5AncestorMoved
@@ -312,39 +354,40 @@ public class ReturnsForm extends javax.swing.JDialog {
     }//GEN-LAST:event_jLabel5AncestorMoved
 
     private void btnHuyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHuyActionPerformed
+        this.dispose();
         this.setVisible(false);
-        //        panelFormTraHang.setVisible(true);
-        //        panelTraHang.setVisible(false);
-        //        listProductReturn = new ArrayList<>();
-        //        tblBillDetails.clearSelection();
-        //        int rowCount = tblBillDetails.getRowCount();
-        //        Boolean isChecked = null;
-        //        txtHoanTra.setText("");
-        //        txtLyDo.setText("");
-        //
-        //        for (int i = 0; i < rowCount; i++) {
-        //            isChecked = (Boolean) tblBillDetails.getValueAt(i, tblBillDetails.getColumnCount() - 1);
-        //            if (isChecked != null && isChecked) {
-        //                tblBillDetails.setValueAt(false, i, tblBillDetails.getColumnCount() - 1);
-        //            }
-        //        }
+
     }//GEN-LAST:event_btnHuyActionPerformed
 
     private void btnXacNhanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXacNhanActionPerformed
-        //        if (txtLyDo.getText().trim().isEmpty()) {
-        //            JOptionPane.showMessageDialog(this, "Vui lòng nhập lý do trả hàng", "Lỗi", JOptionPane.ERROR_MESSAGE);
-        //            return;
-        //        }
-        //        int indexBill = tblBill.getSelectedRow();
-        //        Bill bill = biv.getAll().get(indexBill);
-        //        ReturnBill returnBill = new ReturnBill(new BigDecimal(txtHoanTra.getText()), biv.getById(Long.valueOf(bill.getId())), txtLyDo.getText());
-        //        if(biv.)
+        if (txtLyDo.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập lý do trả hàng", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        ReturnBillDetailImple returnBillDetailImple = new ReturnBillDetailImple();
+        ReturnBillDetail returnBillDetail = null;
+        ReturnBill returnBill = new ReturnBill(new BigDecimal(txtHoanTra.getText()), billImple.getById(Long.valueOf(bill.getId())), txtLyDo.getText());
 
-
+        // nếu trả hàng thành công thì sẽ tạo ra các hóa đơn trả hàng chi tiết và chứa cá sản phẩm chi tiết
+        int soLuongTra = 0;
+        if (new ReturnBillImple().insert(returnBill)) {
+            for (int i = 0; i < tblProductReturn.getRowCount()-1; i++) {
+                String value = tblProductReturn.getValueAt(i, tblProductReturn.getColumnCount() - 1).toString();
+                soLuongTra = Integer.parseInt(value);
+                returnBillDetail = new ReturnBillDetail(billDetails.get(i).getPriceNow(), soLuongTra, billDetails.get(i).getProductDetailId(), new ReturnBillImple().getByIdBill(String.valueOf(bill.getId())), "4");
+                new ReturnBillDetailImple().insert(returnBillDetail);
+                // thay đổi trạng thái hóa đơn
+                billImple.updateStatusById(bill.getId(), 4);
+            }
+            JOptionPane.showMessageDialog(this, "Gửi yêu cầu trả hàng thành công", "Trả hàng", 1);
+        } else {
+            JOptionPane.showMessageDialog(this, "Gửi yêu cầu trả hàng thất bại do lỗi hệ thống", "Trả hàng", 0);
+        }
     }//GEN-LAST:event_btnXacNhanActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         loadTableProductReturn();
+        loadForm();
     }//GEN-LAST:event_formWindowOpened
 
     /**

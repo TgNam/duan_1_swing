@@ -1,6 +1,7 @@
 package repository;
 
 import model.entity.ReturnBill;
+import java.sql.ResultSet;
 
 /**
  *
@@ -27,12 +28,27 @@ public class Return_Bill_Repository {
     public boolean insert(ReturnBill returnBill) {
         String query = "INSERT INTO return_bill(total_cost, bill_id, created_at, reason_description) VALUES (?,?,NOW(),?) ";
         try {
-            JDBCHelped.excuteUpdate(query, returnBill.getTotalCost(), returnBill.getBillId(),returnBill.getReasonDescription() );
+            JDBCHelped.excuteUpdate(query, returnBill.getTotalCost(), returnBill.getBillId().getId(), returnBill.getReasonDescription());
         } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
         return true;
+    }
+
+    public ReturnBill getByIdBill(String idBill) {
+        String query = "select * from return_bill WHERE bill_id = ?";
+        ReturnBill returnBill = null;
+        try {
+            ResultSet rs = JDBCHelped.executeQuery(query, idBill);
+            if (rs.next()) {
+                returnBill = new ReturnBill(rs.getBigDecimal(1), new BillRepository().getById(rs.getLong(2)), rs.getDate(3), rs.getString(4), rs.getDate(5), rs.getString(6));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+        return returnBill;
     }
     // end linh dz
 }

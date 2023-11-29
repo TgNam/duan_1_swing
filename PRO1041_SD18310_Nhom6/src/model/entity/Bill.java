@@ -161,5 +161,10 @@ public class Bill {
             return "Null";
         }
     }
+
+    @Override
+    public String toString() {
+        return "Bill{" + "intoMoney=" + intoMoney + ", totalCost=" + totalCost + ", addressId=" + addressId + ", createdAt=" + createdAt + ", deliveryDate=" + deliveryDate + ", id=" + id + ", updatedAt=" + updatedAt + ", userId=" + userId + ", voucherId=" + voucherId + ", status=" + status + '}';
+    }
     
 }

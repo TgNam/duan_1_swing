@@ -20,4 +20,9 @@ public class ReturnBillImple implements ReturnBillService {
     public boolean insert(ReturnBill returnBill) {
         return returnBillRepository.insert(returnBill);
     }
+
+    @Override
+    public ReturnBill getByIdBill(String idBill) {
+        return returnBillRepository.getByIdBill(idBill);
+    }
 }

@@ -18,8 +18,8 @@ public class ReturnBill_Detail_Repository {
                 + " created_at, product_detail_id,return_bill_id,status) VALUES (?,?,NOW(),?,?,?) ";
         try {
             JDBCHelped.excuteUpdate(query, returnBillDetail.getPriceAtTheTimeOfPurchase(),
-                    returnBillDetail.getQuantityOfProductsReturned(),returnBillDetail.getProductDetailId(),
-                    returnBillDetail.getReturnBillId(), returnBillDetail.getStatus());
+                    returnBillDetail.getQuantityOfProductsReturned(),returnBillDetail.getProductDetailId().getId(),
+                    returnBillDetail.getReturnBillId().getId(), returnBillDetail.getStatus());
         } catch (Exception e) {
             e.printStackTrace();
             return false;

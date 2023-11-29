@@ -12,18 +12,12 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-<<<<<<< HEAD
-            <file>file:/E:/DuAn01_Swing/PRO1041_SD18310_Nhom6/src/service/imple/ReturnBillDetailImple.java</file>
-            <file>file:/E:/DuAn01_Swing/PRO1041_SD18310_Nhom6/src/views/ReturnsJPanel.java</file>
-            <file>file:/E:/DuAn01_Swing/PRO1041_SD18310_Nhom6/src/service/ReturnBillService.java</file>
-            <file>file:/E:/DuAn01_Swing/PRO1041_SD18310_Nhom6/src/repository/Return_Bill_Repository.java</file>
-            <file>file:/E:/DuAn01_Swing/PRO1041_SD18310_Nhom6/src/repository/ReturnBill_Detail_Repository.java</file>
+            <file>file:/E:/DuAn01_Swing/PRO1041_SD18310_Nhom6/src/service/imple/BillDetailImple.java</file>
+            <file>file:/E:/DuAn01_Swing/PRO1041_SD18310_Nhom6/src/service/imple/BillImple.java</file>
+            <file>file:/E:/DuAn01_Swing/PRO1041_SD18310_Nhom6/src/repository/BillDetailRepository.java</file>
+            <file>file:/E:/DuAn01_Swing/PRO1041_SD18310_Nhom6/src/views/ReturnsForm.java</file>
+            <file>file:/E:/DuAn01_Swing/PRO1041_SD18310_Nhom6/src/views/InvoiceManagementJPanel.java</file>
             <file>file:/E:/DuAn01_Swing/PRO1041_SD18310_Nhom6/src/repository/BillRepository.java</file>
-            <file>file:/E:/DuAn01_Swing/PRO1041_SD18310_Nhom6/src/model/entity/ReturnBill.java</file>
-=======
-            <file>file:/D:/DuAn1/PRO1041_SD18310_Nhom6/src/views/BillJPanel.java</file>
-            <file>file:/D:/DuAn1/PRO1041_SD18310_Nhom6/src/views/Main.java</file>
->>>>>>> 2585752ea5a2841a1e2e0a49d8956104b0dfd1e2
         </group>
     </open-files>
 </project-private>

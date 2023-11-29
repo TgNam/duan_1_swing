@@ -21,4 +21,5 @@ public interface BillService {
     boolean delete_bill_id(Bill b);
     // link
     Bill getById(Long id);
+    boolean updateStatusById(String id, int status);
 }
