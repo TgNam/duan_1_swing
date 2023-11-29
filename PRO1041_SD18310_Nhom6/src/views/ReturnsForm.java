@@ -75,7 +75,7 @@ public class ReturnsForm extends javax.swing.JDialog {
         bill = billImple.getById(idBill);
         txtMaKH.setText(bill.getId());
         txtTenKH.setText(bill.getUserId().getFullName());
-        txtDaTT.setText(bill.getTotalCost() + "");
+        txtDaTT.setText(bill.getIntoMoney() + "");
     }
 
     @SuppressWarnings("unchecked")
@@ -155,6 +155,11 @@ public class ReturnsForm extends javax.swing.JDialog {
 
         txtDaTT.setEditable(false);
         txtDaTT.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        txtDaTT.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtDaTTActionPerformed(evt);
+            }
+        });
 
         jLabel5.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         jLabel5.setText("Đã thanh toán: ");
@@ -299,13 +304,14 @@ public class ReturnsForm extends javax.swing.JDialog {
     private void tblProductReturnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblProductReturnMouseClicked
         int rowCount = tblProductReturn.getRowCount();
         bill = billImple.getById(idBill);
+
         List<BillDetail> billDetails = billDetailImple.getbill_all(bill.getId());
         Integer soLuongInput = 0;
         Integer soLuongGoc = 0;
         BigDecimal sumMoney = BigDecimal.ZERO;
 
         for (int i = 0; i < rowCount; i++) {
-            if (tblProductReturn.getValueAt(i, 7) != null) {
+            if (tblProductReturn.getValueAt(i, 7) != null && tblProductReturn.getValueAt(i, 7) != "" && Integer.valueOf((String) tblProductReturn.getValueAt(i, 7)) > 0) {
                 try {
                     soLuongInput = Integer.parseInt(tblProductReturn.getValueAt(i, 7).toString());
                     if (soLuongInput < 0) {
@@ -342,11 +348,15 @@ public class ReturnsForm extends javax.swing.JDialog {
                     return;
                 }
             }
+            Double saleOf = 0.0;
+            if (bill.getVoucherId() != null) {
+                saleOf = bill.getVoucherId().getSaleOf(); // Giả sử saleOf là một giá trị double
+            }
+            BigDecimal discount = BigDecimal.valueOf(1).subtract(BigDecimal.valueOf(saleOf).divide(BigDecimal.valueOf(100)));
+            BigDecimal tienTra = sumMoney.multiply(discount);
+            txtHoanTra.setText(tienTra.toString());
         }
-        double saleOf = bill.getVoucherId().getSaleOf(); // Giả sử saleOf là một giá trị double
-        BigDecimal discount = BigDecimal.valueOf(1).subtract(BigDecimal.valueOf(saleOf).divide(BigDecimal.valueOf(100)));
-        BigDecimal tienTra = sumMoney.multiply(discount);
-        txtHoanTra.setText(tienTra.toString());
+
     }//GEN-LAST:event_tblProductReturnMouseClicked
 
     private void jLabel5AncestorMoved(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_jLabel5AncestorMoved
@@ -360,6 +370,16 @@ public class ReturnsForm extends javax.swing.JDialog {
     }//GEN-LAST:event_btnHuyActionPerformed
 
     private void btnXacNhanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXacNhanActionPerformed
+        if (txtHoanTra.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Chưa nhập số lượng", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (Double.valueOf(txtHoanTra.getText().trim()) <= 0) {
+            JOptionPane.showMessageDialog(this, "Chưa nhập số lượng", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
         if (txtLyDo.getText().trim().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Vui lòng nhập lý do trả hàng", "Lỗi", JOptionPane.ERROR_MESSAGE);
             return;
@@ -371,7 +391,7 @@ public class ReturnsForm extends javax.swing.JDialog {
         // nếu trả hàng thành công thì sẽ tạo ra các hóa đơn trả hàng chi tiết và chứa cá sản phẩm chi tiết
         int soLuongTra = 0;
         if (new ReturnBillImple().insert(returnBill)) {
-            for (int i = 0; i < tblProductReturn.getRowCount()-1; i++) {
+            for (int i = 0; i < tblProductReturn.getRowCount(); i++) {
                 String value = tblProductReturn.getValueAt(i, tblProductReturn.getColumnCount() - 1).toString();
                 soLuongTra = Integer.parseInt(value);
                 returnBillDetail = new ReturnBillDetail(billDetails.get(i).getPriceNow(), soLuongTra, billDetails.get(i).getProductDetailId(), new ReturnBillImple().getByIdBill(String.valueOf(bill.getId())), "4");
@@ -380,6 +400,8 @@ public class ReturnsForm extends javax.swing.JDialog {
                 billImple.updateStatusById(bill.getId(), 4);
             }
             JOptionPane.showMessageDialog(this, "Gửi yêu cầu trả hàng thành công", "Trả hàng", 1);
+            this.setVisible(false);
+            new InvoiceManagementJPanel().datarowBill("3", "3");
         } else {
             JOptionPane.showMessageDialog(this, "Gửi yêu cầu trả hàng thất bại do lỗi hệ thống", "Trả hàng", 0);
         }
@@ -389,6 +411,10 @@ public class ReturnsForm extends javax.swing.JDialog {
         loadTableProductReturn();
         loadForm();
     }//GEN-LAST:event_formWindowOpened
+
+    private void txtDaTTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDaTTActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtDaTTActionPerformed
 
     /**
      * @param args the command line arguments
