@@ -28,6 +28,13 @@ public class Product {
     public Product() {
     }
 
+    public Product(BigDecimal product_price, String id, SaleProduct sale_id, String name_product) {
+        this.product_price = product_price;
+        this.id = id;
+        this.sale_id = sale_id;
+        this.name_product = name_product;
+    }
+    
     public Product(BigDecimal product_price, String name_product) {
         this.product_price = product_price;
         this.name_product = name_product;

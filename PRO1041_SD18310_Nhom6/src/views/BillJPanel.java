@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -282,14 +283,14 @@ public class BillJPanel extends javax.swing.JPanel {
             if (nameVoucher.trim().isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Vui lòng không được để trống tên Voucher!");
                 return false;
-            }  if (!vl.isCheckVoucher(nameVoucher)) {
+            }
+            if (!vl.isCheckVoucher(nameVoucher)) {
                 JOptionPane.showMessageDialog(this, "Định dạng của voucher không đúng");
                 return false;
-            } 
-//            else if (voucher == null) {
-//                JOptionPane.showMessageDialog(this, "Voucher không tồn tại!");
-//                return false;
-//            }
+            } //            else if (voucher == null) {
+            //                JOptionPane.showMessageDialog(this, "Voucher không tồn tại!");
+            //                return false;
+            //            }
             else {
                 return true;
             }
@@ -301,6 +302,159 @@ public class BillJPanel extends javax.swing.JPanel {
         }
     }
 
+    //lấy thông tin sản phẩm không bán nữa
+    public ArrayList<BillDetail> listBillDetail_0() {
+        //Lấy vị trí click của bill
+        int indexBill = tblbill.getSelectedRow();
+        ArrayList<BillDetail> list = new ArrayList<>();
+        try {
+            if (indexBill >= 0) {
+                //lấy dữ liệu của đối tượng sản phẩm chi tiết  tại vị trí indexBill
+                Bill bill = billService.getListBill_0().get(indexBill);
+                for (BillDetail billDetail : billDetailService.getBill_idBill_0(bill.getId())) {
+                    list.add(billDetail);
+                }
+                return list;
+            } else {
+                JOptionPane.showMessageDialog(this, "Bạn cần chọn Bill");
+                return null;
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Lỗi dữ liệu");
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    //hỏi xem người dùng có muốn xóa sản phẩm không bán nữa trong cửa hàng hay không 
+    public boolean checkHoiDeleteListBillDetail_0() {
+        try {
+            if (!listBillDetail_0().isEmpty()) {
+                String string0 = "";
+                int index = 1;
+                for (BillDetail billDetail : listBillDetail_0()) {
+                    String string1 = billDetail.getProductDetailId().getProductId().getName_product()
+                            + "|"
+                            + billDetail.getProductDetailId().getColorId().getNameColor()
+                            + "|"
+                            + billDetail.getProductDetailId().getSizeId().getNameSize();
+                    string0 = string0 + "\n" + string1;
+                }
+                int hoi = JOptionPane.showConfirmDialog(this, "Hiện tại trong giỏ hàng có sản phẩm:" + string0 + "\nĐã dừng bán bạn có muốn xóa sản phẩm đó \n" + "không");
+                if (hoi != JOptionPane.YES_NO_OPTION) {
+                    JOptionPane.showMessageDialog(this, "Bạn đã không xóa sản phẩm ");
+                    return false;
+                }                
+                //delete billDetail where id 
+                for (BillDetail billDetail : listBillDetail_0()) {
+                    billDetailService.delete_bill_datail_ShoppingCart(billDetail);
+                }
+                JOptionPane.showMessageDialog(this, "Bạn đã xóa sản phẩm ");
+                return true;
+            } else {
+                return true;
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Lỗi dữ liệu");
+            e.printStackTrace();
+            return false;
+        }
+    }
+    //lấy thông tin sản phẩm vượt quá số lượng hàng trong kho 
+
+    public ArrayList<BillDetail> listBillDetailQuantity() {
+        //Lấy vị trí click của bill
+        int indexBill = tblbill.getSelectedRow();
+        ArrayList<BillDetail> list = new ArrayList<>();
+        try {
+            if (indexBill >= 0) {
+                //lấy dữ liệu của đối tượng sản phẩm chi tiết  tại vị trí indexBill
+                Bill bill = billService.getListBill_0().get(indexBill);
+                for (BillDetail billDetail : billDetailService.getBill_idBill(bill.getId())) {
+                    if (Integer.parseInt(billDetail.getQuantityPurchased()) > productDetailService.getById(billDetail.getProductDetailId().getId()).getQuantity()) {
+                        list.add(billDetail);
+                    }
+                }
+                return list;
+            } else {
+                JOptionPane.showMessageDialog(this, "Bạn cần chọn Bill");
+                return null;
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Lỗi dữ liệu");
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    //hỏi xem người dùng có muốn lấy số sản phẩm còn lại trong kho hay không hay không 
+    public boolean checkHoiUpdateListBillDetail() {
+        try {
+            if (!listBillDetailQuantity().isEmpty()) {
+                String string0 = "";
+                for (BillDetail billDetail : listBillDetailQuantity()) {
+                    String string1 = billDetail.getProductDetailId().getProductId().getName_product()
+                            + "|"
+                            + billDetail.getProductDetailId().getColorId().getNameColor()
+                            + "|"
+                            + billDetail.getProductDetailId().getSizeId().getNameSize();
+                    string0 = string0 + "\n" + string1;
+                }
+                int hoi = JOptionPane.showConfirmDialog(this, "Hiện tại trong giỏ hàng có sản phẩm:" + string0 + "\nĐã vượt quá số lượng trong kho bạn có muốn \n" + "Lấy sản phẩm đó không");
+                if (hoi != JOptionPane.YES_NO_OPTION) {
+                    JOptionPane.showMessageDialog(this, "Bạn đã không xóa sản phẩm ");
+                    return false;
+                }
+                for (BillDetail billDetail : listBillDetailQuantity()) {
+                    billDetailService.Update_bill_datail(productDetailService.getById(billDetail.getProductDetailId().getId()).getQuantity(), billDetail.getId());
+                }               
+                JOptionPane.showMessageDialog(this, "Bạn đã update sản phẩm ");
+                return true;
+            } else {
+                return true;
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Lỗi dữ liệu");
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
+    //kiểm tra xem voucher có đc sử dụng hay không 
+    public void checkVoucherUsedFlag() {
+        String idVoucher = null;
+        try {
+            if (Double.parseDouble("0.0") <= Double.parseDouble(jLGiamGia.getText())) {
+                idVoucher = txtVoucher.getText();
+                voucherResponsitory.updateStatus(idVoucher);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Lỗi dữ liệu");
+            e.printStackTrace();
+        }
+    }
+    //kiểm tra xem sản phẩm chi tiết đã hết hàng hay chưa
+    public void checkProcuctDetail(String idProduct) {
+        String string0 = "";
+        for (ProductDetail productDetail : productDetailService.get_ProductDetails_id_Bill(idProduct, "1")) {
+            if (productDetail.getQuantity() == 0) {
+                productDetailService.Update_procuct_detail_billdetail(productDetail.getId());
+                String string1 = productDetail.getProductId().getName_product()+
+                productDetail.getColorId().getNameColor()+
+                productDetail.getSizeId().getNameSize();
+                string0 = string0 + "\n" + string1;                                 
+            }
+        }
+        JOptionPane.showMessageDialog(this, "Sản phẩm:" + string0 + "\nHiện Tại đã hết hàng!");
+    }
+    //kiểm tra xem sản phẩm  đã hết hàng hay chưa
+    public void checkProcuct(String idProduct) {                            
+        checkProcuctDetail(idProduct);
+        if (productDetailService.get_ProductDetails_id_Bill(idProduct, "1").isEmpty()) {
+            productService.delete_product_bill(idProduct);
+            JOptionPane.showMessageDialog(this, "Sản phẩm:" + productService.getProcuct(idProduct) + "\nHiện Tại đã hết hàng!");
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -837,7 +991,15 @@ public class BillJPanel extends javax.swing.JPanel {
             new String [] {
                 "STT", "Mã SP", "Tên SP", "Giá", "% Khuyến Mãi", "Status"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         tblProduct.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tblProductMouseClicked(evt);
@@ -845,18 +1007,16 @@ public class BillJPanel extends javax.swing.JPanel {
         });
         jScrollPane1.setViewportView(tblProduct);
         if (tblProduct.getColumnModel().getColumnCount() > 0) {
-            tblProduct.getColumnModel().getColumn(0).setMinWidth(30);
-            tblProduct.getColumnModel().getColumn(0).setMaxWidth(40);
+            tblProduct.getColumnModel().getColumn(0).setMinWidth(100);
+            tblProduct.getColumnModel().getColumn(0).setMaxWidth(100);
             tblProduct.getColumnModel().getColumn(1).setMinWidth(60);
             tblProduct.getColumnModel().getColumn(1).setMaxWidth(100);
-            tblProduct.getColumnModel().getColumn(2).setMinWidth(120);
+            tblProduct.getColumnModel().getColumn(2).setMinWidth(200);
             tblProduct.getColumnModel().getColumn(2).setMaxWidth(200);
-            tblProduct.getColumnModel().getColumn(3).setMinWidth(100);
-            tblProduct.getColumnModel().getColumn(3).setMaxWidth(150);
-            tblProduct.getColumnModel().getColumn(4).setMinWidth(30);
-            tblProduct.getColumnModel().getColumn(4).setMaxWidth(70);
-            tblProduct.getColumnModel().getColumn(5).setMinWidth(50);
-            tblProduct.getColumnModel().getColumn(5).setMaxWidth(70);
+            tblProduct.getColumnModel().getColumn(3).setMinWidth(200);
+            tblProduct.getColumnModel().getColumn(3).setMaxWidth(200);
+            tblProduct.getColumnModel().getColumn(4).setMinWidth(150);
+            tblProduct.getColumnModel().getColumn(4).setMaxWidth(150);
         }
 
         jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
@@ -869,7 +1029,7 @@ public class BillJPanel extends javax.swing.JPanel {
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 617, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 859, Short.MAX_VALUE)
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addGap(0, 0, Short.MAX_VALUE)))
@@ -922,7 +1082,7 @@ public class BillJPanel extends javax.swing.JPanel {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 617, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -1061,10 +1221,10 @@ public class BillJPanel extends javax.swing.JPanel {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(20, 20, 20))
@@ -1351,7 +1511,7 @@ public class BillJPanel extends javax.swing.JPanel {
                 boolean checkVoucher = false;
                 BigDecimal sale = BigDecimal.ZERO;
                 if (checkVoucher()) {
-                    for (Voucher voucher : voucherResponsitory.getAllById(txtVoucher.getText())) {
+                    for (Voucher voucher : voucherResponsitory.getAllById(txtVoucher.getText(),"1")) {
                         if (voucher.getId().equals(idVoucher)) {
                             sale = BigDecimal.valueOf(voucher.getSaleOf());
                             checkVoucher = true;
@@ -1420,7 +1580,26 @@ public class BillJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_bthresetvoucherActionPerformed
 
     private void bthpaymentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bthpaymentActionPerformed
-        
+        //Lấy vị trí click của bill
+        int indexBill = tblbill.getSelectedRow();
+        try {
+            if (indexBill >= 0) {
+                if (checkHoiDeleteListBillDetail_0()) {
+                    if (checkHoiUpdateListBillDetail()) {
+
+                        
+                    }
+
+                }
+            }else {
+                JOptionPane.showMessageDialog(this, "Bạn cần chọn Bill");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Lỗi dữ liệu!");
+        }
+
     }//GEN-LAST:event_bthpaymentActionPerformed
     /**
      * @param args the command line arguments

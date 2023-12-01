@@ -37,7 +37,8 @@ public class BillDetailRepository {
                     + " db_levents.bill_detail.id,\n"
                     + " db_levents.product_detail.id,\n"
                     + " db_levents.sale_product.id,\n"
-                    + " db_levents.sale_product.sale\n"
+                    + " db_levents.sale_product.sale,\n"
+                    + " db_levents.product.id\n"
                     + "FROM db_levents.bill_detail\n"
                     + "join db_levents.product_detail on product_detail.id = bill_detail.product_detail_id\n"
                     + "join db_levents.product on product.id = product_detail.product_id\n"
@@ -45,6 +46,42 @@ public class BillDetailRepository {
                     + "join db_levents.color on color.id = product_detail.color_id\n"
                     + "join db_levents.size on size.id = product_detail.size_id\n"
                     + "where bill_id = ? ;";
+            ResultSet rs = JDBCHelped.executeQuery(sql, id);
+            while (rs.next()) {
+                SaleProduct saleProduct = new SaleProduct(rs.getString(8), rs.getDouble(9));
+                Product p = new Product(rs.getBigDecimal(5),rs.getString(10), saleProduct, rs.getString(1));
+                ProductDetail pd = new ProductDetail(new Color(rs.getString(2)), rs.getString(7), p, new Size(rs.getString(3)));
+                list.add(new BillDetail(rs.getString(6), pd, rs.getString(4))
+                );
+
+            }
+            return list;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+    //select lấy dữ liệu hóa đơn chưa thanh toán
+    public ArrayList<BillDetail> getBill_idBill_0(String id) {
+        ArrayList<BillDetail> list = new ArrayList<>();
+        try {
+            String sql = "SELECT \n"
+                    + " db_levents.product.name_product,\n"
+                    + " db_levents.color.name_color,\n"
+                    + " db_levents.size.name_size,\n"
+                    + " db_levents.bill_detail.quantity_urchased,\n"
+                    + " db_levents.product.product_price,\n"
+                    + " db_levents.bill_detail.id,\n"
+                    + " db_levents.product_detail.id,\n"
+                    + " db_levents.sale_product.id,\n"
+                    + " db_levents.sale_product.sale\n"
+                    + "FROM db_levents.bill_detail\n"
+                    + "join db_levents.product_detail on product_detail.id = bill_detail.product_detail_id\n"
+                    + "join db_levents.product on product.id = product_detail.product_id\n"
+                    + "LEFT join db_levents.sale_product on sale_product.id = product.sale_id\n"
+                    + "join db_levents.color on color.id = product_detail.color_id\n"
+                    + "join db_levents.size on size.id = product_detail.size_id\n"
+                    + "where bill_id = ? and product_detail.status = 0;";
             ResultSet rs = JDBCHelped.executeQuery(sql, id);
             while (rs.next()) {
                 SaleProduct saleProduct = new SaleProduct(rs.getString(8), rs.getDouble(9));

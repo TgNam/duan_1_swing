@@ -403,7 +403,16 @@ public class ProductDetailRepository {
             return false;
         }
     }
-
+    public boolean Update_procuct_detail_billdetail(String id) {
+        try {
+            String sql = "update db_levents.product_detail set status = 0 where id =?;";
+            JDBCHelped.excuteUpdate(sql, id);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
     //them cai nay ngay 28//11
     public ArrayList<ProductDetail> getProductDetails_Selling_Next(String idSP, int min, int max) {
         ArrayList<ProductDetail> list = new ArrayList<>();
@@ -471,6 +480,7 @@ public class ProductDetailRepository {
     }
 
     // linh dz 
+    //Nam đang dùng ké ở hàm này 
     public ProductDetail getById(String id) {
         ProductDetail productDetail = new ProductDetail();
         try {

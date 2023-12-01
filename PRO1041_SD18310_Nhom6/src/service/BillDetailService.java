@@ -15,7 +15,7 @@ import model.entity.BillDetail;
 public interface BillDetailService {
 
     ArrayList<BillDetail> getBill_idBill(String id);
-
+    ArrayList<BillDetail> getBill_idBill_0(String id);
     boolean add_bill_datail(BillDetail bd, String bill_id, String pd_id);
 
     boolean Update_bill_datail(int quantity_urchased, String billDetail_id);

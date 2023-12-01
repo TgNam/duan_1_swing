@@ -74,4 +74,9 @@ public class BillDetailImple implements BillDetailService {
         }
     }
 
+    @Override
+    public ArrayList<BillDetail> getBill_idBill_0(String id) {
+        return bdr.getBill_idBill_0(id);
+    }
+
 }
