@@ -51,7 +51,9 @@ public class InvoiceManagementJPanel extends javax.swing.JPanel {
     private JFrame jFrame = new JFrame();
     private ReturnsForm returnsForm = new ReturnsForm(jFrame, true);
     private List<BillDetail> listProductReturn = null;
-
+    //them cai nay 30/11
+    private List<BillDetail> listProductExchang = null;
+    private Exchang_Bill ex = new Exchang_Bill(jFrame, true);
     /**
      * Creates new form InvoiceManagementJPanel
      */
@@ -65,7 +67,7 @@ public class InvoiceManagementJPanel extends javax.swing.JPanel {
         bthXacNhan.setVisible(false);
         pannelLyDoHoanTra.setVisible(false);
     }
-    
+
     public void columns_no_checkbox() {
         tableModel = new DefaultTableModel();
         String[] column = {"STT", "Tên Sản Phẩm", "Màu", "Size", "Số Lượng", "Đơn Giá"};
@@ -132,7 +134,7 @@ public class InvoiceManagementJPanel extends javax.swing.JPanel {
             tableModel.addRow(ob);
         }
     }
-    
+
     public void loadBillReturn(List<ReturnBillDetail> list) {
         tableModel = (DefaultTableModel) this.tblBillDetails.getModel();
         tableModel.setRowCount(0);
@@ -648,7 +650,36 @@ public class InvoiceManagementJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_tblBillDetailsMouseClicked
 
     private void btnDoiHangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDoiHangActionPerformed
-        
+
+        int rowCount = tblBillDetails.getRowCount();
+        int indexBill = tblBill.getSelectedRow();
+        if (indexBill != -1) {
+            Bill bill = billService.getBill_status(checkStatus, checkStatus).get(indexBill);
+            // Lấy ra các sản phẩm có trong bill này
+            List<BillDetail> billDetails = billDetailService.getbill_all(bill.getId());
+            Boolean isChecked = null;
+            listProductExchang = new ArrayList<>();
+            ex = new Exchang_Bill(jFrame, true);
+            // duyệt qua từng dòng với i là đại diện cho index của các dòng
+            for (int i = 0; i < rowCount; i++) {
+                isChecked = (Boolean) tblBillDetails.getValueAt(i, tblBillDetails.getColumnCount() - 1);
+                if (isChecked != null && isChecked) {
+                    // nếu dòng này đang được tích thì lấy ra BillDetail tại dòng đó
+                    billDetails.get(i).setBillId(bill);
+                    listProductExchang.add(billDetails.get(i));
+                }
+            }
+            if (listProductExchang.size() == 0) {
+                JOptionPane.showMessageDialog(this, "Chọn sản phẩm muốn trả", "Trả hàng", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            ex.setBillDetails(listProductExchang);
+            ex.setIdBill(Long.valueOf(bill.getId()));
+            ex.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(this, "Chưa chọn hóa đơn", "Lỗi", 0);
+            return;
+        }
     }//GEN-LAST:event_btnDoiHangActionPerformed
 
     private void btnInPhieuGHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInPhieuGHActionPerformed
@@ -658,7 +689,7 @@ public class InvoiceManagementJPanel extends javax.swing.JPanel {
     private void bthXacNhanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bthXacNhanActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_bthXacNhanActionPerformed
- /**
+    /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
