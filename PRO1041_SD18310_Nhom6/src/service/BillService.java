@@ -4,6 +4,7 @@
  */
 package service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import model.entity.Bill;
 
@@ -22,4 +23,6 @@ public interface BillService {
     // link
     Bill getById(Long id);
     boolean updateStatusById(String id, int status);
+    boolean updateVoucherByIdBill(String voucher_id, String id);
+    boolean updatemoneyByIdBill(BigDecimal into_money, BigDecimal total_cost, String id);
 }

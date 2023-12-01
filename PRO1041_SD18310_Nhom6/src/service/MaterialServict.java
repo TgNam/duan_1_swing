@@ -15,4 +15,6 @@ public interface MaterialServict {
     ArrayList<Material> getAll();
     public boolean them(Material mr);
     public boolean sua(String id, Material mr);
+     //them vao 1/12
+    public boolean xoa(String id);
 }

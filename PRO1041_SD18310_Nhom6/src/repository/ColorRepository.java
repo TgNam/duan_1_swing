@@ -45,7 +45,7 @@ public class ColorRepository {
         return false;
     }
     
-      public boolean  Update(String id,Color cl){
+    public boolean Update(String id, Color cl) {
         try {
             String sql = "UPDATE `db_levents`.`color` SET `updated_at` = curdate(), `name_color` = ? WHERE (`id` = ?);";
             JDBCHelped.excuteUpdate(sql, cl.getNameColor(), id);
@@ -55,5 +55,15 @@ public class ColorRepository {
         }
         return false;
     }
-    
+     //them vao 1/12
+    public boolean Delete(String id) {
+        try {
+            String sql = "update db_levents.color set db_levents.color.statuss = 0 where db_levents.size.id = ?;";
+            JDBCHelped.excuteUpdate(sql,  id);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

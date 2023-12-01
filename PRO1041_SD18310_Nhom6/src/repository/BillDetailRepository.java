@@ -221,4 +221,13 @@ public class BillDetailRepository {
         }
         return null;
     }
+    public boolean updateprice_nowByIdBillDetail(BigDecimal price_now, String id) {
+        try {
+            String sql = "update db_levents.bill_detail set price_now = ? where id =? ;";
+            JDBCHelped.excuteUpdate(sql, price_now,id);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }

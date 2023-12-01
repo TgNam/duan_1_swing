@@ -449,9 +449,10 @@
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="1" attributes="0">
-                      <Component id="bthXacNhan" max="32767" attributes="0"/>
+                      <Component id="jButton1" max="32767" attributes="0"/>
+                      <Component id="bthXacNhan" alignment="1" max="32767" attributes="0"/>
                       <Component id="btnInPhieuGH" alignment="0" pref="371" max="32767" attributes="0"/>
-                      <Component id="btnTraHang" max="32767" attributes="0"/>
+                      <Component id="btnTraHang" alignment="1" max="32767" attributes="0"/>
                       <Component id="btnDoiHang" alignment="1" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
@@ -468,8 +469,10 @@
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="btnInPhieuGH" min="-2" pref="52" max="-2" attributes="0"/>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="bthXacNhan" pref="57" max="32767" attributes="0"/>
+                  <Component id="bthXacNhan" min="-2" pref="50" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
+                  <Component id="jButton1" min="-2" pref="53" max="-2" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -506,6 +509,11 @@
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bthXacNhanActionPerformed"/>
           </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="jButton1">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="HU&#x1ef6;"/>
+          </Properties>
         </Component>
       </SubComponents>
     </Container>

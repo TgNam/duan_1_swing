@@ -15,4 +15,6 @@ public interface ThicknessService {
     ArrayList<Thickness> getAll();
     public boolean them(Thickness tk);
     public boolean sua(String id, Thickness tk);
+     //them vao 1/12
+    public boolean xoa(String id);
 }

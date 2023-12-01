@@ -236,5 +236,22 @@ public class BillRepository {
         }
         return null;
     }
-
+    public boolean updateVoucherByIdBill(String voucher_id, String id) {
+        try {
+            String sql = "update db_levents.bill set voucher_id = ? where id =? ;";
+            JDBCHelped.excuteUpdate(sql, voucher_id,id);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+    public boolean updatemoneyByIdBill(BigDecimal into_money, BigDecimal total_cost, String id) {
+        try {
+            String sql = "update db_levents.bill set into_money = ?,total_cost = ?,status = '1' where id =? ;";
+            JDBCHelped.excuteUpdate(sql, into_money,total_cost,id);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }

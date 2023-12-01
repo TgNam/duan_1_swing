@@ -15,4 +15,6 @@ public interface SizeSevice {
     ArrayList<Size> getAll();
     public boolean Insert(Size sz);
     public boolean Update(String id, Size sz);
+     //them vao 1/12
+    public boolean remove(String id);
 }

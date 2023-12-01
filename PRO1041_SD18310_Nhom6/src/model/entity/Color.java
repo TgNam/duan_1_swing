@@ -16,7 +16,8 @@ public class Color {
     private String id;
     private Date updatedAt;
     private String nameColor;
-
+    private boolean status;
+    
     public Color() {
     }
 
@@ -29,6 +30,14 @@ public class Color {
         this.id = id;
         this.updatedAt = updatedAt;
         this.nameColor = nameColor;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
     }
 
     public Date getCreatedAt() {

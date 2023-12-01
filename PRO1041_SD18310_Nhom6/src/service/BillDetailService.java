@@ -4,6 +4,7 @@
  */
 package service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import model.entity.Bill;
 import model.entity.BillDetail;
@@ -29,5 +30,5 @@ public interface BillDetailService {
 
     //Xóa billdetail của phần giỏ hàng thông qua id của bill
     boolean delete_bill_datail(Bill b);
-
+    boolean updateprice_nowByIdBillDetail(BigDecimal price_now, String id);
 }

@@ -58,7 +58,17 @@ public class MaterialRepository {
         }
         return false;
     }
-    
+     //them vao 1/12
+    public boolean Delete(String id) {
+        try {
+            String sql = "update db_levents.material set db_levents.material.statuss = 0 where db_levents.material.id = ?;";
+            JDBCHelped.excuteUpdate(sql,  id);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
     
     
 }

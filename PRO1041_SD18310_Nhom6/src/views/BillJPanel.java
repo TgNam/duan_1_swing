@@ -421,38 +421,36 @@ public class BillJPanel extends javax.swing.JPanel {
     }
     
     //kiểm tra xem voucher có đc sử dụng hay không 
-    public void checkVoucherUsedFlag() {
+    public String checkVoucherUsedFlag() {
         String idVoucher = null;
         try {
-            if (Double.parseDouble("0.0") <= Double.parseDouble(jLGiamGia.getText())) {
+            if (Double.parseDouble("0.0") < Double.parseDouble(jLGiamGia.getText())) {
                 idVoucher = txtVoucher.getText();
                 voucherResponsitory.updateStatus(idVoucher);
+                return idVoucher;
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Lỗi dữ liệu");
             e.printStackTrace();
         }
+        return null;
     }
     //kiểm tra xem sản phẩm chi tiết đã hết hàng hay chưa
     public void checkProcuctDetail(String idProduct) {
-        String string0 = "";
         for (ProductDetail productDetail : productDetailService.get_ProductDetails_id_Bill(idProduct, "1")) {
             if (productDetail.getQuantity() == 0) {
                 productDetailService.Update_procuct_detail_billdetail(productDetail.getId());
                 String string1 = productDetail.getProductId().getName_product()+
                 productDetail.getColorId().getNameColor()+
-                productDetail.getSizeId().getNameSize();
-                string0 = string0 + "\n" + string1;                                 
+                productDetail.getSizeId().getNameSize();                               
             }
         }
-        JOptionPane.showMessageDialog(this, "Sản phẩm:" + string0 + "\nHiện Tại đã hết hàng!");
     }
     //kiểm tra xem sản phẩm  đã hết hàng hay chưa
     public void checkProcuct(String idProduct) {                            
         checkProcuctDetail(idProduct);
         if (productDetailService.get_ProductDetails_id_Bill(idProduct, "1").isEmpty()) {
             productService.delete_product_bill(idProduct);
-            JOptionPane.showMessageDialog(this, "Sản phẩm:" + productService.getProcuct(idProduct) + "\nHiện Tại đã hết hàng!");
         }
     }
     /**
@@ -791,7 +789,7 @@ public class BillJPanel extends javax.swing.JPanel {
 
         jLinto_money.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         jLinto_money.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLinto_money.setText("349,200");
+        jLinto_money.setText("349200");
 
         jLabel18.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         jLabel18.setText("VND");
@@ -1586,12 +1584,45 @@ public class BillJPanel extends javax.swing.JPanel {
             if (indexBill >= 0) {
                 if (checkHoiDeleteListBillDetail_0()) {
                     if (checkHoiUpdateListBillDetail()) {
-
-                        
+                        //lấy dữ liệu của đối tượng sản phẩm chi tiết  tại vị trí indexBill
+                        Bill bill = billService.getListBill_0().get(indexBill);
+                        if (bill !=null) {
+                            String idBill = bill.getId();
+                            BigDecimal into_money = BigDecimal.valueOf(Double.valueOf(jLinto_money.getText()));
+                            BigDecimal total_cost = BigDecimal.valueOf(Double.valueOf(jLtotal_cost.getText()));
+                            if (checkVoucherUsedFlag()!=null) {
+                                String idVoucher =checkVoucherUsedFlag();
+                                billService.updateVoucherByIdBill(idVoucher, idBill);
+                                billService.updatemoneyByIdBill(into_money, total_cost, idBill);
+                                for (BillDetail billDetail : billDetailService.getBill_idBill(idBill)) {
+                                    String idBillDetail = billDetail.getId();
+                                    String idProductDetail = billDetail.getProductDetailId().getId();
+                                    String idProduct = billDetail.getProductDetailId().getProductId().getId();
+                                    ProductDetail productDetail = productDetailService.getById(idProductDetail);
+                                    model.entity.Product product = productService.getProcuct(idProduct);
+                                    BigDecimal price_now = product.getProduct_price();
+                                    billDetailService.updateprice_nowByIdBillDetail(price_now, idBillDetail);
+                                    checkProcuct(idProduct);
+                                }
+                            }else{
+                                billService.updatemoneyByIdBill(into_money, total_cost, idBill);
+                                for (BillDetail billDetail : billDetailService.getBill_idBill(idBill)) {
+                                    String idBillDetail = billDetail.getId();
+                                    String idProductDetail = billDetail.getProductDetailId().getId();
+                                    String idProduct = billDetail.getProductDetailId().getProductId().getId();
+                                    ProductDetail productDetail = productDetailService.getById(idProductDetail);
+                                    model.entity.Product product = productService.getProcuct(idProduct);
+                                    BigDecimal price_now = product.getProduct_price();
+                                    billDetailService.updateprice_nowByIdBillDetail(price_now, idBillDetail);
+                                    checkProcuct(idProduct);
+                                }   
+                            }
+                        }else{
+                        JOptionPane.showMessageDialog(this, "Lỗi dữ liệu Bill");
+                    }     
                     }
-
                 }
-            }else {
+            } else {
                 JOptionPane.showMessageDialog(this, "Bạn cần chọn Bill");
             }
 
@@ -1599,7 +1630,6 @@ public class BillJPanel extends javax.swing.JPanel {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Lỗi dữ liệu!");
         }
-
     }//GEN-LAST:event_bthpaymentActionPerformed
     /**
      * @param args the command line arguments

@@ -324,7 +324,7 @@ public class ProductRepository {
                         rs.getDate(5),
                         rs.getString(6),
                         rs.getString(7));
-            }
+}
             return product;
         } catch (SQLException ex) {
             ex.printStackTrace();
