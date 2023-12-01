@@ -43,9 +43,8 @@ public class Voucher {
         this.status = status;
     }
 
-    public Voucher(double saleOf, Date createdAt, Date endAt, String id, Date startAt) {
+    public Voucher(double saleOf,  Date endAt, String id, Date startAt) {
         this.saleOf = saleOf;
-        this.createdAt = createdAt;
         this.endAt = endAt;
         this.id = id;
         this.startAt = startAt;
