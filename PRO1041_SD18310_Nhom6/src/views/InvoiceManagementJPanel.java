@@ -51,7 +51,9 @@ public class InvoiceManagementJPanel extends javax.swing.JPanel {
     private JFrame jFrame = new JFrame();
     private ReturnsForm returnsForm = new ReturnsForm(jFrame, true);
     private List<BillDetail> listProductReturn = null;
-
+    //them cai nay 30/11
+    private List<BillDetail> listProductExchang = null;
+    private Exchang_Bill ex = new Exchang_Bill(jFrame, true);
     /**
      * Creates new form InvoiceManagementJPanel
      */
@@ -662,7 +664,35 @@ public class InvoiceManagementJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_tblBillDetailsMouseClicked
 
     private void btnDoiHangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDoiHangActionPerformed
-
+        int rowCount = tblBillDetails.getRowCount();
+        int indexBill = tblBill.getSelectedRow();
+        if (indexBill != -1) {
+            Bill bill = billService.getBill_status(checkStatus, checkStatus).get(indexBill);
+            // Lấy ra các sản phẩm có trong bill này
+            List<BillDetail> billDetails = billDetailService.getbill_all(bill.getId());
+            Boolean isChecked = null;
+            listProductExchang = new ArrayList<>();
+            ex = new Exchang_Bill(jFrame, true);
+            // duyệt qua từng dòng với i là đại diện cho index của các dòng
+            for (int i = 0; i < rowCount; i++) {
+                isChecked = (Boolean) tblBillDetails.getValueAt(i, tblBillDetails.getColumnCount() - 1);
+                if (isChecked != null && isChecked) {
+                    // nếu dòng này đang được tích thì lấy ra BillDetail tại dòng đó
+                    billDetails.get(i).setBillId(bill);
+                    listProductExchang.add(billDetails.get(i));
+                }
+            }
+            if (listProductExchang.size() == 0) {
+                JOptionPane.showMessageDialog(this, "Chọn sản phẩm muốn trả", "Trả hàng", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            ex.setBillDetails(listProductExchang);
+            ex.setIdBill(Long.valueOf(bill.getId()));
+            ex.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(this, "Chưa chọn hóa đơn", "Lỗi", 0);
+            return;
+        }
     }//GEN-LAST:event_btnDoiHangActionPerformed
 
     private void btnInPhieuGHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInPhieuGHActionPerformed
@@ -672,41 +702,7 @@ public class InvoiceManagementJPanel extends javax.swing.JPanel {
     private void bthXacNhanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bthXacNhanActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_bthXacNhanActionPerformed
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Main().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bthBill1;

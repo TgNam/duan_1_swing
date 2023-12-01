@@ -37,5 +37,14 @@ public class ColorImple implements ColorService{
             return false;
         }
     }
+
+    @Override
+    public boolean xoa(String id) {
+        if(cl.Delete(id)){
+            return true;
+        }else{
+            return false;
+        }
+    }
     
 }

@@ -37,5 +37,14 @@ public class ThicknessImple implements ThicknessService{
             return false;
         }
     }
+
+    @Override
+    public boolean xoa(String id) {
+        if(t.Delete(id)){
+            return true;
+        }else{
+            return false;
+        }
+    }
     
 }

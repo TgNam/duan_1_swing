@@ -37,5 +37,14 @@ public class CustomImple implements CustomService{
             return false;
         }
     }
+
+    @Override
+    public boolean xoa(String id) {
+        if(ct.Delete(id)){
+            return true;
+        }else{
+            return false;
+        }
+    }
     
 }
