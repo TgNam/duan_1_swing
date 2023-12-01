@@ -68,4 +68,35 @@ public class SizeRepository {
             return false;
         }
     }
+    
+    public ArrayList<Size> getSize_Sell(int min, int max) {
+        ArrayList<Size> List = new ArrayList<>();
+        try {
+            String sql = """
+                         select * from (select 
+                         db_levents.size.id, 
+                         db_levents.size.name_size, 
+                         db_levents.size.created_at, 
+                         db_levents.size.updated_at, 
+                         statuss, 
+                         ROW_NUMBER() OVER (ORDER BY size.id) AS rownum 
+                         from db_levents.size where statuss = 1) 
+                         AS temp WHERE rownum BETWEEN ? AND ?;   
+                         """;
+            ResultSet rs =  JDBCHelped.executeQuery(sql, min, max);
+            while(rs.next()){
+                Size s;
+                String id = rs.getString(1);
+                String name = rs.getString(2);
+                Date created_at = rs.getDate(3);
+                Date  updated_at = rs.getDate(4);
+                s = new Size(created_at, id, updated_at, name);
+                List.add(s);
+            }
+            return List;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return  null;
+    }
 }

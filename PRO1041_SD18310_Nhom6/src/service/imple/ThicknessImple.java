@@ -46,5 +46,10 @@ public class ThicknessImple implements ThicknessService{
             return false;
         }
     }
+
+    @Override
+    public ArrayList<Thickness> getThickness_sell(int min, int max) {
+        return t.getThickness_sell(min, max);
+    }
     
 }
