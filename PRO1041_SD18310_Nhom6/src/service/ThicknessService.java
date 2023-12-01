@@ -17,4 +17,5 @@ public interface ThicknessService {
     public boolean sua(String id, Thickness tk);
      //them vao 1/12
     public boolean xoa(String id);
+    ArrayList<Thickness> getThickness_sell(int min, int max);
 }

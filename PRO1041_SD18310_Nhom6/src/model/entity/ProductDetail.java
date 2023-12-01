@@ -21,7 +21,8 @@ public class ProductDetail {
     private Size sizeId;
     private Date updatedAt;
     private String status;
-
+    private byte[] image;
+    
     public ProductDetail(int quantity, Color colorId, Date createdAt, String id, Product productId, Size sizeId, Date updatedAt, String status) {
         this.quantity = quantity;
         this.colorId = colorId;
@@ -70,6 +71,35 @@ public class ProductDetail {
         this.id = id;
         this.productId = productId;
         this.sizeId = sizeId;
+    }
+    // them 1/12
+    public ProductDetail(int quantity, Color colorId, Product productId, Size sizeId, byte[] image) {
+        this.quantity = quantity;
+        this.colorId = colorId;
+        this.productId = productId;
+        this.sizeId = sizeId;
+        this.image = image;
+    }
+    
+     public ProductDetail(int quantity, Color colorId, Date createdAt, String id, Product productId, Size sizeId, Date updatedAt, String status, byte[] image) {
+        this.quantity = quantity;
+        this.colorId = colorId;
+        this.createdAt = createdAt;
+        this.id = id;
+        this.productId = productId;
+        this.sizeId = sizeId;
+        this.updatedAt = updatedAt;
+        this.status = status;
+        this.image = image;
+        
+    }
+    
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
     }
 
     public ProductDetail(String id) {

@@ -31,9 +31,9 @@ public class ImageDisplayExample {
             String password = "root";
 
             try (Connection connection = DriverManager.getConnection(url, username, password)) {
-                String description = "Áo Polo Levents";
+                String description = "13";
 
-                String selectQuery = "SELECT image_data FROM product WHERE image_type = ?";
+                String selectQuery = "SELECT image_data FROM product WHERE id = ?;";
                 try (PreparedStatement preparedStatement = connection.prepareStatement(selectQuery)) {
                     preparedStatement.setString(1, description);
 
