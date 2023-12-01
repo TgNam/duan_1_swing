@@ -197,9 +197,9 @@ public class Main extends javax.swing.JFrame {
                 .addComponent(btnSale)
                 .addGap(18, 18, 18)
                 .addComponent(btnVoucher)
-                .addGap(18, 18, 18)
+                .addGap(12, 12, 12)
                 .addComponent(bthThongke)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton1)
                 .addContainerGap(286, Short.MAX_VALUE))
         );

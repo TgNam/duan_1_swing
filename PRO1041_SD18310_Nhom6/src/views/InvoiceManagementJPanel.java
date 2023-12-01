@@ -65,7 +65,7 @@ public class InvoiceManagementJPanel extends javax.swing.JPanel {
         bthXacNhan.setVisible(false);
         pannelLyDoHoanTra.setVisible(false);
     }
-    
+
     public void columns_no_checkbox() {
         tableModel = new DefaultTableModel();
         String[] column = {"STT", "Tên Sản Phẩm", "Màu", "Size", "Số Lượng", "Đơn Giá"};
@@ -132,7 +132,7 @@ public class InvoiceManagementJPanel extends javax.swing.JPanel {
             tableModel.addRow(ob);
         }
     }
-    
+
     public void loadBillReturn(List<ReturnBillDetail> list) {
         tableModel = (DefaultTableModel) this.tblBillDetails.getModel();
         tableModel.setRowCount(0);
@@ -177,7 +177,7 @@ public class InvoiceManagementJPanel extends javax.swing.JPanel {
         bthXacNhan = new javax.swing.JButton();
         pannelLyDoHoanTra = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        txtLyDo = new javax.swing.JTextArea();
         jLabel2 = new javax.swing.JLabel();
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
@@ -454,10 +454,10 @@ public class InvoiceManagementJPanel extends javax.swing.JPanel {
 
         pannelLyDoHoanTra.setPreferredSize(new java.awt.Dimension(383, 267));
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
-        jTextArea1.setRows(5);
-        jScrollPane3.setViewportView(jTextArea1);
+        txtLyDo.setColumns(20);
+        txtLyDo.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
+        txtLyDo.setRows(5);
+        jScrollPane3.setViewportView(txtLyDo);
 
         jLabel2.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jLabel2.setText("Lý do:");
@@ -532,6 +532,8 @@ public class InvoiceManagementJPanel extends javax.swing.JPanel {
         btnTraHang.setVisible(false);
         btnInPhieuGH.setVisible(true);
         bthXacNhan.setVisible(false);
+        pannelLyDoHoanTra.setVisible(false);
+        txtLyDo.setText("");
     }//GEN-LAST:event_bthBill1ActionPerformed
 
     private void bthBill2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bthBill2ActionPerformed
@@ -542,6 +544,8 @@ public class InvoiceManagementJPanel extends javax.swing.JPanel {
         btnTraHang.setVisible(false);
         btnInPhieuGH.setVisible(false);
         bthXacNhan.setVisible(true);
+        pannelLyDoHoanTra.setVisible(false);
+        txtLyDo.setText("");
     }//GEN-LAST:event_bthBill2ActionPerformed
 
     private void bthBill3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bthBill3ActionPerformed
@@ -552,6 +556,8 @@ public class InvoiceManagementJPanel extends javax.swing.JPanel {
         btnTraHang.setVisible(true);
         btnInPhieuGH.setVisible(false);
         bthXacNhan.setVisible(false);
+        pannelLyDoHoanTra.setVisible(false);
+        txtLyDo.setText("");
     }//GEN-LAST:event_bthBill3ActionPerformed
 
     private void bthBill46ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bthBill46ActionPerformed
@@ -563,6 +569,7 @@ public class InvoiceManagementJPanel extends javax.swing.JPanel {
         btnInPhieuGH.setVisible(false);
         bthXacNhan.setVisible(true);
         pannelLyDoHoanTra.setVisible(true);
+        txtLyDo.setText("");
     }//GEN-LAST:event_bthBill46ActionPerformed
 
     private void bthBill57ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bthBill57ActionPerformed
@@ -573,6 +580,8 @@ public class InvoiceManagementJPanel extends javax.swing.JPanel {
         btnTraHang.setVisible(false);
         btnInPhieuGH.setVisible(false);
         bthXacNhan.setVisible(false);
+        pannelLyDoHoanTra.setVisible(false);
+        txtLyDo.setText("");
     }//GEN-LAST:event_bthBill57ActionPerformed
 
     private void tblBillMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblBillMouseClicked
@@ -597,7 +606,7 @@ public class InvoiceManagementJPanel extends javax.swing.JPanel {
                     List<ReturnBillDetail> listRbd = new ReturnBillDetailImple().getByIdBill(id);
                     loadBillReturn(listRbd);
                     ReturnBill returnBill = new ReturnBillImple().getById(listRbd.get(0).getReturnBillId().getId());
-                    jTextArea1.setText(returnBill.getReasonDescription());
+                    txtLyDo.setText(returnBill.getReasonDescription());
                 } else if (checkStatus.equals("57")) {
                     Bill bill = billService.getBill_status("5", "7").get(row);
                     String id = bill.getId();
@@ -644,11 +653,16 @@ public class InvoiceManagementJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_btnTraHangActionPerformed
 
     private void tblBillDetailsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblBillDetailsMouseClicked
-        // TODO add your handling code here:
+        int rowCount = tblBillDetails.getRowCount();
+        int indexBill = tblBill.getSelectedRow();
+        if (indexBill != -1) {
+            Bill bill = billService.getBill_status(checkStatus, checkStatus).get(indexBill);
+            
+        }
     }//GEN-LAST:event_tblBillDetailsMouseClicked
 
     private void btnDoiHangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDoiHangActionPerformed
-        
+
     }//GEN-LAST:event_btnDoiHangActionPerformed
 
     private void btnInPhieuGHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInPhieuGHActionPerformed
@@ -658,7 +672,7 @@ public class InvoiceManagementJPanel extends javax.swing.JPanel {
     private void bthXacNhanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bthXacNhanActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_bthXacNhanActionPerformed
- /**
+    /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
@@ -715,10 +729,10 @@ public class InvoiceManagementJPanel extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JPanel panelFormTraHang;
     private javax.swing.JPanel pannelLyDoHoanTra;
     private javax.swing.JTable tblBill;
     private javax.swing.JTable tblBillDetails;
+    private javax.swing.JTextArea txtLyDo;
     // End of variables declaration//GEN-END:variables
 }
