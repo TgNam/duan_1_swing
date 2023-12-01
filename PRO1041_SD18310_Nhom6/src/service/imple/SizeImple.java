@@ -37,5 +37,14 @@ public class SizeImple implements SizeSevice{
             return false;
         }
     }
+
+    @Override
+    public boolean remove(String id) {
+        if(s.Delete(id)){
+            return true;
+        }else{
+            return false;
+        }
+    }
     
 }

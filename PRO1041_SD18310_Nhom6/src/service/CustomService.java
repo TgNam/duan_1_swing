@@ -15,4 +15,6 @@ public interface CustomService {
     ArrayList<Custom> getAll();
     public boolean them(Custom c);
     public boolean sua(String id, Custom c);
+     //them vao 1/12
+    public boolean xoa(String id);
 }

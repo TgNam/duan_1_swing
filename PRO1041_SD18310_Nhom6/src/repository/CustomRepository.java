@@ -57,5 +57,17 @@ public class CustomRepository {
         }
         return false;
     }
+    
+    //them vao 1/12
+    public boolean Delete(String id) {
+        try {
+            String sql = "update db_levents.custom set db_levents.custom.statuss = 0 where db_levents.custom.id = ?;";
+            JDBCHelped.excuteUpdate(sql,  id);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
 }
