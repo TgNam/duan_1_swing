@@ -87,7 +87,8 @@ public class ProductRepository {
                     + "material.name_material, \n"
                     + "thickness.gsm, \n"
                     + "product.DESCRIPTION, \n"
-                    + "product.status,\n"
+                    + "product.status,"
+                    + "product.image_data,\n"
                     + "ROW_NUMBER() OVER (ORDER BY product.id) AS rownum \n"
                     + "from product \n"
                     + "inner join custom on product.custome_id = custom.id \n"
@@ -109,7 +110,8 @@ public class ProductRepository {
                 int thickness = rs.getInt(8);
                 String describe = rs.getString(9);
                 String status = rs.getString(10);
-                pr = new Product(price, Create_at, new Custom(custom), id, new Material(material), new Thickness(thickness), Updated_at, describe, name_Product, status);
+                byte[] img = rs.getBytes(11);
+                pr = new Product(price, Create_at, new Custom(custom), id, new Material(material), new Thickness(thickness), Updated_at, describe, name_Product, status, img);
                 list.add(pr);
             }
             return list;
@@ -197,12 +199,12 @@ public class ProductRepository {
 
     public boolean Insert(Product pr) {
         try {
-            String sql = "INSERT INTO product (created_at, name_product, product_price, custome_id, material_id,  thickness_id, description, status) "
+            String sql = "INSERT INTO product (created_at, name_product, product_price, custome_id, material_id,  thickness_id, description, status, image_data) "
                     + "VALUES  (curdate(), ?,?,"
                     + "(select id from custom where custom.name_custom =  ?),"
                     + "(select id from material where name_material = ?),"
-                    + "(select id from thickness where gsm = ?),?,'1');";
-            JDBCHelped.excuteUpdate(sql, pr.getName_product(), pr.getProduct_price(), pr.getCustome_id().getNameCustom(), pr.getMaterial_id().getNameMaterial(), pr.getThickness_id().getGsm(), pr.getDescription());
+                    + "(select id from thickness where gsm = ?),?,'1',?);";
+            JDBCHelped.excuteUpdate(sql, pr.getName_product(), pr.getProduct_price(), pr.getCustome_id().getNameCustom(), pr.getMaterial_id().getNameMaterial(), pr.getThickness_id().getGsm(), pr.getDescription(), pr.getImage_Type());
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -212,8 +214,8 @@ public class ProductRepository {
 
     public boolean Update(String id, Product pr) {
         try {
-            String sql = "UPDATE product set updated_at = curdate(), name_product = ?, product_price = ?, custome_id = (select id from custom where custom.name_custom =  ?), material_id = (select id from material where name_material = ?), thickness_id = (select id from thickness where gsm = ?), description = ? where id = ?;";
-            JDBCHelped.excuteUpdate(sql, pr.getName_product(), pr.getProduct_price(), pr.getCustome_id().getNameCustom(), pr.getMaterial_id().getNameMaterial(), pr.getThickness_id().getGsm(), pr.getDescription(), id);
+            String sql = "UPDATE product set updated_at = curdate(), name_product = ?, product_price = ?, custome_id = (select id from custom where custom.name_custom =  ?), material_id = (select id from material where name_material = ?), thickness_id = (select id from thickness where gsm = ?), description = ?, image_data = ?  where id = ?;";
+            JDBCHelped.excuteUpdate(sql, pr.getName_product(), pr.getProduct_price(), pr.getCustome_id().getNameCustom(), pr.getMaterial_id().getNameMaterial(), pr.getThickness_id().getGsm(), pr.getDescription(),pr.getImage_Type(), id);
             return true;
         } catch (Exception e) {
             e.printStackTrace();

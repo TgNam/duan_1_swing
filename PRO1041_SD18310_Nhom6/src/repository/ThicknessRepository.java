@@ -60,7 +60,7 @@ public class ThicknessRepository {
      //them vao 1/12
     public boolean Delete(String id) {
         try {
-            String sql = "update db_levents.thickness set db_levents.thickness.statuss = 0 where db_levents.thickness.id = ?;";
+            String sql = "update db_levents.thickness set db_levents.thickness.status = 0 where db_levents.thickness.id = ?;";
             JDBCHelped.excuteUpdate(sql,  id);
             return true;
         } catch (Exception e) {

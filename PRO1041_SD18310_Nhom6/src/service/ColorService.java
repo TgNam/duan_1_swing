@@ -17,4 +17,5 @@ public interface ColorService {
     public boolean  sua(String id, Color c);
      //them vao 1/12
     public boolean xoa(String id);
+    ArrayList<Color> getColor_Sell(int min, int max);
 }

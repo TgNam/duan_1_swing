@@ -61,7 +61,7 @@ public class MaterialRepository {
      //them vao 1/12
     public boolean Delete(String id) {
         try {
-            String sql = "update db_levents.material set db_levents.material.statuss = 0 where db_levents.material.id = ?;";
+            String sql = "update db_levents.material set db_levents.material.status = 0 where db_levents.material.id = ?;";
             JDBCHelped.excuteUpdate(sql,  id);
             return true;
         } catch (Exception e) {
@@ -70,5 +70,36 @@ public class MaterialRepository {
         return false;
     }
     
+     public ArrayList<Material> getMaterial_Sell(int min, int max) {
+        ArrayList<Material> List = new ArrayList<>();
+        try {
+            String sql = """
+                         select * from (select 
+                         id, 
+                         name_material, 
+                         created_at, 
+                         updated_at, 
+                         status, 
+                         ROW_NUMBER() OVER (ORDER BY material.id) AS rownum 
+                         from material where status = 1) 
+                         AS temp WHERE rownum BETWEEN ? AND ?;   
+                         """;
+            ResultSet rs =  JDBCHelped.executeQuery(sql,min,max);
+            while(rs.next()){
+                Material m;
+                String id = rs.getString(1);
+                String name = rs.getString(2);
+                Date created_at = rs.getDate(3);
+                Date  updated_at = rs.getDate(4);
+                boolean status = rs.getBoolean(5);
+                m = new Material(status, created_at, id, updated_at, name);
+                List.add(m);
+            }
+            return List;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return  null;
+    }
     
 }

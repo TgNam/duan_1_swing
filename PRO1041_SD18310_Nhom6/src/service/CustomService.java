@@ -17,4 +17,5 @@ public interface CustomService {
     public boolean sua(String id, Custom c);
      //them vao 1/12
     public boolean xoa(String id);
+    ArrayList<Custom> getCustom_Sell(int min, int max);
 }
