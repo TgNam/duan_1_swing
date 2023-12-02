@@ -4,6 +4,7 @@
  */
 package service.imple;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import model.entity.Bill;
 import repository.BillRepository;
@@ -60,6 +61,24 @@ public class BillImple implements BillService {
     @Override
     public boolean updateStatusById(String id, int status) {
         return br.updateStatusById(id, status);
+    }
+
+    @Override
+    public boolean updateVoucherByIdBill(String voucher_id, String id) {
+        if (br.updateVoucherByIdBill(voucher_id, id)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean updatemoneyByIdBill(BigDecimal into_money, BigDecimal total_cost, String id) {
+        if (br.updatemoneyByIdBill(into_money, total_cost, id)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }

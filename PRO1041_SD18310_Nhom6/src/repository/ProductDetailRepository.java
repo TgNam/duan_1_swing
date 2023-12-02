@@ -404,7 +404,16 @@ public class ProductDetailRepository {
             return false;
         }
     }
-
+    public boolean Update_procuct_detail_billdetail(String id) {
+        try {
+            String sql = "update db_levents.product_detail set status = 0 where id =?;";
+            JDBCHelped.excuteUpdate(sql, id);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
     //them cai nay ngay 28//11
     public ArrayList<ProductDetail> getProductDetails_Selling_Next(String idSP, int min, int max) {
         ArrayList<ProductDetail> list = new ArrayList<>();
@@ -461,6 +470,7 @@ public class ProductDetailRepository {
     }
 
     //them cai nay ngay 29//11
+    //Nam đang dùng ké ở hàm này 
     public boolean getMinus_product_Detail(String id, int quantity) {
         try {
             String sql = "update db_levents.product_detail set db_levents.product_detail.quantity = db_levents.product_detail.quantity - ? where db_levents.product_detail.id = ?;";
@@ -473,6 +483,7 @@ public class ProductDetailRepository {
     }
 
     // linh dz 
+    //Nam đang dùng ké ở hàm này 
     public ProductDetail getById(String id) {
         ProductDetail productDetail = new ProductDetail();
         try {

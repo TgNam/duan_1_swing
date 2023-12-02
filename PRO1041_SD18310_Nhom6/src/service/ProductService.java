@@ -27,4 +27,6 @@ public interface ProductService {
     
     ArrayList<Product> getNext_Product_Stop_selling(int min, int max);
     public boolean KhoiPhuc(String id);
+    boolean delete_product_bill(String id);
+    Product getProcuct(String id);
 }

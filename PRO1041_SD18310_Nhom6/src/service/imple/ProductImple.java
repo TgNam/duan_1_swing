@@ -87,5 +87,19 @@ public class ProductImple implements ProductService{
     public boolean KhoiPhuc(String id) {
         return pr.Restore(id);
     }
+
+    @Override
+    public boolean delete_product_bill(String id) {
+        if(pr.delete_product_bill(id)){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    @Override
+    public Product getProcuct(String id) {
+        return pr.getProcuct(id);
+}
     
 }

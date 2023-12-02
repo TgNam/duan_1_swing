@@ -177,6 +177,7 @@ public class InvoiceManagementJPanel extends javax.swing.JPanel {
         btnTraHang = new javax.swing.JButton();
         btnInPhieuGH = new javax.swing.JButton();
         bthXacNhan = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
         pannelLyDoHoanTra = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         txtLyDo = new javax.swing.JTextArea();
@@ -427,6 +428,8 @@ public class InvoiceManagementJPanel extends javax.swing.JPanel {
             }
         });
 
+        jButton1.setText("HUỶ");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -434,6 +437,7 @@ public class InvoiceManagementJPanel extends javax.swing.JPanel {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(bthXacNhan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnInPhieuGH, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 371, Short.MAX_VALUE)
                     .addComponent(btnTraHang, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -450,8 +454,10 @@ public class InvoiceManagementJPanel extends javax.swing.JPanel {
                 .addGap(18, 18, 18)
                 .addComponent(btnInPhieuGH, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(bthXacNhan, javax.swing.GroupLayout.DEFAULT_SIZE, 57, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(bthXacNhan, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pannelLyDoHoanTra.setPreferredSize(new java.awt.Dimension(383, 267));
@@ -714,6 +720,7 @@ public class InvoiceManagementJPanel extends javax.swing.JPanel {
     private javax.swing.JButton btnDoiHang;
     private javax.swing.JButton btnInPhieuGH;
     private javax.swing.JButton btnTraHang;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel6;

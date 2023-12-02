@@ -47,12 +47,12 @@ public class VoucherResponsitory {
         }
         return voucher;
     }
-
-    public List<Voucher> getAllById(String id) {
-        String query = "SELECT * FROM voucher WHERE id = ?";
+//Nam sử dụng hàm này cho bill
+    public List<Voucher> getAllById(String id, String status) {
+        String query = "SELECT * FROM voucher WHERE id = ? and status = ?";
         List<Voucher> list = new ArrayList<>();
 
-        ResultSet rs = JDBCHelped.executeQuery(query, id);
+        ResultSet rs = JDBCHelped.executeQuery(query, id,status);
 
         try {
             while (rs.next()) {
@@ -116,5 +116,17 @@ public class VoucherResponsitory {
             return false;
         }
         return true;
+    }
+    public boolean updateStatus(String id) {
+        String query = "UPDATE voucher SET status = 0 WHERE id = ?";
+        try {
+            Integer row = JDBCHelped.excuteUpdate(query,id);
+            if (row > 0) {
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }
