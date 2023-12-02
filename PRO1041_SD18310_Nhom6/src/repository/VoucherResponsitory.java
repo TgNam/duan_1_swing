@@ -67,9 +67,9 @@ public class VoucherResponsitory {
     }
     
     public boolean create(Voucher voucher) {
-        String query = "INSERT INTO voucher (id,sale_of,created_at,start_at,end_at,status) VALUES (?,?,?,?,?,?)";
+        String query = "INSERT INTO voucher (id,sale_of,created_at,start_at,end_at,status) VALUES (?,?,NOW(6),?,?,?)";
         try {
-            Integer row = JDBCHelped.excuteUpdate(query, voucher.getId(), voucher.getSaleOf(), voucher.getCreatedAt(),
+            Integer row = JDBCHelped.excuteUpdate(query, voucher.getId(), voucher.getSaleOf(),
                     voucher.getStartAt(), voucher.getEndAt(), voucher.getStatus());
             if (row > 0) {
                 return true;
@@ -81,9 +81,9 @@ public class VoucherResponsitory {
     }
 
     public boolean update(Voucher voucher) {
-        String query = "UPDATE voucher SET sale_of = ? ,created_at = ? ,start_at = ? ,end_at = ? ,status = ? WHERE id = ?";
+        String query = "UPDATE voucher SET sale_of = ? ,updated_at = NOW(6) ,start_at = ? ,end_at = ? ,status = ? WHERE id = ?";
         try {
-            Integer row = JDBCHelped.excuteUpdate(query, voucher.getSaleOf(), voucher.getCreatedAt(),
+            Integer row = JDBCHelped.excuteUpdate(query, voucher.getSaleOf(), 
                     voucher.getStartAt(), voucher.getEndAt(), voucher.getStatus(), voucher.getId());
             if (row > 0) {
                 return true;

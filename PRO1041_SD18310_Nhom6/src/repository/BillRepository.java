@@ -48,7 +48,7 @@ public class BillRepository {
         try {
             String sql = "INSERT INTO db_levents.bill (created_at, updated_at, delivery_date, total_cost, into_money, status, user_id,voucher_id,address_id)\n"
                     + "VALUES \n"
-                    + "(?, ?, ?, null, null, 0, (SELECT id FROM db_levents.user where number_phone = ?), null, null);";
+                    + "(?, ?, ?, null, null, 0, (SELECT id FROM db_levents.user where number_phone = ? LIMIT 1), null, null);";
             JDBCHelped.excuteUpdate(sql, b.getCreatedAt(), b.getUpdatedAt(), b.getDeliveryDate(), b.getUserId().getNumberPhone());
             return true;
         } catch (Exception e) {

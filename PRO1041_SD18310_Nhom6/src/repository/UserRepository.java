@@ -22,10 +22,10 @@ public class UserRepository {
     public ArrayList<User> getUser_name_phone() {
         ArrayList<User> list = new ArrayList<>();
         try {
-            String sql = "SELECT id, full_name, number_phone FROM db_levents.user";
+            String sql = "SELECT id, full_name, number_phone, email, status FROM db_levents.user";
             ResultSet rs = JDBCHelped.executeQuery(sql);
             while (rs.next()) {
-                list.add(new User(rs.getString(1), rs.getString(2), rs.getString(3))
+                list.add(new User(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5))
                 );
             }
             return list;
@@ -37,8 +37,8 @@ public class UserRepository {
 
     public boolean add_user(User user) {
         try {
-            String sql = "insert into db_levents.user (created_at,updated_at,full_name,number_phone) value\n"
-                    + "(?,?,?,?);";
+            String sql = "insert into db_levents.user (created_at,updated_at,full_name,number_phone,status) value\n"
+                    + "(?,?,?,?,'1');";
             JDBCHelped.excuteUpdate(sql, user.getCreatedAt(), user.getUpdatedAt(), user.getFullName(), user.getNumberPhone());
             return true;
         } catch (Exception e) {

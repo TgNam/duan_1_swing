@@ -311,7 +311,7 @@ public class ReturnsForm extends javax.swing.JDialog {
         BigDecimal sumMoney = BigDecimal.ZERO;
 
         for (int i = 0; i < rowCount; i++) {
-            if (tblProductReturn.getValueAt(i, 7) != null && tblProductReturn.getValueAt(i, 7) != "" && Integer.valueOf((String) tblProductReturn.getValueAt(i, 7)) > 0) {
+            if (tblProductReturn.getValueAt(i, 7) != null && tblProductReturn.getValueAt(i, 7) != "") {
                 try {
                     soLuongInput = Integer.parseInt(tblProductReturn.getValueAt(i, 7).toString());
                     if (soLuongInput < 0) {
@@ -320,7 +320,7 @@ public class ReturnsForm extends javax.swing.JDialog {
                     }
                 } catch (NumberFormatException e) {
                     e.printStackTrace();
-                    JOptionPane.showMessageDialog(this, "Vui lòng nhập số nguyên dương", "Lỗi", 2);
+                    JOptionPane.showMessageDialog(this, "Vui lòng nhập số vào số lượng", "Lỗi", 2);
                     return;
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -338,10 +338,6 @@ public class ReturnsForm extends javax.swing.JDialog {
                     BigDecimal productPrice = new BigDecimal(tblProductReturn.getValueAt(i, 6).toString());
                     BigDecimal productTotal = BigDecimal.valueOf(soLuongInput).multiply(productPrice);
                     sumMoney = sumMoney.add(productTotal);
-                } catch (NumberFormatException e) {
-                    e.printStackTrace();
-                    JOptionPane.showMessageDialog(this, "Vui lòng nhập số nguyên", "Lỗi", 2);
-                    return;
                 } catch (Exception e) {
                     e.printStackTrace();
                     JOptionPane.showMessageDialog(this, "Lỗi hệ thống", "Lỗi", 2);
@@ -383,6 +379,49 @@ public class ReturnsForm extends javax.swing.JDialog {
         if (txtLyDo.getText().trim().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Vui lòng nhập lý do trả hàng", "Lỗi", JOptionPane.ERROR_MESSAGE);
             return;
+        }
+        int rowCount = tblProductReturn.getRowCount();
+        bill = billImple.getById(idBill);
+
+        List<BillDetail> billDetails = billDetailImple.getbill_all(bill.getId());
+        Integer soLuongInput = 0;
+        Integer soLuongGoc = 0;
+        BigDecimal sumMoney = BigDecimal.ZERO;
+
+        for (int i = 0; i < rowCount; i++) {
+            if (tblProductReturn.getValueAt(i, 7) != null && tblProductReturn.getValueAt(i, 7) != "") {
+                try {
+                    soLuongInput = Integer.parseInt(tblProductReturn.getValueAt(i, 7).toString());
+                    if (soLuongInput < 0) {
+                        JOptionPane.showMessageDialog(this, "Số lượng không thể âm", "Lỗi", 2);
+                        return;
+                    }
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                    JOptionPane.showMessageDialog(this, "Vui lòng nhập số vào số lượng", "Lỗi", 2);
+                    return;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    JOptionPane.showMessageDialog(this, "Lỗi hệ thống", "Lỗi", 2);
+                    return;
+                }
+
+                try {
+                    soLuongGoc = Integer.parseInt(tblProductReturn.getValueAt(i, 3).toString());
+                    if (soLuongInput > soLuongGoc) {
+                        JOptionPane.showMessageDialog(this, "Số lượng muốn trả không phù hợp", "Lỗi", 2);
+                        return;
+                    }
+
+                    BigDecimal productPrice = new BigDecimal(tblProductReturn.getValueAt(i, 6).toString());
+                    BigDecimal productTotal = BigDecimal.valueOf(soLuongInput).multiply(productPrice);
+                    sumMoney = sumMoney.add(productTotal);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    JOptionPane.showMessageDialog(this, "Lỗi hệ thống", "Lỗi", 2);
+                    return;
+                }
+            }
         }
         ReturnBillDetailImple returnBillDetailImple = new ReturnBillDetailImple();
         ReturnBillDetail returnBillDetail = null;

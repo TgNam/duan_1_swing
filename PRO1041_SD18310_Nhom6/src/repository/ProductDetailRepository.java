@@ -468,6 +468,7 @@ public class ProductDetailRepository {
     }
 
     //them cai nay ngay 29//11
+    //Nam đang dùng ké ở hàm này 
     public boolean getMinus_product_Detail(String id, int quantity) {
         try {
             String sql = "update db_levents.product_detail set db_levents.product_detail.quantity = db_levents.product_detail.quantity - ? where db_levents.product_detail.id = ?;";

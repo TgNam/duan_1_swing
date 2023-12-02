@@ -62,11 +62,13 @@ public class BillJPanel extends javax.swing.JPanel {
         txtUser.setVisible(false);
         resetformbill();
     }
-    public void resetformbill(){
-        jLtotal_cost.setText( "0.0 ");
+
+    public void resetformbill() {
+        jLtotal_cost.setText("0.0 ");
         jLinto_money.setText("0.0 ");
         jLGiamGia.setText("0.0 ");
     }
+
     //lấy thời gian hiện tại
     public static Date getCurrentDateTime() {
         try {
@@ -110,7 +112,7 @@ public class BillJPanel extends javax.swing.JPanel {
         tableModel = (DefaultTableModel) tblProductDetail.getModel();
         tableModel.setRowCount(0);
         int index = 1;
-        for (ProductDetail productDetail : productDetailService.get_ProductDetails_id_Bill(idProduct,"1")) {
+        for (ProductDetail productDetail : productDetailService.get_ProductDetails_id_Bill(idProduct, "1")) {
             tableModel.addRow(new Object[]{
                 index++,
                 productDetail.getProductId().getName_product(),
@@ -145,7 +147,7 @@ public class BillJPanel extends javax.swing.JPanel {
         int index = 1;
         // Khởi tạo biến để lưu tổng giá tiền
         BigDecimal totalAmount = BigDecimal.ZERO;
-        
+
         for (BillDetail billDetail : billDetailService.getBill_idBill(id)) {
             // Lấy giá sản phẩm từ đối tượng billDetail
             BigDecimal Product_price = billDetail.getProductDetailId().getProductId().getProduct_price();
@@ -173,12 +175,12 @@ public class BillJPanel extends javax.swing.JPanel {
         resetformbill();
         jLtotal_cost.setText(String.valueOf(totalAmount.setScale(2, RoundingMode.HALF_UP)));
         jLinto_money.setText(String.valueOf(totalAmount.setScale(2, RoundingMode.HALF_UP)));
-        
+
     }
 
     //thêm sản phẩm lên form SP
     public void filltableSP(model.entity.Product product, int index) {
-        ProductDetail pd = productDetailService.get_ProductDetails_id_Bill(product.getId(),"1").get(index);
+        ProductDetail pd = productDetailService.get_ProductDetails_id_Bill(product.getId(), "1").get(index);
         jLSTT.setText(String.valueOf(index + 1));
         jLname.setText(pd.getProductId().getName_product());
         jLColor.setText(pd.getColorId().getNameColor());
@@ -227,7 +229,7 @@ public class BillJPanel extends javax.swing.JPanel {
             } else {
                 return true;
             }
-        } catch (Exception e) {  
+        } catch (Exception e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Vui Lòng nhập lại!");
             return false;
@@ -247,7 +249,7 @@ public class BillJPanel extends javax.swing.JPanel {
                     nowDate = getCurrentDateTime();
                     //lấy dữ liệu của đối tượng sản phẩm tại vị trí indexProduct
                     model.entity.Product product = productService.getList_sale().get(indexProduct);
-                    ProductDetail pd = productDetailService.get_ProductDetails_id_Bill(product.getId(),"1").get(indexProductDetail);
+                    ProductDetail pd = productDetailService.get_ProductDetails_id_Bill(product.getId(), "1").get(indexProductDetail);
                     if (SL.trim().isEmpty()) {
                         JOptionPane.showMessageDialog(this, "Vui lòng không được để trống số lượng!");
                         return false;
@@ -344,7 +346,7 @@ public class BillJPanel extends javax.swing.JPanel {
                 if (hoi != JOptionPane.YES_NO_OPTION) {
                     JOptionPane.showMessageDialog(this, "Bạn đã không xóa sản phẩm ");
                     return false;
-                }                
+                }
                 //delete billDetail where id 
                 for (BillDetail billDetail : listBillDetail_0()) {
                     billDetailService.delete_bill_datail_ShoppingCart(billDetail);
@@ -402,12 +404,12 @@ public class BillJPanel extends javax.swing.JPanel {
                 }
                 int hoi = JOptionPane.showConfirmDialog(this, "Hiện tại trong giỏ hàng có sản phẩm:" + string0 + "\nĐã vượt quá số lượng trong kho bạn có muốn \n" + "Lấy sản phẩm đó không");
                 if (hoi != JOptionPane.YES_NO_OPTION) {
-                    JOptionPane.showMessageDialog(this, "Bạn đã không xóa sản phẩm ");
+                    JOptionPane.showMessageDialog(this, "Bạn đã lấy sản phẩm ");
                     return false;
                 }
                 for (BillDetail billDetail : listBillDetailQuantity()) {
                     billDetailService.Update_bill_datail(productDetailService.getById(billDetail.getProductDetailId().getId()).getQuantity(), billDetail.getId());
-                }               
+                }
                 JOptionPane.showMessageDialog(this, "Bạn đã update sản phẩm ");
                 return true;
             } else {
@@ -419,7 +421,7 @@ public class BillJPanel extends javax.swing.JPanel {
             return false;
         }
     }
-    
+
     //kiểm tra xem voucher có đc sử dụng hay không 
     public String checkVoucherUsedFlag() {
         String idVoucher = null;
@@ -435,24 +437,39 @@ public class BillJPanel extends javax.swing.JPanel {
         }
         return null;
     }
+
     //kiểm tra xem sản phẩm chi tiết đã hết hàng hay chưa
     public void checkProcuctDetail(String idProduct) {
         for (ProductDetail productDetail : productDetailService.get_ProductDetails_id_Bill(idProduct, "1")) {
             if (productDetail.getQuantity() == 0) {
                 productDetailService.Update_procuct_detail_billdetail(productDetail.getId());
-                String string1 = productDetail.getProductId().getName_product()+
-                productDetail.getColorId().getNameColor()+
-                productDetail.getSizeId().getNameSize();                               
+                String string1 = productDetail.getProductId().getName_product()
+                        + productDetail.getColorId().getNameColor()
+                        + productDetail.getSizeId().getNameSize();
             }
         }
     }
+
     //kiểm tra xem sản phẩm  đã hết hàng hay chưa
-    public void checkProcuct(String idProduct) {                            
+    public void checkProcuct(String idProduct) {
         checkProcuctDetail(idProduct);
         if (productDetailService.get_ProductDetails_id_Bill(idProduct, "1").isEmpty()) {
             productService.delete_product_bill(idProduct);
         }
     }
+
+    public void resetShoppingCart() {
+        txtUser.setText("");
+        txtPhoneNumber.setText("");
+        jLKH.setVisible(false);
+        txtPhoneNumber.setEditable(true);
+        txtUser.setVisible(false);
+        datarowBill();
+        tableModel = (DefaultTableModel) tblShoppingCart.getModel();
+        tableModel.setRowCount(0);
+        resetformbill();
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -1286,7 +1303,7 @@ public class BillJPanel extends javax.swing.JPanel {
                             //kiểm tra sự tồn tại của sản phẩm 
                             if (product != null) {
                                 //lấy dữ liệu của đối tượng sản phẩm chi tiết  tại vị trí indexProductDetail
-                                ProductDetail pd = productDetailService.get_ProductDetails_id_Bill(product.getId(),"1").get(indexProductDetail);
+                                ProductDetail pd = productDetailService.get_ProductDetails_id_Bill(product.getId(), "1").get(indexProductDetail);
                                 //kiểm tra sự tồn tại của sản phẩm chi tiết 
                                 if (pd != null) {
                                     //lấy dữ liệu của đối tượng sản phẩm chi tiết  tại vị trí indexBill
@@ -1389,74 +1406,88 @@ public class BillJPanel extends javax.swing.JPanel {
 
     private void bthaddbillActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bthaddbillActionPerformed
         try {
-                    if (checkphone() == true) {
-            //tạo ra đối tượng user
-            User u = null;
-            //kiểm tra số điện thoại
-            boolean checkName_phone = false;
-            for (User user : userService.getUser_name_phone()) {
-                if (user.getNumberPhone().equals(txtPhoneNumber.getText())) {
-                    // Nếu số điện thoại của người dùng trong danh sách khớp với số điện thoại nhập vào
-                    // Gán người dùng tương ứng vào biến u và đặt cờ kiểm tra checkName_phone thành true
-                    u = user;
-                    checkName_phone = true;
+            if (checkphone() == true) {
+                //tạo ra đối tượng user
+                User u = null;
+                //kiểm tra số điện thoại
+                boolean checkName_phone = false;
+                for (User user : userService.getUser_name_phone()) {
+                    if (user.getNumberPhone().equals(txtPhoneNumber.getText())) {
+                        // Nếu số điện thoại của người dùng trong danh sách khớp với số điện thoại nhập vào
+                        // Gán người dùng tương ứng vào biến u và đặt cờ kiểm tra checkName_phone thành true
+                        u = user;
+                        checkName_phone = true;
+                    }
                 }
-            }
-            //số điện thoại nếu tồn tại 
-            if (checkName_phone == true) {
-                // Hiển thị và cấu hình các thành phần giao diện đồng thời
-                jLKH.setVisible(true); // Hiển thị nhãn chứa thông tin khách hàng
-                txtUser.setVisible(true); // Hiển thị ô văn bản để hiển thị thông tin tên khách hàng
-                txtUser.setText(u.getFullName()); // Đặt văn bản trong ô là tên đầy đủ của khách hàng
-                txtUser.setEditable(false); // Vô hiệu hóa khả năng chỉnh sửa ô văn bản với thông tin khách hàng
-                // Vô hiệu hóa khả năng chỉnh sửa ô văn bản cho số điện thoại và hiển thị thông báo
-                txtPhoneNumber.setEditable(false); // Vô hiệu hóa khả năng chỉnh sửa ô văn bản cho số điện thoại
-                JOptionPane.showMessageDialog(this, "Số điện thoại của khách hàng: " + u.getFullName()); // Hiển thị hộp thoại thông báo với thông tin số điện thoại của khách hàng
-                // Lấy ngày và giờ hiện tại
-                nowDate = getCurrentDateTime();// Gán giá trị ngày và giờ hiện tại vào biến nowDate
-                //tạo hóa đơn mới 
-                JOptionPane.showMessageDialog(this, billService.add_bill(new Bill(nowDate, nowDate, nowDate, u)));
-            }
-            if (checkName_phone == false) {
-                // Hiển thị và kích hoạt tính năng chỉnh sửa trên các thành phần giao diện
-                jLKH.setVisible(true); // Hiển thị nhãn chứa thông tin khách hàng
-                txtUser.setVisible(true); // Hiển thị ô văn bản để hiển thị thông tin tên khách hàng
-                txtUser.setEditable(true); // Kích hoạt khả năng chỉnh sửa cho ô văn bản với thông tin tên khách hàng
-                // Lấy ngày và giờ hiện tại
-                nowDate = getCurrentDateTime(); // Gán giá trị ngày và giờ hiện tại vào biến nowDate   
-            }
-            if (checkKH == true) {
+                //số điện thoại nếu tồn tại 
+                if (checkName_phone == true) {
+                    if (u.getStatus().equals("1")) {
+                        // Hiển thị và cấu hình các thành phần giao diện đồng thời
+                        jLKH.setVisible(true); // Hiển thị nhãn chứa thông tin khách hàng
+                        txtUser.setVisible(true); // Hiển thị ô văn bản để hiển thị thông tin tên khách hàng
+                        txtUser.setText(u.getFullName()); // Đặt văn bản trong ô là tên đầy đủ của khách hàng
+                        txtUser.setEditable(false); // Vô hiệu hóa khả năng chỉnh sửa ô văn bản với thông tin khách hàng
+                        // Vô hiệu hóa khả năng chỉnh sửa ô văn bản cho số điện thoại và hiển thị thông báo
+                        txtPhoneNumber.setEditable(false); // Vô hiệu hóa khả năng chỉnh sửa ô văn bản cho số điện thoại
+                        JOptionPane.showMessageDialog(this, "Số điện thoại của khách hàng: " + u.getFullName()); // Hiển thị hộp thoại thông báo với thông tin số điện thoại của khách hàng
+                        // Lấy ngày và giờ hiện tại
+                        nowDate = getCurrentDateTime();// Gán giá trị ngày và giờ hiện tại vào biến nowDate
+                        //tạo hóa đơn mới 
+                        JOptionPane.showMessageDialog(this, billService.add_bill(new Bill(nowDate, nowDate, nowDate, u)));
+                        resetShoppingCart();
+                        System.out.println("0");
+                        return;
+                    }
+                    if (u.getStatus().equals("0")) {
+                        JOptionPane.showMessageDialog(this, "Đối tượng này đã cấm!");
+                        resetShoppingCart();
+                        System.out.println("1");
+                        return;
+                    }
+                }
+                if (checkName_phone == false) {
+                    // Hiển thị và kích hoạt tính năng chỉnh sửa trên các thành phần giao diện
+                    jLKH.setVisible(true); // Hiển thị nhãn chứa thông tin khách hàng
+                    txtUser.setVisible(true); // Hiển thị ô văn bản để hiển thị thông tin tên khách hàng
+                    txtUser.setEditable(true); // Kích hoạt khả năng chỉnh sửa cho ô văn bản với thông tin tên khách hàng
+                    // Lấy ngày và giờ hiện tại
+                    nowDate = getCurrentDateTime(); // Gán giá trị ngày và giờ hiện tại vào biến nowDate  
+                    System.out.println("2");
+                }
                 if (checkKH == true) {
-                    u = new User(nowDate, nowDate, txtUser.getText(), txtPhoneNumber.getText());
-                    //thêm user
-                    userService.add_user(u);
-                    //thêm role_user
-                    userRoleService.add_user_role(u, String.valueOf("3"));
-                    //thông báo kết quả
-                    JOptionPane.showMessageDialog(this, billService.add_bill(new Bill(nowDate, nowDate, nowDate, new User(txtUser.getText(), txtPhoneNumber.getText()))));
-                }
-                checkKH = false;
-            }
+                    System.out.println("3");
 
-        }
+                    if (checkKH() == true) {
+                        u = new User(nowDate, nowDate, txtUser.getText(), txtPhoneNumber.getText());
+                        //thêm user
+                        userService.add_user(u);
+                        //thêm role_user
+                        userRoleService.add_user_role(u, String.valueOf("3"));
+                        //thông báo kết quả
+                        JOptionPane.showMessageDialog(this, billService.add_bill(new Bill(nowDate, nowDate, nowDate, new User(txtUser.getText(), txtPhoneNumber.getText()))));
+                        checkKH = false;
+                        resetShoppingCart();
+                        System.out.println("4");
+                        return;
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Thêm thất bại;");
+                        checkKH = false;
+                        return;
+                    }
+
+                }
+                System.out.println("5");
+                checkKH = true;
+            }
         } catch (Exception e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Lỗi dữ liệu!");
         }
-        checkKH = true;
-        datarowBill();
-        tableModel = (DefaultTableModel) tblShoppingCart.getModel();
-        tableModel.setRowCount(0);
+        System.out.println("6");
     }//GEN-LAST:event_bthaddbillActionPerformed
 
     private void bthresetShoppingCartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bthresetShoppingCartActionPerformed
-        txtUser.setText("");
-        txtPhoneNumber.setText("");
-        jLKH.setVisible(false);
-        txtUser.setVisible(false);
-        datarowBill();
-        tableModel = (DefaultTableModel) tblShoppingCart.getModel();
-        tableModel.setRowCount(0);
+        resetShoppingCart();
     }//GEN-LAST:event_bthresetShoppingCartActionPerformed
 
     private void bthdeleteproductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bthdeleteproductActionPerformed
@@ -1509,7 +1540,7 @@ public class BillJPanel extends javax.swing.JPanel {
                 boolean checkVoucher = false;
                 BigDecimal sale = BigDecimal.ZERO;
                 if (checkVoucher()) {
-                    for (Voucher voucher : voucherResponsitory.getAllById(txtVoucher.getText(),"1")) {
+                    for (Voucher voucher : voucherResponsitory.getAllById(txtVoucher.getText(), "1")) {
                         if (voucher.getId().equals(idVoucher)) {
                             sale = BigDecimal.valueOf(voucher.getSaleOf());
                             checkVoucher = true;
@@ -1523,7 +1554,7 @@ public class BillJPanel extends javax.swing.JPanel {
                         JOptionPane.showMessageDialog(this, "Voucher không tồn tại!");
                     }
                 }
-            }else{
+            } else {
                 JOptionPane.showMessageDialog(this, "Bạn cần chọn Bill!");
             }
         } catch (Exception e) {
@@ -1565,10 +1596,7 @@ public class BillJPanel extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Lỗi dữ liệu!");
         }
         resetProduct();
-        resetformbill();
-        datarowBill();
-        tableModel = (DefaultTableModel) tblShoppingCart.getModel();
-        tableModel.setRowCount(0);
+        resetShoppingCart();
     }//GEN-LAST:event_bthdeleteBillActionPerformed
 
     private void bthresetvoucherActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bthresetvoucherActionPerformed
@@ -1586,40 +1614,54 @@ public class BillJPanel extends javax.swing.JPanel {
                     if (checkHoiUpdateListBillDetail()) {
                         //lấy dữ liệu của đối tượng sản phẩm chi tiết  tại vị trí indexBill
                         Bill bill = billService.getListBill_0().get(indexBill);
-                        if (bill !=null) {
+                        if (bill != null) {
                             String idBill = bill.getId();
                             BigDecimal into_money = BigDecimal.valueOf(Double.valueOf(jLinto_money.getText()));
                             BigDecimal total_cost = BigDecimal.valueOf(Double.valueOf(jLtotal_cost.getText()));
-                            if (checkVoucherUsedFlag()!=null) {
-                                String idVoucher =checkVoucherUsedFlag();
-                                billService.updateVoucherByIdBill(idVoucher, idBill);
-                                billService.updatemoneyByIdBill(into_money, total_cost, idBill);
+                            if (checkVoucherUsedFlag() != null) {
+                                String idVoucher = checkVoucherUsedFlag();
+                                boolean checkbillServiceVoucher = billService.updateVoucherByIdBill(idVoucher, idBill);
+                                boolean checkbillServicemoney = billService.updatemoneyByIdBill(into_money, total_cost, idBill);
                                 for (BillDetail billDetail : billDetailService.getBill_idBill(idBill)) {
                                     String idBillDetail = billDetail.getId();
                                     String idProductDetail = billDetail.getProductDetailId().getId();
                                     String idProduct = billDetail.getProductDetailId().getProductId().getId();
+                                    int quantityPurchased = Integer.parseInt(billDetail.getQuantityPurchased());
                                     ProductDetail productDetail = productDetailService.getById(idProductDetail);
                                     model.entity.Product product = productService.getProcuct(idProduct);
                                     BigDecimal price_now = product.getProduct_price();
                                     billDetailService.updateprice_nowByIdBillDetail(price_now, idBillDetail);
+                                    productDetailService.getQuantity(idProductDetail, quantityPurchased);
                                     checkProcuct(idProduct);
                                 }
-                            }else{
-                                billService.updatemoneyByIdBill(into_money, total_cost, idBill);
+                                if (checkbillServiceVoucher && checkbillServicemoney) {
+                                    JOptionPane.showMessageDialog(this, "Đã thanh toán thành công!");
+                                } else {
+                                    JOptionPane.showMessageDialog(this, "Đã thanh toán thất bại!");
+                                }
+                            } else {
+                                boolean checkbillServicemoney = billService.updatemoneyByIdBill(into_money, total_cost, idBill);
                                 for (BillDetail billDetail : billDetailService.getBill_idBill(idBill)) {
                                     String idBillDetail = billDetail.getId();
                                     String idProductDetail = billDetail.getProductDetailId().getId();
                                     String idProduct = billDetail.getProductDetailId().getProductId().getId();
+                                    int quantityPurchased = Integer.parseInt(billDetail.getQuantityPurchased());
                                     ProductDetail productDetail = productDetailService.getById(idProductDetail);
                                     model.entity.Product product = productService.getProcuct(idProduct);
                                     BigDecimal price_now = product.getProduct_price();
                                     billDetailService.updateprice_nowByIdBillDetail(price_now, idBillDetail);
+                                    productDetailService.getQuantity(idProductDetail, quantityPurchased);
                                     checkProcuct(idProduct);
-                                }   
+                                }
+                                if (checkbillServicemoney) {
+                                    JOptionPane.showMessageDialog(this, "Đã thanh toán thành công!");
+                                } else {
+                                    JOptionPane.showMessageDialog(this, "Đã thanh toán thất bại!");
+                                }
                             }
-                        }else{
-                        JOptionPane.showMessageDialog(this, "Lỗi dữ liệu Bill");
-                    }     
+                        } else {
+                            JOptionPane.showMessageDialog(this, "Lỗi dữ liệu Bill");
+                        }
                     }
                 }
             } else {
@@ -1630,10 +1672,8 @@ public class BillJPanel extends javax.swing.JPanel {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Lỗi dữ liệu!");
         }
+        resetShoppingCart();
     }//GEN-LAST:event_bthpaymentActionPerformed
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -1648,13 +1688,13 @@ public class BillJPanel extends javax.swing.JPanel {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Index.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Index.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Index.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Index.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
@@ -1662,11 +1702,11 @@ public class BillJPanel extends javax.swing.JPanel {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Main().setVisible(true);
+                new Index().setVisible(true);
             }
         });
     }
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BthResetProduct;
     private javax.swing.JButton bthADDProduct_GioHang;

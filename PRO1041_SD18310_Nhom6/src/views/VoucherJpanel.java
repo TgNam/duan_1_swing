@@ -4,16 +4,12 @@
  */
 package views;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.entity.Voucher;
-import repository.UserRepository;
 import repository.UserVoucherResponsitory;
-import repository.VoucherResponsitory;
 import service.imple.UserImple;
 import service.imple.VoucherImple;
 
@@ -79,11 +75,23 @@ public class VoucherJpanel extends javax.swing.JPanel {
 
     public boolean validateForm() {
         if (txtSaleOf.getText().trim().isEmpty() || jXStartAt.getDate() == null || jXEndAt.getDate() == null) {
-            JOptionPane.showMessageDialog(this, "Lỗi dữ liệu sai", "Lỗi", 2);
+            JOptionPane.showMessageDialog(this, "Lỗi dữ liệu trống", "Lỗi", 2);
             return false;
         }
-        if (jXStartAt.getDate().compareTo(jXEndAt.getDate()) >= 0) {
-            JOptionPane.showMessageDialog(this, "Ngày bắt đầu phải nhỏ hơn ngày kết thúc!", "Date Error", JOptionPane.ERROR_MESSAGE);
+        Double saleOf = Double.valueOf(txtSaleOf.getText().trim());
+        if (saleOf < 0) {
+            JOptionPane.showMessageDialog(this, "Giảm giá không được âm", "Lỗi", 2);
+            return false;
+        }
+        if (saleOf > 100) {
+            JOptionPane.showMessageDialog(this, "Giảm giá chỉ nằm trong khoảng từ 0 - 100", "Lỗi", 2);
+            return false;
+        }
+        Date startDate = jXStartAt.getDate();
+        Date endDate = jXEndAt.getDate();
+
+        if (startDate != null && endDate != null && startDate.compareTo(endDate) >= 0) {
+            JOptionPane.showMessageDialog(this, "Ngày bắt đầu phải nhỏ hơn ngày kết thúc!", "Lỗi ngày", JOptionPane.ERROR_MESSAGE);
             return false;
         }
 
@@ -102,10 +110,23 @@ public class VoucherJpanel extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Lỗi dữ liệu sai", "Lỗi", 2);
             return false;
         }
-//        if (jXStartAt1.getDate().compareTo(jXEndAt1.getDate()) >= 0) {
-//            JOptionPane.showMessageDialog(this, "Ngày bắt đầu phải nhỏ hơn ngày kết thúc!", "Date Error", JOptionPane.ERROR_MESSAGE);
-//            return false;
-//        }
+        Double saleOf = Double.valueOf(txtSaleOf1.getText().trim());
+        if (saleOf < 0) {
+            JOptionPane.showMessageDialog(this, "Giảm giá không được âm", "Lỗi", 2);
+            return false;
+        }
+        if (saleOf > 100) {
+            JOptionPane.showMessageDialog(this, "Giảm giá chỉ nằm trong khoảng từ 0 - 100", "Lỗi", 2);
+            return false;
+        }
+        Date startDate = jXStartAt1.getDate();
+        Date endDate = jXEndAt1.getDate();
+
+        if (startDate != null && endDate != null && startDate.compareTo(endDate) >= 0) {
+            JOptionPane.showMessageDialog(this, "Ngày bắt đầu phải nhỏ hơn ngày kết thúc!", "Lỗi ngày", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+
         try {
             Double.valueOf(txtSaleOf1.getText().trim());
         } catch (NumberFormatException e) {
@@ -114,27 +135,6 @@ public class VoucherJpanel extends javax.swing.JPanel {
             return false;
         }
         return true;
-    }
-
-    public static Date getCurrentDateTime() {
-        try {
-            // Lấy thời gian hiện tại
-            Date currentDate = new Date();
-
-            // Định dạng ngày tháng năm giờ phút giây
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-            // Chuyển đổi thành chuỗi theo định dạng
-            String formattedDateTime = dateFormat.format(currentDate);
-
-            // Chuyển lại thành đối tượng Date
-            Date date = dateFormat.parse(formattedDateTime);
-
-            return date;
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return null;
-        }
     }
 
     private String generateRandomId() {
@@ -175,7 +175,6 @@ public class VoucherJpanel extends javax.swing.JPanel {
         jXStartAt = new org.jdesktop.swingx.JXDatePicker();
         jXEndAt = new org.jdesktop.swingx.JXDatePicker();
         btnCreate = new javax.swing.JButton();
-        btnRemove = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblKhachHang = new javax.swing.JTable();
@@ -212,7 +211,15 @@ public class VoucherJpanel extends javax.swing.JPanel {
             new String [] {
                 "ID", "Giảm giá", "Ngày bắt đầu", "Ngày kết thúc", "Ngày tạo", "Ngày cập nhật", "Trạng thái"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         tblVoucher.setFocusTraversalPolicyProvider(true);
         tblVoucher.setInheritsPopupMenu(true);
         tblVoucher.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -256,7 +263,7 @@ public class VoucherJpanel extends javax.swing.JPanel {
                 .addContainerGap())
         );
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jPanel1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         jLabel3.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
         jLabel3.setText("Giảm giá: ");
@@ -280,43 +287,30 @@ public class VoucherJpanel extends javax.swing.JPanel {
             }
         });
 
-        btnRemove.setBackground(new java.awt.Color(51, 51, 51));
-        btnRemove.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        btnRemove.setForeground(new java.awt.Color(255, 255, 255));
-        btnRemove.setText("REMOVE");
-        btnRemove.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRemoveActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(34, 34, 34)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(btnCreate, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnRemove, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(4, 4, 4)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtSaleOf)
+                            .addComponent(jXStartAt, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(34, 34, 34)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(4, 4, 4)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txtSaleOf)
-                                    .addComponent(jXStartAt, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(4, 4, 4)
-                                .addComponent(jXEndAt, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(4, 4, 4)
+                        .addComponent(jXEndAt, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(45, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(btnCreate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -334,9 +328,7 @@ public class VoucherJpanel extends javax.swing.JPanel {
                     .addComponent(jLabel6)
                     .addComponent(jXEndAt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 90, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnRemove, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnCreate, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(btnCreate, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(78, 78, 78))
         );
 
@@ -364,21 +356,32 @@ public class VoucherJpanel extends javax.swing.JPanel {
             Class[] types = new Class [] {
                 java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
             };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, true
+            };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
         });
         jScrollPane2.setViewportView(tblKhachHang);
         if (tblKhachHang.getColumnModel().getColumnCount() > 0) {
+            tblKhachHang.getColumnModel().getColumn(0).setMinWidth(100);
             tblKhachHang.getColumnModel().getColumn(0).setPreferredWidth(10);
+            tblKhachHang.getColumnModel().getColumn(0).setMaxWidth(100);
             tblKhachHang.getColumnModel().getColumn(2).setResizable(false);
             tblKhachHang.getColumnModel().getColumn(3).setResizable(false);
+            tblKhachHang.getColumnModel().getColumn(4).setMinWidth(70);
             tblKhachHang.getColumnModel().getColumn(4).setPreferredWidth(5);
+            tblKhachHang.getColumnModel().getColumn(4).setMaxWidth(70);
         }
 
         jLabel7.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        jLabel7.setText("Danh sách khách hàng");
+        jLabel7.setText("Chọn khách hàng:");
 
         btnBack.setBackground(new java.awt.Color(51, 51, 51));
         btnBack.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
@@ -405,9 +408,10 @@ public class VoucherJpanel extends javax.swing.JPanel {
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
                 .addGroup(FormVoucherPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 508, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 6, Short.MAX_VALUE))
+                    .addGroup(FormVoucherPanelLayout.createSequentialGroup()
+                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 350, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2)))
         );
         FormVoucherPanelLayout.setVerticalGroup(
             FormVoucherPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -422,7 +426,7 @@ public class VoucherJpanel extends javax.swing.JPanel {
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnBack)))
-                .addContainerGap(320, Short.MAX_VALUE))
+                .addContainerGap(318, Short.MAX_VALUE))
         );
 
         jPanel2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -533,21 +537,32 @@ public class VoucherJpanel extends javax.swing.JPanel {
             Class[] types = new Class [] {
                 java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
             };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, true
+            };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
         });
         jScrollPane3.setViewportView(tblKhachHang1);
         if (tblKhachHang1.getColumnModel().getColumnCount() > 0) {
+            tblKhachHang1.getColumnModel().getColumn(0).setMinWidth(100);
             tblKhachHang1.getColumnModel().getColumn(0).setPreferredWidth(10);
+            tblKhachHang1.getColumnModel().getColumn(0).setMaxWidth(100);
             tblKhachHang1.getColumnModel().getColumn(2).setResizable(false);
             tblKhachHang1.getColumnModel().getColumn(3).setResizable(false);
+            tblKhachHang1.getColumnModel().getColumn(4).setMinWidth(70);
             tblKhachHang1.getColumnModel().getColumn(4).setPreferredWidth(5);
+            tblKhachHang1.getColumnModel().getColumn(4).setMaxWidth(70);
         }
 
         jLabel13.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        jLabel13.setText("Danh sách khách hàng");
+        jLabel13.setText("Chọn khách hàng");
 
         btnBack1.setBackground(new java.awt.Color(51, 51, 51));
         btnBack1.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
@@ -568,13 +583,14 @@ public class VoucherJpanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(FormVoucherUpdateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(FormVoucherUpdateLayout.createSequentialGroup()
+                        .addComponent(btnBack1)
+                        .addGap(0, 822, Short.MAX_VALUE))
+                    .addGroup(FormVoucherUpdateLayout.createSequentialGroup()
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(FormVoucherUpdateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 508, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(btnBack1))
-                .addGap(0, 12, Short.MAX_VALUE))
+                            .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane3)))))
         );
         FormVoucherUpdateLayout.setVerticalGroup(
             FormVoucherUpdateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -588,7 +604,7 @@ public class VoucherJpanel extends javax.swing.JPanel {
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addGap(35, 35, 35)
                 .addComponent(btnBack1)
-                .addContainerGap(479, Short.MAX_VALUE))
+                .addContainerGap(524, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -622,7 +638,7 @@ public class VoucherJpanel extends javax.swing.JPanel {
     private void btnCreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateActionPerformed
         // tạo voucher
         if (validateForm()) {
-            Voucher voucher = new Voucher(Double.valueOf(txtSaleOf.getText().trim()), getCurrentDateTime(),
+            Voucher voucher = new Voucher(Double.valueOf(txtSaleOf.getText().trim()),
                     jXEndAt.getDate(), generateRandomId(), jXStartAt.getDate());
 
             if (voucherImple.insert(voucher)) {
@@ -642,15 +658,14 @@ public class VoucherJpanel extends javax.swing.JPanel {
 
                         // tạo ra voucher với những khách hàng nào được sử dụng voucher này
                         String userId = userImple.getCustomer().get(rowSelected).getId();
-
                         userVoucherResponsitory.createAll(voucher.getId(), userId);
-                        resetForm();
-                        fillTableVoucher();
-                        TableVoucherPanel.setVisible(true);
-                        FormVoucherPanel.setVisible(false);
-                        FormVoucherUpdate.setVisible(false);
                     }
                 }
+                resetForm();
+                fillTableVoucher();
+                TableVoucherPanel.setVisible(true);
+                FormVoucherPanel.setVisible(false);
+                FormVoucherUpdate.setVisible(false);
                 //--------------------------------------
             } else {
                 JOptionPane.showMessageDialog(this, "Tạo Voucher thất bại", "Quản lý user", JOptionPane.ERROR_MESSAGE);
@@ -673,27 +688,6 @@ public class VoucherJpanel extends javax.swing.JPanel {
         FormVoucherPanel.setVisible(true);
         FormVoucherUpdate.setVisible(false);
     }//GEN-LAST:event_btnCreateVoucherActionPerformed
-
-    private void btnRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveActionPerformed
-        if (index != -1) {
-            Voucher voucher = voucherImple.getAll().get(index);
-
-            if (voucherImple.delete(voucher.getId())) {
-                JOptionPane.showMessageDialog(this, "Xóa Voucher thành công");
-                userVoucherResponsitory.removeAllByVoucherId(Long.valueOf(voucher.getId()));
-                resetForm();
-                fillTableVoucher();
-                TableVoucherPanel.setVisible(true);
-                FormVoucherPanel.setVisible(false);
-                FormVoucherUpdate.setVisible(false);
-            } else {
-                JOptionPane.showMessageDialog(this, "Xóa Voucher thất bại", "Quản lý user", JOptionPane.ERROR_MESSAGE);
-            }
-
-        } else {
-            JOptionPane.showMessageDialog(this, "Vui lòng chọn Voucher muốn xóa!", "Quản lý voucher", JOptionPane.ERROR_MESSAGE);
-        }
-    }//GEN-LAST:event_btnRemoveActionPerformed
 
     private void tblVoucherMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblVoucherMousePressed
         index = tblVoucher.getSelectedRow();
@@ -778,7 +772,7 @@ public class VoucherJpanel extends javax.swing.JPanel {
                 FormVoucherPanel.setVisible(false);
                 FormVoucherUpdate.setVisible(false);
             } else {
-                JOptionPane.showMessageDialog(this, "Xóa Voucher thất bại", "Quản lý user", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Không thể xóa voucher này!!!", "Quản lý user", JOptionPane.ERROR_MESSAGE);
             }
 
         } else {
@@ -803,7 +797,6 @@ public class VoucherJpanel extends javax.swing.JPanel {
     private javax.swing.JButton btnBack1;
     private javax.swing.JButton btnCreate;
     private javax.swing.JButton btnCreateVoucher;
-    private javax.swing.JButton btnRemove;
     private javax.swing.JButton btnRemove1;
     private javax.swing.JButton btnUUpdate1;
     private javax.swing.JLabel jLabel1;
