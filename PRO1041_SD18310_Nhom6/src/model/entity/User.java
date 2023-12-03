@@ -59,12 +59,13 @@ public class User {
         this.fullName = fullName;
         this.numberPhone = numberPhone;
     }
-    public User(String id, String fullName, String numberPhone, String email, String status) {
+    public User(String id, String fullName, String numberPhone, String email, String status, String account) {
         this.id = id;
         this.fullName = fullName;
         this.numberPhone = numberPhone;
         this.email = email;
         this.status = status;
+        this.account = account;
     }
     public User(Date createdAt, Date updatedAt, String fullName, String numberPhone) {
         this.createdAt = createdAt;
