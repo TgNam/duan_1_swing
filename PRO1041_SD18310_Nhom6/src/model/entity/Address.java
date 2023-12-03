@@ -18,7 +18,7 @@ public class Address {
 
     public Address() {
     }
-
+    
     public Address(String id, String addressDetail) {
         this.id = id;
         this.addressDetail = addressDetail;

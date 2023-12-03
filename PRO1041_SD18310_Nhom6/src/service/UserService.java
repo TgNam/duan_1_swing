@@ -7,6 +7,7 @@ package service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import model.entity.Address;
 import model.entity.User;
 
 /**
@@ -20,4 +21,6 @@ public interface UserService {
     boolean Update_user_all(User user, String id);
     boolean Update_status_user(String status, User user) ;
     List<User> getCustomer();
+    boolean Update_user_address(String address_id, String id);
+    Address getAddress(Date created_at, String address_detail);
 }
