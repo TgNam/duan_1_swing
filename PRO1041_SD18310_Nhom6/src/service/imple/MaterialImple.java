@@ -46,5 +46,10 @@ public class MaterialImple implements MaterialServict{
             return false;
         }
     }
+
+    @Override
+    public ArrayList<Material> getMaterial_Sell(int min, int max) {
+        return m.getMaterial_Sell(min, max);
+    }
     
 }

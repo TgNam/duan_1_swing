@@ -48,7 +48,7 @@ public class BillRepository {
         try {
             String sql = "INSERT INTO db_levents.bill (created_at, updated_at, delivery_date, total_cost, into_money, status, user_id,voucher_id,address_id)\n"
                     + "VALUES \n"
-                    + "(?, ?, ?, null, null, 0, (SELECT id FROM db_levents.user where number_phone = ?), null, null);";
+                    + "(?, ?, ?, null, null, 0, (SELECT id FROM db_levents.user where number_phone = ? LIMIT 1), null, null);";
             JDBCHelped.excuteUpdate(sql, b.getCreatedAt(), b.getUpdatedAt(), b.getDeliveryDate(), b.getUserId().getNumberPhone());
             return true;
         } catch (Exception e) {
@@ -236,5 +236,22 @@ public class BillRepository {
         }
         return null;
     }
-
+    public boolean updateVoucherByIdBill(String voucher_id, String id) {
+        try {
+            String sql = "update db_levents.bill set voucher_id = ? where id =? ;";
+            JDBCHelped.excuteUpdate(sql, voucher_id,id);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+    public boolean updatemoneyByIdBill(BigDecimal into_money, BigDecimal total_cost, String id) {
+        try {
+            String sql = "update db_levents.bill set into_money = ?,total_cost = ?,status = '1' where id =? ;";
+            JDBCHelped.excuteUpdate(sql, into_money,total_cost,id);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }

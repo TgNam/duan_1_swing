@@ -24,10 +24,18 @@ public class Product {
     private String description;
     private String name_product;
     private String status;
-
+    private byte[] image_Type;
+    
     public Product() {
     }
 
+    public Product(BigDecimal product_price, String id, SaleProduct sale_id, String name_product) {
+        this.product_price = product_price;
+        this.id = id;
+        this.sale_id = sale_id;
+        this.name_product = name_product;
+    }
+    
     public Product(BigDecimal product_price, String name_product) {
         this.product_price = product_price;
         this.name_product = name_product;
@@ -110,6 +118,42 @@ public class Product {
         this.thickness_id = thickness_id;
         this.description = description;
         this.name_product = name_product;
+    }
+    //them vao 1/12
+
+    public Product(BigDecimal product_price, Date created_at, Custom custome_id, String id, Material material_id, Thickness thickness_id, Date updated_at, String description, String name_product, String status, byte[] image_Type) {
+        this.product_price = product_price;
+        this.created_at = created_at;
+        this.custome_id = custome_id;
+        this.id = id;
+        this.material_id = material_id;
+        this.thickness_id = thickness_id;
+        this.updated_at = updated_at;
+        this.description = description;
+        this.name_product = name_product;
+        this.status = status;
+        this.image_Type = image_Type;
+    }
+
+    public Product(BigDecimal product_price, Custom custome_id, Material material_id, Thickness thickness_id, String description, String name_product, byte[] image_Type) {
+        this.product_price = product_price;
+        this.custome_id = custome_id;
+        this.material_id = material_id;
+        this.thickness_id = thickness_id;
+        this.description = description;
+        this.name_product = name_product;
+        this.image_Type = image_Type;
+    }
+    
+    
+    
+
+    public byte[] getImage_Type() {
+        return image_Type;
+    }
+
+    public void setImage_Type(byte[] image_Type) {
+        this.image_Type = image_Type;
     }
     
     

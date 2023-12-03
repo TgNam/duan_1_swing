@@ -61,7 +61,7 @@ public class CustomRepository {
     //them vao 1/12
     public boolean Delete(String id) {
         try {
-            String sql = "update db_levents.custom set db_levents.custom.statuss = 0 where db_levents.custom.id = ?;";
+            String sql = "update db_levents.custom set db_levents.custom.status = 0 where db_levents.custom.id = ?;";
             JDBCHelped.excuteUpdate(sql,  id);
             return true;
         } catch (Exception e) {
@@ -70,4 +70,35 @@ public class CustomRepository {
         return false;
     }
 
+     public ArrayList<Custom> getCustom_Sell(int min, int max) {
+        ArrayList<Custom> List = new ArrayList<>();
+        try {
+            String sql = """
+                         select * from (select 
+                         id, 
+                         name_custom, 
+                         created_at, 
+                         updated_at , 
+                         status, 
+                         ROW_NUMBER() OVER (ORDER BY custom.id) AS rownum 
+                         from custom where status = 1) 
+                         AS temp WHERE rownum BETWEEN ? AND ?;   
+                         """;
+            ResultSet rs = JDBCHelped.executeQuery(sql,min,max);
+            while (rs.next()) {
+                Custom c;
+                String id = rs.getString(1);
+                String name = rs.getString(2);
+                Date created_at = rs.getDate(3);
+                Date updated_at = rs.getDate(4);
+                boolean status = rs.getBoolean(5);
+                c = new Custom(status, created_at, id, updated_at, name);
+                List.add(c);
+            }
+            return List;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

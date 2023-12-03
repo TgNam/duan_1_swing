@@ -41,4 +41,6 @@ public interface ProductDetailService {
     
     // linh dz
     public ProductDetail getById(String id);
+    
+    boolean Update_procuct_detail_billdetail(String id);
 }

@@ -46,5 +46,10 @@ public class ColorImple implements ColorService{
             return false;
         }
     }
+
+    @Override
+    public ArrayList<Color> getColor_Sell(int min, int max) {
+        return cl.getColor_sell(min, max);
+    }
     
 }

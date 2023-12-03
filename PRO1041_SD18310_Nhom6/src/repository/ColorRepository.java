@@ -66,4 +66,35 @@ public class ColorRepository {
         }
         return false;
     }
+    
+    public ArrayList<Color> getColor_sell(int min, int max) {
+        ArrayList<Color> List = new ArrayList<>();
+        try {
+            String sql = """
+                         select * from (select 
+                         db_levents.color.id, 
+                         db_levents.color.name_color, 
+                         db_levents.color.created_at, 
+                         db_levents.color.updated_at , 
+                         statuss,ROW_NUMBER() OVER (ORDER BY color.id) AS rownum 
+                         from db_levents.color where db_levents.color.statuss = 1) 
+                         AS temp WHERE rownum BETWEEN ? AND ?;
+                         """;
+            ResultSet rs =  JDBCHelped.executeQuery(sql, min,max);
+            while(rs.next()){
+                Color cl;
+                String id = rs.getString(1);
+                String name = rs.getString(2);
+                Date created_at = rs.getDate(3);
+                Date  updated_at = rs.getDate(4);
+                cl = new Color( created_at, id, updated_at, name);
+                List.add(cl);
+            }
+            return List;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return  null;
+    }
+    
 }

@@ -259,12 +259,12 @@ public class ProductDetailRepository {
 
     public boolean Insert(ProductDetail prd) {
         try {
-            String sql = "INSERT INTO `db_levents`.`product_detail` (`quantity`, `color_id`, `product_id`, `size_id`, `status`, `created_at`, `updated_at`) VALUES \n"
+            String sql = "INSERT INTO `db_levents`.`product_detail` (`quantity`, `color_id`, `product_id`, `size_id`, `status`, `created_at`, `updated_at`, image_data) VALUES \n"
                     + "(?, \n"
                     + "(select id from db_levents.color where db_levents.color.name_color = ?), \n"
                     + "(select id from db_levents.product  where db_levents.product.name_product = ?),\n"
-                    + "(select id from db_levents.size where db_levents.size.name_size = ?), '1', curdate(), curdate());";
-            JDBCHelped.excuteUpdate(sql, prd.getQuantity(), prd.getColorId().getNameColor(), prd.getProductId().getName_product(), prd.getSizeId().getNameSize());
+                    + "(select id from db_levents.size where db_levents.size.name_size = ?), '1', curdate(), curdate(), ?);";
+            JDBCHelped.excuteUpdate(sql, prd.getQuantity(), prd.getColorId().getNameColor(), prd.getProductId().getName_product(), prd.getSizeId().getNameSize(), prd.getImage());
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -279,9 +279,10 @@ public class ProductDetailRepository {
                     + "`color_id` = (select id from db_levents.color where db_levents.color.name_color = ?), \n"
                     + "`product_id` = (select id from db_levents.product  where db_levents.product.name_product = ?), \n"
                     + "`size_id` = (select id from db_levents.size where db_levents.size.name_size = ?), \n"
-                    + "`updated_at` = curdate() \n"
+                    + "`updated_at` = curdate() ,"
+                    + "image_data = ?\n"
                     + "WHERE (`id` = ?);";
-            JDBCHelped.excuteUpdate(sql, prd.getQuantity(), prd.getColorId().getNameColor(), prd.getProductId().getName_product(), prd.getSizeId().getNameSize(), id);
+            JDBCHelped.excuteUpdate(sql, prd.getQuantity(), prd.getColorId().getNameColor(), prd.getProductId().getName_product(), prd.getSizeId().getNameSize(),prd.getImage(), id);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -403,7 +404,16 @@ public class ProductDetailRepository {
             return false;
         }
     }
-
+    public boolean Update_procuct_detail_billdetail(String id) {
+        try {
+            String sql = "update db_levents.product_detail set status = 0 where id =?;";
+            JDBCHelped.excuteUpdate(sql, id);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
     //them cai nay ngay 28//11
     public ArrayList<ProductDetail> getProductDetails_Selling_Next(String idSP, int min, int max) {
         ArrayList<ProductDetail> list = new ArrayList<>();
@@ -419,6 +429,7 @@ public class ProductDetailRepository {
                              pd.updated_at,
                              pd.quantity,
                              pd.status,
+                             pd.image_data,
                              ROW_NUMBER() OVER (ORDER BY pd.id) AS rownum 
                          FROM 
                              db_levents.product_detail pd
@@ -442,12 +453,12 @@ public class ProductDetailRepository {
                 Date updated_at = rs.getDate(6);
                 int quantity = rs.getInt(7);
                 String status = rs.getString(8);
-
+                byte[] img = rs.getBytes(9);
                 Color color = new Color(name_Coler);
                 Size size = new Size(name_Size);
 
                 Product product = new Product(name_Product);
-                ProductDetail pdt = new ProductDetail(quantity, color, created_at, id, product, size, updated_at, status);
+                ProductDetail pdt = new ProductDetail(quantity, color, created_at, id, product, size, updated_at, status,img);
 
                 list.add(pdt);
             }
@@ -459,6 +470,7 @@ public class ProductDetailRepository {
     }
 
     //them cai nay ngay 29//11
+    //Nam đang dùng ké ở hàm này 
     public boolean getMinus_product_Detail(String id, int quantity) {
         try {
             String sql = "update db_levents.product_detail set db_levents.product_detail.quantity = db_levents.product_detail.quantity - ? where db_levents.product_detail.id = ?;";
@@ -471,6 +483,7 @@ public class ProductDetailRepository {
     }
 
     // linh dz 
+    //Nam đang dùng ké ở hàm này 
     public ProductDetail getById(String id) {
         ProductDetail productDetail = new ProductDetail();
         try {

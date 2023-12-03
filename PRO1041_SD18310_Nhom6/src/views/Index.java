@@ -335,7 +335,7 @@ public class Index extends javax.swing.JFrame {
         panel = new SaleProductJpanel();
         panel.setSize(tblCN.getWidth(), tblCN.getHeight());
         tblCN.removeAll();
-        tblCN.add(panel);
+        tblCN.add(panel); 
         tblCN.validate();
     }//GEN-LAST:event_btnSaleActionPerformed
 

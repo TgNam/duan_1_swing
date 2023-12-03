@@ -34,6 +34,7 @@ public class ImageDisplayExample {
                 String description = "1";
 
                 String selectQuery = "SELECT image_data FROM product WHERE id = ?";
+
                 try (PreparedStatement preparedStatement = connection.prepareStatement(selectQuery)) {
                     preparedStatement.setString(1, description);
 

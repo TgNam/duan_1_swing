@@ -46,5 +46,10 @@ public class SizeImple implements SizeSevice{
             return false;
         }
     }
+
+    @Override
+    public ArrayList<Size> getSize_Sell(int min, int max) {
+        return s.getSize_Sell(min, max);
+    }
     
 }

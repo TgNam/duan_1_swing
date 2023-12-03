@@ -46,5 +46,10 @@ public class CustomImple implements CustomService{
             return false;
         }
     }
+
+    @Override
+    public ArrayList<Custom> getCustom_Sell(int min, int max) {
+        return ct.getCustom_Sell(min, max);
+    }
     
 }

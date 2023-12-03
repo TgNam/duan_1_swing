@@ -17,4 +17,5 @@ public interface MaterialServict {
     public boolean sua(String id, Material mr);
      //them vao 1/12
     public boolean xoa(String id);
+    ArrayList<Material> getMaterial_Sell(int min, int max);
 }

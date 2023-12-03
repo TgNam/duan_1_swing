@@ -108,4 +108,13 @@ public class ProductDetailImple implements ProductDetailService {
         return pdr.getById(id);
     }
 
+    @Override
+    public boolean Update_procuct_detail_billdetail(String id) {
+        if (pdr.Update_procuct_detail_billdetail(id)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }

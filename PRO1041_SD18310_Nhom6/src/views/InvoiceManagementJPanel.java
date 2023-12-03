@@ -37,7 +37,7 @@ import service.imple.UserRoleImple;
  * @author TgNam
  */
 public class InvoiceManagementJPanel extends javax.swing.JPanel {
-
+    
     private DefaultTableModel tableModel = new DefaultTableModel();
     private BillDetailService billDetailService = new BillDetailImple();
     private ProductService productService = new ProductImple();
@@ -54,6 +54,7 @@ public class InvoiceManagementJPanel extends javax.swing.JPanel {
     //them cai nay 30/11
     private List<BillDetail> listProductExchang = null;
     private Exchang_Bill ex = new Exchang_Bill(jFrame, true);
+
     /**
      * Creates new form InvoiceManagementJPanel
      */
@@ -67,7 +68,7 @@ public class InvoiceManagementJPanel extends javax.swing.JPanel {
         bthXacNhan.setVisible(false);
         pannelLyDoHoanTra.setVisible(false);
     }
-
+    
     public void columns_no_checkbox() {
         tableModel = new DefaultTableModel();
         String[] column = {"STT", "Tên Sản Phẩm", "Màu", "Size", "Số Lượng", "Đơn Giá"};
@@ -75,7 +76,7 @@ public class InvoiceManagementJPanel extends javax.swing.JPanel {
         TableColumnModel columnModel = tblBillDetails.getColumnModel();
         tblBillDetails.setModel(tableModel);
     }
-
+    
     public void columns_yes_checkbox() {
         tblBillDetails.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         tblBillDetails.setModel(new javax.swing.table.DefaultTableModel(
@@ -90,18 +91,18 @@ public class InvoiceManagementJPanel extends javax.swing.JPanel {
             boolean[] canEdit = new boolean[]{
                 false, false, false, false, false, false, true
             };
-
+            
             public Class getColumnClass(int columnIndex) {
                 return types[columnIndex];
             }
-
+            
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit[columnIndex];
             }
         });
         tblBillDetails.setRowHeight(25);
     }
-
+    
     public void datarowBill(String status1, String status2) {
         tableModel = (DefaultTableModel) tblBill.getModel();
         tableModel.setRowCount(0);
@@ -117,7 +118,7 @@ public class InvoiceManagementJPanel extends javax.swing.JPanel {
             });
         }
     }
-
+    
     public void loadBillDetail(String id) {
         tableModel = (DefaultTableModel) this.tblBillDetails.getModel();
         tableModel.setRowCount(0);
@@ -134,7 +135,7 @@ public class InvoiceManagementJPanel extends javax.swing.JPanel {
             tableModel.addRow(ob);
         }
     }
-
+    
     public void loadBillReturn(List<ReturnBillDetail> list) {
         tableModel = (DefaultTableModel) this.tblBillDetails.getModel();
         tableModel.setRowCount(0);
@@ -151,7 +152,7 @@ public class InvoiceManagementJPanel extends javax.swing.JPanel {
             tableModel.addRow(ob);
         }
     }
-
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -177,6 +178,7 @@ public class InvoiceManagementJPanel extends javax.swing.JPanel {
         btnTraHang = new javax.swing.JButton();
         btnInPhieuGH = new javax.swing.JButton();
         bthXacNhan = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
         pannelLyDoHoanTra = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         txtLyDo = new javax.swing.JTextArea();
@@ -427,6 +429,8 @@ public class InvoiceManagementJPanel extends javax.swing.JPanel {
             }
         });
 
+        jButton1.setText("HUỶ");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -434,6 +438,7 @@ public class InvoiceManagementJPanel extends javax.swing.JPanel {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(bthXacNhan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnInPhieuGH, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 371, Short.MAX_VALUE)
                     .addComponent(btnTraHang, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -450,8 +455,10 @@ public class InvoiceManagementJPanel extends javax.swing.JPanel {
                 .addGap(18, 18, 18)
                 .addComponent(btnInPhieuGH, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(bthXacNhan, javax.swing.GroupLayout.DEFAULT_SIZE, 57, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(bthXacNhan, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pannelLyDoHoanTra.setPreferredSize(new java.awt.Dimension(383, 267));
@@ -622,7 +629,7 @@ public class InvoiceManagementJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_tblBillMouseClicked
 
     private void btnTraHangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTraHangActionPerformed
-
+        
         int rowCount = tblBillDetails.getRowCount();
         int indexBill = tblBill.getSelectedRow();
         if (indexBill != -1) {
@@ -696,7 +703,15 @@ public class InvoiceManagementJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_btnDoiHangActionPerformed
 
     private void btnInPhieuGHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInPhieuGHActionPerformed
-        // TODO add your handling code here:
+        int row = tblBill.getSelectedRow();
+        if (row != -1) {
+            Bill bill = billService.getBill_status("1", "1").get(row);
+            String id = bill.getId();
+            billService.printerBill(Long.valueOf(id));
+            JOptionPane.showMessageDialog(this, "Hóa đơn đã được lưu vào thư mục HoaDon trong ổ C", "Xuất hóa đơn", 1);
+        } else {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn hóa đơn muốn xuất", "Xuất hóa đơn", 0);
+        }
     }//GEN-LAST:event_btnInPhieuGHActionPerformed
 
     private void bthXacNhanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bthXacNhanActionPerformed
@@ -714,6 +729,7 @@ public class InvoiceManagementJPanel extends javax.swing.JPanel {
     private javax.swing.JButton btnDoiHang;
     private javax.swing.JButton btnInPhieuGH;
     private javax.swing.JButton btnTraHang;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel6;
