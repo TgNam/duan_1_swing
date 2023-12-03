@@ -25,4 +25,5 @@ public interface BillService {
     boolean updateStatusById(String id, int status);
     boolean updateVoucherByIdBill(String voucher_id, String id);
     boolean updatemoneyByIdBill(BigDecimal into_money, BigDecimal total_cost, String id);
+    void printerBill(Long id);
 }

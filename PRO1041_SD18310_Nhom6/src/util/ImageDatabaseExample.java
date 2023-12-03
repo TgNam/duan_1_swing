@@ -21,12 +21,12 @@ public class ImageDatabaseExample {
 
         try (Connection connection = DriverManager.getConnection(url, username, password)) {
             // Lưu ảnh vào cơ sở dữ liệu
-            String imagePath = "C:\\Users\\thiet\\OneDrive\\Hình ảnh\\Ảnh chụp màn hình\\Screenshot 2023-11-21 221104.png"; // Đường dẫn đến file ảnh
+            String imagePath = "C:\\Users\\lenovo\\Desktop\\image\\6.jpg"; // Đường dẫn đến file ảnh
+
             byte[] imageData = readImageFile(imagePath);
 
             String description = "";
-
-            String insertQuery = "update db_levents.product set image_type = ?, image_data = ? where id = '13';";
+            String insertQuery = "update db_levents.product set image_type = ?, image_data = ? where id = 1;";
 
             try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
                 preparedStatement.setBytes(2, imageData);
