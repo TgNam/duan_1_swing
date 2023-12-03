@@ -7,6 +7,7 @@ package service.imple;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import model.entity.Address;
 import model.entity.User;
 import repository.UserRepository;
 import service.UserService;
@@ -63,6 +64,20 @@ public class UserImple implements UserService {
     @Override
     public List<User> getCustomer() {
         return ur.getCustomers();
+    }
+
+    @Override
+    public boolean Update_user_address(String address_id, String id) {
+        if (ur.Update_user_address(address_id, id)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public Address getAddress(Date created_at, String address_detail) {
+        return ur.getAddress(created_at, address_detail);
     }
 
 }

@@ -22,10 +22,10 @@ public class UserRepository {
     public ArrayList<User> getUser_name_phone() {
         ArrayList<User> list = new ArrayList<>();
         try {
-            String sql = "SELECT id, full_name, number_phone, email, status FROM db_levents.user";
+            String sql = "SELECT id, full_name, number_phone, email, status , account FROM db_levents.user";
             ResultSet rs = JDBCHelped.executeQuery(sql);
             while (rs.next()) {
-                list.add(new User(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5))
+                list.add(new User(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6))
                 );
             }
             return list;
@@ -34,7 +34,20 @@ public class UserRepository {
         }
         return null;
     }
-
+    public Address getAddress(Date created_at, String address_detail) {
+        Address address = new Address();
+        try {
+            String sql = "SELECT id, address_detail  FROM db_levents.address where created_at= ? and address_detail =?";
+            ResultSet rs = JDBCHelped.executeQuery(sql, created_at, address_detail);
+            while (rs.next()) {
+                address = new Address(rs.getString(1),rs.getString(2));
+            }
+            return address;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
     public boolean add_user(User user) {
         try {
             String sql = "insert into db_levents.user (created_at,updated_at,full_name,number_phone,status) value\n"
@@ -143,4 +156,16 @@ public class UserRepository {
         return null;
     }
     // end linhz----------------------------
+    public boolean Update_user_address(String address_id, String id) {
+        try {
+            String sql = "UPDATE db_levents.user SET address_id = ? WHERE (id = ?);";
+            JDBCHelped.excuteUpdate(sql,
+                    address_id,
+                    id
+            );
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }

@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import model.entity.Address;
 import model.entity.User;
 import model.entity.UserRole;
 import service.AddressService;
@@ -18,11 +19,13 @@ import service.UserService;
 import service.imple.AddressImple;
 import service.imple.UserImple;
 import service.imple.UserRoleImple;
+
 /**
  *
  * @author TgNam
  */
 public class UserJPanel extends javax.swing.JPanel {
+
     private DefaultTableModel tableModel;
     private Validate vl = new Validate();
     private Date nowDate = null;
@@ -31,6 +34,7 @@ public class UserJPanel extends javax.swing.JPanel {
     private AddressService as = new AddressImple();
     private boolean search = true;
     private boolean search0 = true;
+
     /**
      * Creates new form UserJPanel
      */
@@ -38,11 +42,14 @@ public class UserJPanel extends javax.swing.JPanel {
         initComponents();
         datarowUser();
         datarowUser_0();
+        txtaccount.setEditable(false);
+        txtnumblephone.setEditable(false);
     }
-        //đổ đữ liệu cho bảng User
+    //đổ đữ liệu cho bảng User
+
     public void datarowUser() {
         tableModel = (DefaultTableModel) tblUser.getModel();
-        tableModel.setRowCount(0);        
+        tableModel.setRowCount(0);
         for (UserRole userRole : urs.getAll_User(String.valueOf("1"))) {
             tableModel.addRow(new Object[]{
                 userRole.getUserId().getFullName(),
@@ -56,7 +63,8 @@ public class UserJPanel extends javax.swing.JPanel {
             });
         }
     }
-        //đổ đữ liệu cho bảng XoaNhanVien
+    //đổ đữ liệu cho bảng XoaNhanVien
+
     public void datarowUser_0() {
         tableModel = (DefaultTableModel) tblUser_0.getModel();
         tableModel.setRowCount(0);
@@ -71,9 +79,10 @@ public class UserJPanel extends javax.swing.JPanel {
                 userRole.getUserId().getAddressId().getAddressDetail(),
                 urs.getUser_Bill(userRole.getUserId())
             });
-        }    
+        }
     }
-        //lấy thời gian hiện tại
+    //lấy thời gian hiện tại
+
     public static Date getCurrentDateTime() {
         try {
             // Lấy thời gian hiện tại
@@ -94,27 +103,57 @@ public class UserJPanel extends javax.swing.JPanel {
             return null;
         }
     }
-    
+
     public void fillTableUser(int index) {
         UserRole ur = urs.getAll_User(String.valueOf("1")).get(index);
-        txtfullname.setText(ur.getUserId().getFullName());
-        txtemail.setText(ur.getUserId().getEmail());
-        txtnumblephone.setText(ur.getUserId().getNumberPhone());
-        txtdateofbirth.setText(String.valueOf(ur.getUserId().getDateOfBirth()));
-        txtaccount.setText(ur.getUserId().getAccount());
-        txtpassword.setText(ur.getUserId().getPassword());
-        txtaddress.setText(ur.getUserId().getAddressId().getAddressDetail());
+        if (ur.getUserId().getAccount() != null) {
+            txtfullname.setText(ur.getUserId().getFullName());
+            txtemail.setText(ur.getUserId().getEmail());
+            txtnumblephone.setText(ur.getUserId().getNumberPhone());
+            txtdateofbirth.setText(String.valueOf(ur.getUserId().getDateOfBirth()));
+            txtaccount.setText(ur.getUserId().getAccount());
+            txtpassword.setText(ur.getUserId().getPassword());
+            txtaddress.setText(ur.getUserId().getAddressId().getAddressDetail());
+            txtaccount.setEditable(false);
+        }
+        if (ur.getUserId().getAccount() == null) {
+            txtfullname.setText(ur.getUserId().getFullName());
+            txtemail.setText(ur.getUserId().getEmail());
+            txtnumblephone.setText(ur.getUserId().getNumberPhone());
+            txtdateofbirth.setText(String.valueOf(ur.getUserId().getDateOfBirth()));
+            txtaccount.setText(ur.getUserId().getAccount());
+            txtpassword.setText(ur.getUserId().getPassword());
+            txtaddress.setText(ur.getUserId().getAddressId().getAddressDetail());
+            txtaccount.setEditable(true);
+        }
+
     }
+
     public void fillTableUserSearch(int index, String name) {
         UserRole ur = urs.getSearch_User(String.valueOf("1"), name).get(index);
-        txtfullname.setText(ur.getUserId().getFullName());
-        txtemail.setText(ur.getUserId().getEmail());
-        txtnumblephone.setText(ur.getUserId().getNumberPhone());
-        txtdateofbirth.setText(String.valueOf(ur.getUserId().getDateOfBirth()));
-        txtaccount.setText(ur.getUserId().getAccount());
-        txtpassword.setText(ur.getUserId().getPassword());
-        txtaddress.setText(ur.getUserId().getAddressId().getAddressDetail());
+        if (ur.getUserId().getAccount() != null) {
+            txtfullname.setText(ur.getUserId().getFullName());
+            txtemail.setText(ur.getUserId().getEmail());
+            txtnumblephone.setText(ur.getUserId().getNumberPhone());
+            txtdateofbirth.setText(String.valueOf(ur.getUserId().getDateOfBirth()));
+            txtaccount.setText(ur.getUserId().getAccount());
+            txtpassword.setText(ur.getUserId().getPassword());
+            txtaddress.setText(ur.getUserId().getAddressId().getAddressDetail());
+            txtaccount.setEditable(false);
+        }
+        if (ur.getUserId().getAccount() == null) {
+            txtfullname.setText(ur.getUserId().getFullName());
+            txtemail.setText(ur.getUserId().getEmail());
+            txtnumblephone.setText(ur.getUserId().getNumberPhone());
+            txtdateofbirth.setText(String.valueOf(ur.getUserId().getDateOfBirth()));
+            txtaccount.setText(ur.getUserId().getAccount());
+            txtpassword.setText(ur.getUserId().getPassword());
+            txtaddress.setText(ur.getUserId().getAddressId().getAddressDetail());
+            txtaccount.setEditable(true);
+        }
+
     }
+
     public void reset() {
         txtfullname.setText("");
         txtemail.setText("");
@@ -124,7 +163,8 @@ public class UserJPanel extends javax.swing.JPanel {
         txtpassword.setText("");
         txtaddress.setText("");
     }
-        // check ngày sinh
+    // check ngày sinh
+
     public Date checkDateOfBirch() {
         Date date;
         try {
@@ -142,75 +182,43 @@ public class UserJPanel extends javax.swing.JPanel {
             return null;
         }
     }
-        // check số điện thoại 
-    public String checknumblephone() {
-        String numblephone = txtnumblephone.getText();
-        boolean checkName_phone = true;
-        try {
-            if (numblephone.trim().isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Vui lòng không được để trống số điện thoại!");
-            }
-            if (!vl.isCheckPhone(numblephone)) {
-                JOptionPane.showMessageDialog(this, "Vui lòng nhập đúng định dạng số điện thoại!");
-                return null;
-            }
-            if (checkName_phone) {
-                for (User userl : us.getUser_name_phone()) {
-                    if (userl.getNumberPhone().equals(numblephone)) {
-                        checkName_phone = false;
-                    }
-                }
-            }
-            if (checkName_phone == false) {
-                JOptionPane.showMessageDialog(this, "Số điện thoại đã được sử dụng vui lòng sử dụng số diện thoại khác!");
-                return null;
-            } else {
-                return numblephone;
 
-            }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Vui Lòng nhập lại!");
-            return null;
-        }
-    }
-    public User checkadd() {
-        User user = null;
-        Date dateofbirth = checkDateOfBirch();
-        // Lấy giá trị từ trường nhập liệu tên đầy đủ
-        String fullname = txtfullname.getText();
-        // Lấy giá trị từ trường nhập liệu email
-        String email = txtemail.getText();
-        // Gọi phương thức checknumblephone() để kiểm tra và lấy giá trị số điện thoại
-        String numblephone = checknumblephone();
-        // Lấy giá trị từ trường nhập liệu tài khoản
+    public String checkaccount() {
         String account = txtaccount.getText();
-        // Lấy giá trị từ trường nhập liệu mật khẩu
-        String password = txtpassword.getText();
-        // Lấy giá trị từ trường nhập liệu địa chỉ
-        String address = txtaddress.getText();
-        // Lấy thời điểm hiện tại và lưu vào biến nowDate
-        nowDate = getCurrentDateTime();
+        boolean checkName_account = true;
         try {
-            if (fullname.trim().isEmpty() || email.trim().isEmpty() || account.trim().isEmpty() || password.trim().isEmpty() || address.trim().isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Vui lòng không được để trống các ô nhập!");
-                return null;
-            } else if (!vl.isCheckName(fullname) || !vl.isCheckName(email) || !vl.isCheckName(account) || !vl.isCheckName(password)) {
-                JOptionPane.showMessageDialog(this, "Vui lòng kí tự không được vượt quá 40 kí tự!");
-                return null;
-            } else if (!vl.isCheckTXT(address)) {
+            if (account.trim().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Vui lòng không được để trống tài khoản!");
+            }
+            if (!vl.isCheckTXT(account)) {
                 JOptionPane.showMessageDialog(this, "Vui lòng kí tự không được vượt quá 100 kí tự!");
                 return null;
-            } else if (dateofbirth == null || numblephone.trim().isEmpty()) {
+            }
+            if (checkName_account) {
+                for (User userl : us.getUser_name_phone()) {
+                    if (userl.getAccount() != null && !userl.getAccount().isEmpty()) {
+                        // Tiếp tục xử lý khi giá trị không null và rỗng
+                        if (userl.getAccount().equals(account)) {
+                            checkName_account = false;
+                        }
+                    }
+
+                }
+            }
+            if (!checkName_account) {
+                JOptionPane.showMessageDialog(this, "Tài khoản này đã được sử dụng vui lòng sử dụng tài khoản khác!");
                 return null;
             } else {
-                return new User(null, nowDate, dateofbirth, null, null, nowDate, account, email, fullname, numblephone, password, String.valueOf(1));
+                return account;
             }
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Vui Lòng nhập lại!");
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Lỗi tài khoản!");
             return null;
         }
     }
-    public User checkupdate() {
+
+    public User checkupdate1() {
         User user = null;
         Date dateofbirth = checkDateOfBirch();
         String fullname = txtfullname.getText();
@@ -241,7 +249,38 @@ public class UserJPanel extends javax.swing.JPanel {
             return null;
         }
     }
-    
+
+    public User checkupdate2() {
+        User user = null;
+        Date dateofbirth = checkDateOfBirch();
+        String fullname = txtfullname.getText();
+        String email = txtemail.getText();
+        String numblephone = txtnumblephone.getText();
+        String account = checkaccount();
+        String password = txtpassword.getText();
+        String address = txtaddress.getText();
+        nowDate = getCurrentDateTime();
+        try {
+            if (fullname.trim().isEmpty() || email.trim().isEmpty() || account.trim().isEmpty() || password.trim().isEmpty() || address.trim().isEmpty() || numblephone.trim().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Vui lòng không được để trống các ô nhập!");
+                return null;
+            } else if (!vl.isCheckName(fullname) || !vl.isCheckName(email) || !vl.isCheckName(password)) {
+                JOptionPane.showMessageDialog(this, "Vui lòng kí tự không được vượt quá 40 kí tự!");
+                return null;
+            } else if (!vl.isCheckTXT(address)) {
+                JOptionPane.showMessageDialog(this, "Vui lòng kí tự không được vượt quá 100 kí tự!");
+                return null;
+            } else if (dateofbirth == null || account == null) {
+                JOptionPane.showMessageDialog(this, "Vui lòng nhập đúng kí tự của ngày sinh và tài khoản!");
+                return null;
+            } else {
+                return new User(null, nowDate, dateofbirth, null, null, nowDate, account, email, fullname, numblephone, password, String.valueOf(1));
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Vui Lòng nhập lại!");
+            return null;
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -274,14 +313,9 @@ public class UserJPanel extends javax.swing.JPanel {
         jLabel7 = new javax.swing.JLabel();
         txtpassword = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
-        bthadd = new javax.swing.JButton();
         bthUpdateUser = new javax.swing.JButton();
         bthResetForm = new javax.swing.JButton();
         BthRemoveStatus = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
         jLabel11 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -290,10 +324,6 @@ public class UserJPanel extends javax.swing.JPanel {
         jLabel9 = new javax.swing.JLabel();
         txtSearch0 = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
-        jButton11 = new javax.swing.JButton();
-        jButton12 = new javax.swing.JButton();
-        jButton13 = new javax.swing.JButton();
-        jButton14 = new javax.swing.JButton();
         bthKhoiPhuc = new javax.swing.JButton();
         bthResetTable = new javax.swing.JButton();
 
@@ -342,15 +372,6 @@ public class UserJPanel extends javax.swing.JPanel {
 
         jLabel8.setText("Địa Chỉ:");
 
-        bthadd.setBackground(new java.awt.Color(153, 204, 255));
-        bthadd.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        bthadd.setText("Thêm Nhân Viên");
-        bthadd.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bthaddActionPerformed(evt);
-            }
-        });
-
         bthUpdateUser.setBackground(new java.awt.Color(153, 204, 255));
         bthUpdateUser.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         bthUpdateUser.setText("Update Thông Tin Nhân Viên");
@@ -378,18 +399,6 @@ public class UserJPanel extends javax.swing.JPanel {
             }
         });
 
-        jButton2.setBackground(new java.awt.Color(51, 153, 255));
-        jButton2.setText("<|");
-
-        jButton3.setBackground(new java.awt.Color(51, 153, 255));
-        jButton3.setText("<<");
-
-        jButton4.setBackground(new java.awt.Color(51, 153, 255));
-        jButton4.setText(">>");
-
-        jButton5.setBackground(new java.awt.Color(51, 153, 255));
-        jButton5.setText("|>");
-
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -416,27 +425,14 @@ public class UserJPanel extends javax.swing.JPanel {
                 .addGap(172, 172, 172)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(BthRemoveStatus, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addComponent(bthUpdateUser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(bthResetForm, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(6, 6, 6))
-                    .addComponent(bthadd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jButton2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton5)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                    .addComponent(bthUpdateUser, javax.swing.GroupLayout.DEFAULT_SIZE, 386, Short.MAX_VALUE)
+                    .addComponent(bthResetForm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(16, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel2)
@@ -455,31 +451,25 @@ public class UserJPanel extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtdateofbirth, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(bthUpdateUser, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(bthResetForm, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(jLabel6)
+                                .addGap(13, 13, 13)
+                                .addComponent(txtaccount, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel7)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtpassword, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel8)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jButton2)
-                                .addComponent(jButton3)
-                                .addComponent(jButton4)
-                                .addComponent(jButton5))
-                            .addComponent(jLabel6))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtaccount, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel7)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtpassword, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel8)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtaddress, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addComponent(bthadd, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(bthUpdateUser, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(bthResetForm, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(7, 7, 7)
-                        .addComponent(BthRemoveStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(txtaddress, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(BthRemoveStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap())
         );
 
@@ -518,8 +508,9 @@ public class UserJPanel extends javax.swing.JPanel {
                         .addComponent(jLabel11)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jTabbedPane1.addTab("Khách Hàng", jPanel1);
@@ -551,18 +542,6 @@ public class UserJPanel extends javax.swing.JPanel {
         jLabel10.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         jLabel10.setText("Khách Hàng Đã Xóa");
 
-        jButton11.setBackground(new java.awt.Color(51, 153, 255));
-        jButton11.setText("<|");
-
-        jButton12.setBackground(new java.awt.Color(51, 153, 255));
-        jButton12.setText("<<");
-
-        jButton13.setBackground(new java.awt.Color(51, 153, 255));
-        jButton13.setText(">>");
-
-        jButton14.setBackground(new java.awt.Color(51, 153, 255));
-        jButton14.setText("|>");
-
         bthKhoiPhuc.setBackground(new java.awt.Color(153, 204, 255));
         bthKhoiPhuc.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         bthKhoiPhuc.setText("Khôi phục Khách Hàng");
@@ -593,7 +572,7 @@ public class UserJPanel extends javax.swing.JPanel {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(35, 35, 35)
                         .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 239, Short.MAX_VALUE)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(txtSearch0, javax.swing.GroupLayout.PREFERRED_SIZE, 442, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -601,15 +580,7 @@ public class UserJPanel extends javax.swing.JPanel {
                                 .addComponent(bthsearch0, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jLabel9)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jButton11)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton12)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton13)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton14)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(bthResetTable, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(bthKhoiPhuc, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 225, Short.MAX_VALUE))))
@@ -628,13 +599,7 @@ public class UserJPanel extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 446, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(19, 19, 19)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jButton11)
-                        .addComponent(jButton12)
-                        .addComponent(jButton13)
-                        .addComponent(jButton14))
-                    .addComponent(bthKhoiPhuc, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(bthKhoiPhuc, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(bthResetTable, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(44, 44, 44))
@@ -677,78 +642,140 @@ public class UserJPanel extends javax.swing.JPanel {
         search = true;
     }//GEN-LAST:event_bthResetFormActionPerformed
 
-    private void bthaddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bthaddActionPerformed
-        User user = checkadd();
-        if (user != null) {
-            String address = txtaddress.getText();
-            String numblephone = txtnumblephone.getText();
-            nowDate = getCurrentDateTime();
-            as.add_address(nowDate, address);
-            boolean userS = us.add_user_all(user, nowDate, address);
-            if (userS) {
-                JOptionPane.showMessageDialog(this, "Thêm thành công !");
-                String namerole = String.valueOf("3");
-                urs.add_user_role(user, namerole);
-            } else {
-                JOptionPane.showMessageDialog(this, "Thêm thất bại !");
-                as.delete_address(nowDate, address);
-            }
-        }
-        reset();
-        datarowUser();
-        search = true;
-    }//GEN-LAST:event_bthaddActionPerformed
-
     private void bthUpdateUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bthUpdateUserActionPerformed
-        int index = tblUser.getSelectedRow();
+        try {
+            int index = tblUser.getSelectedRow();
         if (index >= 0) {
             if (search == true) {
                 UserRole ur = urs.getAll_User(String.valueOf("1")).get(index);
-                if (ur != null) {
-                    User user = checkupdate();
-                    if (user != null) {
-                        String iduser = ur.getUserId().getId();
-                        String idaddress = ur.getUserId().getAddressId().getId();
-                        String addressdetail = txtaddress.getText();
-                        as.update_address(nowDate, addressdetail, idaddress);
-                        boolean userS = us.Update_user_all(user, iduser);
-                        if (userS) {
-                            JOptionPane.showMessageDialog(this, "Update thành công !");
+                if (ur.getUserId().getAccount() != null) {
+                    if (ur != null) {
+                        User user = checkupdate1();
+                        if (user != null) {
+                            String iduser = ur.getUserId().getId();
+                            String idaddressupdate = ur.getUserId().getAddressId().getId();
+                            String addressdetail = txtaddress.getText();
+                            if (ur.getUserId().getAddressId().getAddressDetail()==null) {
+                                nowDate = getCurrentDateTime();
+                                System.out.println( nowDate);
+                                as.add_address(nowDate, addressdetail);
+                                Address address = us.getAddress(nowDate, addressdetail);
+                                String idaddressadd = address.getId();
+                                System.out.println(idaddressadd);
+                                System.out.println(us.Update_user_address(idaddressadd , iduser));
+                            }else{
+                                as.update_address(nowDate, addressdetail, idaddressupdate);
+                            }                            
+                            boolean userS = us.Update_user_all(user, iduser);
+                            if (userS) {
+                                JOptionPane.showMessageDialog(this, "Update thành công !");
+                            } else {
+                                JOptionPane.showMessageDialog(this, "Update thất bại !");
+                            }
                         } else {
-                            JOptionPane.showMessageDialog(this, "Update thất bại !");
+                            JOptionPane.showMessageDialog(this, "Lỗi ");
                         }
                     } else {
-                        JOptionPane.showMessageDialog(this, "Lỗi ");
+                        JOptionPane.showMessageDialog(this, "Lỗi");
                     }
-                } else {
-                    JOptionPane.showMessageDialog(this, "Lỗi");
+                }
+                if (ur.getUserId().getAccount() == null) {
+                    if (ur != null) {
+                        User user = checkupdate2();
+                        if (user != null) {
+                            String iduser = ur.getUserId().getId();
+                            String idaddressupdate = ur.getUserId().getAddressId().getId();
+                            String addressdetail = txtaddress.getText();
+                            if (ur.getUserId().getAddressId().getAddressDetail()==null) {
+                                nowDate = getCurrentDateTime();
+                                as.add_address(nowDate, addressdetail);
+                                Address address = us.getAddress(nowDate, addressdetail);
+                                String idaddressadd = address.getId();
+                                us.Update_user_address(idaddressadd , iduser);
+                            }else{
+                                as.update_address(nowDate, addressdetail, idaddressupdate);
+                            }   
+                            boolean userS = us.Update_user_all(user, iduser);
+                            if (userS) {
+                                JOptionPane.showMessageDialog(this, "Update thành công !");
+                            } else {
+                                JOptionPane.showMessageDialog(this, "Update thất bại !");
+                            }
+                        } else {
+                            JOptionPane.showMessageDialog(this, "Lỗi ");
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Lỗi");
+                    }
                 }
             }
             if (search == false) {
                 String name = txtSearch1.getText();
                 UserRole ur = urs.getSearch_User(String.valueOf("1"), name).get(index);
-                if (ur != null) {
-                    User user = checkupdate();
-                    if (user != null) {
-                        String iduser = ur.getUserId().getId();
-                        String idaddress = ur.getUserId().getAddressId().getId();
-                        String addressdetail = txtaddress.getText();
-                        as.update_address(nowDate, addressdetail, idaddress);
-                        boolean userS = us.Update_user_all(user, iduser);
-                        if (userS) {
-                            JOptionPane.showMessageDialog(this, "Update thành công !");
+                if (ur.getUserId().getAccount() != null) {
+                    if (ur != null) {
+                        User user = checkupdate1();
+                        if (user != null) {
+                            String iduser = ur.getUserId().getId();
+                            String idaddressupdate = ur.getUserId().getAddressId().getId();
+                            String addressdetail = txtaddress.getText();
+                            if (ur.getUserId().getAddressId().getAddressDetail()==null) {
+                                nowDate = getCurrentDateTime();
+                                as.add_address(nowDate, addressdetail);
+                                Address address = us.getAddress(nowDate, addressdetail);
+                                String idaddressadd = address.getId();
+                                us.Update_user_address(idaddressadd , iduser);
+                            }else{
+                                as.update_address(nowDate, addressdetail, idaddressupdate);
+                            }   
+                            boolean userS = us.Update_user_all(user, iduser);
+                            if (userS) {
+                                JOptionPane.showMessageDialog(this, "Update thành công !");
+                            } else {
+                                JOptionPane.showMessageDialog(this, "Update thất bại !");
+                            }
                         } else {
-                            JOptionPane.showMessageDialog(this, "Update thất bại !");
+                            JOptionPane.showMessageDialog(this, "Lỗi ");
                         }
                     } else {
-                        JOptionPane.showMessageDialog(this, "Lỗi ");
+                        JOptionPane.showMessageDialog(this, "Lỗi");
                     }
-                } else {
-                    JOptionPane.showMessageDialog(this, "Lỗi");
+                }
+                if (ur.getUserId().getAccount() == null) {
+                    if (ur != null) {
+                        User user = checkupdate2();
+                        if (user != null) {
+                            String iduser = ur.getUserId().getId();
+                            String idaddressupdate = ur.getUserId().getAddressId().getId();
+                            String addressdetail = txtaddress.getText();
+                            if (ur.getUserId().getAddressId().getAddressDetail()==null) {
+                                nowDate = getCurrentDateTime();
+                                as.add_address(nowDate, addressdetail);
+                                Address address = us.getAddress(nowDate, addressdetail);
+                                String idaddressadd = address.getId();
+                                us.Update_user_address(idaddressadd , iduser);
+                            }else{
+                                as.update_address(nowDate, addressdetail, idaddressupdate);
+                            }   
+                            boolean userS = us.Update_user_all(user, iduser);
+                            if (userS) {
+                                JOptionPane.showMessageDialog(this, "Update thành công !");
+                            } else {
+                                JOptionPane.showMessageDialog(this, "Update thất bại !");
+                            }
+                        } else {
+                            JOptionPane.showMessageDialog(this, "Lỗi ");
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Lỗi");
+                    }
                 }
             }
         } else {
             JOptionPane.showMessageDialog(this, "Bạn chưa chọn nhân viên nào ");
+        }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         reset();
         datarowUser();
@@ -886,17 +913,8 @@ public class UserJPanel extends javax.swing.JPanel {
     private javax.swing.JButton bthResetForm;
     private javax.swing.JButton bthResetTable;
     private javax.swing.JButton bthUpdateUser;
-    private javax.swing.JButton bthadd;
     private javax.swing.JButton bthsearch0;
     private javax.swing.JButton bthsearch1;
-    private javax.swing.JButton jButton11;
-    private javax.swing.JButton jButton12;
-    private javax.swing.JButton jButton13;
-    private javax.swing.JButton jButton14;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
